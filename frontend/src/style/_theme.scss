@@ -1,0 +1,5 @@
+@import './color';
+
+html[data-theme='light'] {
+  --navbar-background: #{$pale-yellow};
+}

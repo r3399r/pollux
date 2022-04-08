@@ -1,0 +1,13 @@
+@import 'src/style/mixins';
+@import 'src/style/variables';
+
+.body {
+  box-sizing: border-box;
+  height: calc(100vh - 44px);
+  overflow-y: auto;
+  @include scrollbar;
+  padding: 10px;
+  @media (min-width: $sm) {
+    padding: 15px;
+  }
+}
