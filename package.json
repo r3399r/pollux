@@ -4,7 +4,9 @@
   "author": "Yue Chang",
   "license": "ISC",
   "scripts": {
+    "check:backend": "npm --prefix ./backend/ run pre:commit",
     "check:frontend": "npm --prefix ./frontend/ run pre:commit",
+    "fix:backend": "npm --prefix ./backend/ run fix",
     "fix:frontend": "npm --prefix ./frontend/ run fix",
     "pre:commit": "run-p check:*",
     "fix": "run-p fix:*",

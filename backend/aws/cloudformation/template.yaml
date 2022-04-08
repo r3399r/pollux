@@ -1,0 +1,223 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: "AWS::Serverless-2016-10-31"
+Description: sadalsuud deployment cloudformation script
+    
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+      Timeout: 30  # in seconds
+Parameters: 
+  LambdaExecutionRole:
+    Type: String
+    Default: celestial-service-execution-role
+    Description: The primary role in that gives the Lambda function permission to do its work.
+  NodeJsVer:
+    Type: String
+    Default: nodejs14.x
+  Project:
+    Type: String
+  Alias:
+    Type: String
+    Default: P3
+  TargetEnvr:
+    Type: String
+    Description: The target environment for API Gateway deployment.
+  SubDomain:
+    Type: String
+  Domain:
+    Type: String
+Conditions: 
+  IsProd: !Equals [ !Ref TargetEnvr, prod ]
+Resources:
+  ##############################################
+  ##### API Gateway and associated Lambdas #####
+  ##############################################
+  ServerlessApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: !Sub ${TargetEnvr}
+      EndpointConfiguration: REGIONAL
+      DefinitionBody: {
+          "openapi": "3.0.1",
+          "info": {
+            "version": "2020-01-06T07:45:41Z",
+            "title": !Sub "${Project}-${TargetEnvr}-api"
+          },
+          "paths": {
+            "/api/now": {
+              "get": {
+                "responses": {
+                  "200": {
+                    "description": "200 response",
+                    "headers": {
+                      "Access-Control-Allow-Origin": {
+                        "schema": {"type": "string"}
+                      }
+                    },
+                    "content": {
+                      "application/json": {
+                        "schema": {
+                          "$ref": "#/components/schemas/Empty"
+                        }
+                      }
+                    }
+                  }
+                },
+                "x-amazon-apigateway-integration": {
+                  "type": "aws_proxy",
+                  "httpMethod": "POST",
+                  "uri": !Sub "arn:aws:apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/arn:aws:lambda:ap-northeast-1:278497686406:function:${Project}-${TargetEnvr}-now/invocations",
+                  "responses": {
+                    "default": {
+                      "statusCode": "200",
+                      "responseParameters": {
+                        "method.response.header.Access-Control-Allow-Origin": "'*'"
+                      }
+                    }
+                  },
+                  "passthroughBehavior": "when_no_match",
+                  "contentHandling": "CONVERT_TO_TEXT"
+                }
+              }
+            }
+          },
+          "definitions": {
+            "Empty": {
+              "type": "object",
+              "title": "Empty Schema"
+            }
+          }
+        }
+  LambdaNow:
+    Type: AWS::Serverless::Function
+    Properties:
+      Architectures: [arm64]
+      Handler: index.now
+      Runtime: !Sub ${NodeJsVer}
+      FunctionName: !Sub ${Project}-${TargetEnvr}-now
+      Role: !Sub "arn:aws:iam::${AWS::AccountId}:role/${LambdaExecutionRole}"
+      CodeUri: ../../dist/webpack/lambda
+      MemorySize: 128
+      Environment:
+        Variables:
+          sourceArn: !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ServerlessApi}/${TargetEnvr}/*
+  InvokePermissionNow:
+    Type: AWS::Lambda::Permission
+    DependsOn: [ServerlessApi, LambdaNow]
+    Properties:
+      FunctionName: !Sub ${Project}-${TargetEnvr}-now
+      Action: 'lambda:InvokeFunction'
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ServerlessApi}/*
+  #########################################
+  ##### Cloudfront and Route53 config #####
+  #########################################
+  CloudFrontOriginAccessIdentity:
+    Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
+    Properties:
+      CloudFrontOriginAccessIdentityConfig:
+        Comment: !Sub ${Project}-${TargetEnvr}-OAI
+  Route53RecordSet:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneName: !Sub '${Domain}.'
+      Name: !If [IsProd, !Sub '${SubDomain}.${Domain}.', !Sub '${SubDomain}-${TargetEnvr}.${Domain}.']
+      Type: A
+      AliasTarget:
+        HostedZoneId: Z2FDTNDATAQYW2
+        DNSName: !GetAtt
+        - CloudFrontDistribution
+        - DomainName
+  CloudFrontDistribution:
+    Type: AWS::CloudFront::Distribution
+    DependsOn: [ServerlessApi, S3Bucket]
+    Properties:
+      DistributionConfig:
+        Aliases: [!If [IsProd, !Sub '${SubDomain}.${Domain}', !Sub '${SubDomain}-${TargetEnvr}.${Domain}']]
+        Origins:
+        - DomainName: !Sub ${Project}-${TargetEnvr}-y.s3.ap-northeast-1.amazonaws.com
+          Id: S3-hosted-website-ID
+          S3OriginConfig:
+            OriginAccessIdentity: !Sub origin-access-identity/cloudfront/${CloudFrontOriginAccessIdentity}
+        - DomainName: !Sub '${ServerlessApi}.execute-api.${AWS::Region}.amazonaws.com'
+          Id: !Sub ${Project}-${TargetEnvr}-ApiEndpoint-ID
+          OriginPath: !Sub /${TargetEnvr}
+          CustomOriginConfig:
+            HTTPPort: 80
+            HTTPSPort: 443
+            OriginKeepaliveTimeout: 5
+            OriginProtocolPolicy: https-only
+        Enabled: 'true'
+        HttpVersion: http2
+        CustomErrorResponses:
+        - ErrorCachingMinTTL: 300
+          ErrorCode: 404
+          ResponseCode: 200
+          ResponsePagePath: /index.html
+        - ErrorCachingMinTTL: 300
+          ErrorCode: 403
+          ResponseCode: 200
+          ResponsePagePath: /index.html
+        DefaultRootObject: index.html
+        DefaultCacheBehavior:
+          AllowedMethods: [ "GET", "HEAD", "OPTIONS", "PUT", "PATCH", "POST", "DELETE"]
+          TargetOriginId: S3-hosted-website-ID
+          ForwardedValues:
+            QueryString: 'false'
+            Cookies:
+              Forward: none
+          ViewerProtocolPolicy: redirect-to-https
+          DefaultTTL: 0
+          MinTTL: 0
+          MaxTTL: 0
+        CacheBehaviors:
+        - PathPattern: /api/*
+          AllowedMethods: [ "GET", "HEAD", "OPTIONS", "PUT", "PATCH", "POST", "DELETE"]
+          ForwardedValues:
+            Headers: [ "Authorization", "Accept" ]
+            QueryString: true
+          TargetOriginId: !Sub ${Project}-${TargetEnvr}-ApiEndpoint-ID
+          ViewerProtocolPolicy: redirect-to-https
+          DefaultTTL: 0
+          MinTTL: 0
+          MaxTTL: 0
+        PriceClass: PriceClass_200
+        ViewerCertificate:
+          AcmCertificateArn: arn:aws:acm:us-east-1:278497686406:certificate/8914c993-68c7-4e06-b741-def8fc0270ba
+          MinimumProtocolVersion: TLSv1
+          SslSupportMethod: sni-only
+  ####################################
+  ##### S3 Bucket and its policy #####
+  ####################################
+  S3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub ${Project}-${TargetEnvr}-y
+      WebsiteConfiguration:
+        ErrorDocument: error.html
+        IndexDocument: index.html
+  S3BucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    DependsOn: [CloudFrontOriginAccessIdentity]
+    Properties:
+      Bucket: !Sub ${Project}-${TargetEnvr}-y
+      PolicyDocument: !Join
+      - ''
+      - - '{
+            "Version": "2012-10-17",
+            "Id": "PolicyForCloudFrontPrivateContent",
+            "Statement": [
+                {
+                    "Sid": "Allow-OAI-Access-To-Bucket",
+                    "Effect": "Allow",
+                    "Principal": {
+                        "AWS": "arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity '
+        - !Ref CloudFrontOriginAccessIdentity
+        - '" },
+                    "Action": "s3:GetObject",
+                    "Resource": "arn:aws:s3:::'
+        - !Sub ${Project}-${TargetEnvr}-y
+        - '/*"
+                }
+            ]
+          }'

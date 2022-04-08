@@ -15,7 +15,8 @@
     "lint": "run-s lint:*",
     "fix": "run-s fix:*",
     "clean": "del-cli dist -f",
-    "pre:commit": "npm run lint"
+    "pre:commit": "npm run lint",
+    "pre:deploy": "run-s clean build"
   },
   "dependencies": {
     "react": "^18.0.0",
