@@ -1,5 +1,7 @@
 @import './color';
 
 html[data-theme='light'] {
-  --navbar-background: #{$pale-yellow};
+  color: $black;
+  --navbar-background: #{$pale-orange};
+  --navbar-color: #{$white};
 }
