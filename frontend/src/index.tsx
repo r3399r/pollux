@@ -1,7 +1,9 @@
+import { MathJaxContext } from 'better-react-mathjax';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
+import { MathJaxConfig } from './constant/MathJax';
 import ThemeProvider from './context/themer';
 import reportWebVitals from './reportWebVitals';
 import './style/index.scss';
@@ -11,11 +13,13 @@ const root = createRoot(rootElement);
 
 root.render(
   <React.StrictMode>
-    <ThemeProvider>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </ThemeProvider>
+    <MathJaxContext config={MathJaxConfig}>
+      <ThemeProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </ThemeProvider>
+    </MathJaxContext>
   </React.StrictMode>,
 );
 

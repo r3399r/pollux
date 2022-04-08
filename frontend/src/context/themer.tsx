@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useEffect } from 'react';
 import { Theme } from 'src/constant/Theme';
 
-export const ThemeContext = createContext({});
+const ThemeContext = createContext({});
 
 type ThemeProviderProps = {
   children: ReactNode;
