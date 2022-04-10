@@ -18,7 +18,6 @@ Parameters:
     Type: String
   Alias:
     Type: String
-    Default: P3
   TargetEnvr:
     Type: String
     Description: The target environment for API Gateway deployment.

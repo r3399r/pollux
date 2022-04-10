@@ -1,5 +1,3 @@
-@import './variables';
-
 @mixin scrollbar {
   overflow-y: overlay;
   &::-webkit-scrollbar {
