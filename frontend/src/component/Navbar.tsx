@@ -1,30 +1,27 @@
-import HistoryEduIcon from '@mui/icons-material/HistoryEdu';
-import PersonIcon from '@mui/icons-material/Person';
-import { useNavigate } from 'react-router';
-import { Page } from 'src/constant/Page';
+import MenuIcon from '@mui/icons-material/Menu';
+import { useState } from 'react';
 import Logo from 'src/image/logo.png';
+import Drawer from './Drawer';
 import style from './Navbar.module.scss';
 
 const Navbar = () => {
-  const navigate = useNavigate();
+  const [open, setOpen] = useState<boolean>(false);
 
-  const goto = (path: Page) => () => {
-    navigate(path);
-  };
+  const toggleDrawer = () => setOpen(!open);
 
   return (
-    <div className={style.self}>
-      <div className={style.logo}>
-        <div onClick={goto(Page.Landing)} role="button">
+    <>
+      <div className={style.self}>
+        <div className={style.menu} onClick={toggleDrawer}>
+          <MenuIcon />
+        </div>
+        <div className={style.logo}>
           <img alt="" role="presentation" src={Logo} />
           <div>GEMINI</div>
         </div>
       </div>
-      <div className={style.pages}>
-        <HistoryEduIcon />
-        <PersonIcon onClick={goto(Page.User)} />
-      </div>
-    </div>
+      <Drawer open={open} onClose={toggleDrawer} />
+    </>
   );
 };
 
