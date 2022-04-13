@@ -28,13 +28,13 @@ const Drawer = ({ open, onClose }: DrawerProps) => {
           </ListItemIcon>
           <ListItemText primary={'首頁'} />
         </ListItem>
-        <ListItem button>
+        <ListItem button onClick={goto(Page.Student)}>
           <ListItemIcon>
             <SchoolIcon />
           </ListItemIcon>
           <ListItemText primary={'我是學生'} />
         </ListItem>
-        <ListItem button>
+        <ListItem button onClick={goto(Page.Teacher)}>
           <ListItemIcon>
             <HistoryEduIcon />
           </ListItemIcon>
