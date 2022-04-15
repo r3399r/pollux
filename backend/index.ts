@@ -1,1 +1,1 @@
-export { GetNowResponse } from 'src/model/api/Now';
+export { PostUserResponse } from 'src/model/api/User';

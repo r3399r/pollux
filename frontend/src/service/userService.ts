@@ -1,13 +1,7 @@
-import { v4 as uuidv4 } from 'uuid';
+// import http from "src/util/http";
 
-export const getUserId = () => {
-  const savedId = localStorage.getItem('id');
-  if (savedId === null) {
-    const newId = uuidv4();
-    localStorage.setItem('id', newId);
+export const getUser = async () =>
+  // const res=await http.post('user',{headers:{'x-api-timestamp':1}})
+  ({ id: '1234', nickname: 'abcd' });
 
-    return newId;
-  }
-
-  return savedId;
-};
+export const getTransferCode = () => 'abcdefg';

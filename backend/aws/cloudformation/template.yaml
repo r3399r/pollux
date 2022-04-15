@@ -43,8 +43,16 @@ Resources:
             "title": !Sub "${Project}-${TargetEnvr}-api"
           },
           "paths": {
-            "/api/now": {
-              "get": {
+            "/api/user": {
+              "post": {
+                "parameters" : [ {
+                  "name" : "x-api-timestamp",
+                  "in" : "header",
+                  "required" : true,
+                  "schema" : {
+                    "type" : "string"
+                  }
+                } ],
                 "responses": {
                   "200": {
                     "description": "200 response",
@@ -62,10 +70,11 @@ Resources:
                     }
                   }
                 },
+                "x-amazon-apigateway-request-validator" : "Validate body, query string parameters, and headers",
                 "x-amazon-apigateway-integration": {
                   "type": "aws_proxy",
                   "httpMethod": "POST",
-                  "uri": !Sub "arn:aws:apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/arn:aws:lambda:ap-northeast-1:278497686406:function:${Project}-${TargetEnvr}-now/invocations",
+                  "uri": !Sub "arn:aws:apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/arn:aws:lambda:ap-northeast-1:278497686406:function:${Project}-${TargetEnvr}-user/invocations",
                   "responses": {
                     "default": {
                       "statusCode": "200",
@@ -87,24 +96,25 @@ Resources:
             }
           }
         }
-  LambdaNow:
+  LambdaUser:
     Type: AWS::Serverless::Function
     Properties:
       Architectures: [arm64]
-      Handler: index.now
+      Handler: index.user
       Runtime: !Sub ${NodeJsVer}
-      FunctionName: !Sub ${Project}-${TargetEnvr}-now
+      FunctionName: !Sub ${Project}-${TargetEnvr}-user
       Role: !Sub "arn:aws:iam::${AWS::AccountId}:role/${LambdaExecutionRole}"
       CodeUri: ../../dist/webpack/lambda
       MemorySize: 128
       Environment:
         Variables:
-          sourceArn: !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ServerlessApi}/${TargetEnvr}/*
-  InvokePermissionNow:
+          ENVR: !Sub ${TargetEnvr}
+          ALIAS: !Sub ${Alias}
+  InvokePermissionUser:
     Type: AWS::Lambda::Permission
-    DependsOn: [ServerlessApi, LambdaNow]
+    DependsOn: [ServerlessApi, LambdaUser]
     Properties:
-      FunctionName: !Sub ${Project}-${TargetEnvr}-now
+      FunctionName: !Sub ${Project}-${TargetEnvr}-user
       Action: 'lambda:InvokeFunction'
       Principal: apigateway.amazonaws.com
       SourceArn: !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ServerlessApi}/*
