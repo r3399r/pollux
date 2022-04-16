@@ -29,8 +29,10 @@
     "react": "^18.0.0",
     "react-copy-to-clipboard": "^5.1.0",
     "react-dom": "^18.0.0",
+    "react-hook-form": "^7.29.0",
     "react-redux": "^7.2.8",
     "react-router-dom": "^6.3.0",
+    "reduxjs-toolkit-persist": "^7.2.1",
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
@@ -44,6 +46,7 @@
     "@types/react-dom": "^17.0.14",
     "@typescript-eslint/eslint-plugin": "^5.18.0",
     "@typescript-eslint/parser": "^5.18.0",
+    "@y-celestial/pollux-service": "^1.0.0",
     "cross-env": "^7.0.3",
     "del-cli": "^4.0.1",
     "eslint": "^8.12.0",

@@ -8,9 +8,10 @@ import {
 } from '@y-celestial/service';
 import { inject, injectable } from 'inversify';
 
+export const ENTITY = 'token';
+
 export type Token = DbBase & {
   token: string;
-  purpose: string;
   expiredDate?: number;
   userId: string;
 };
@@ -18,11 +19,10 @@ export type Token = DbBase & {
 /**
  * Entity class for Token
  */
-@entity('token')
+@entity(ENTITY)
 class TokenEntity implements Token {
   @primaryAttribute()
   public token: string;
-  public purpose: string;
   public expiredDate?: number;
 
   @relatedAttributeOne('user')
@@ -34,7 +34,6 @@ class TokenEntity implements Token {
 
   constructor(input: Token) {
     this.token = input.token;
-    this.purpose = input.purpose;
     this.expiredDate = input.expiredDate;
     this.userId = input.userId;
     this.dateCreated = input.dateCreated;
@@ -47,14 +46,13 @@ class TokenEntity implements Token {
 export class TokenModel implements ModelBase {
   @inject(DbService)
   private readonly dbService!: DbService;
-  private alias = 'token';
 
   async find(id: string) {
-    return await this.dbService.getItem<Token>(this.alias, id);
+    return await this.dbService.getItem<Token>(ENTITY, id);
   }
 
   async findAll() {
-    return await this.dbService.getItems<Token>(this.alias);
+    return await this.dbService.getItems<Token>(ENTITY);
   }
 
   async create(data: Token): Promise<void> {
@@ -82,6 +80,6 @@ export class TokenModel implements ModelBase {
   }
 
   async hardDelete(id: string): Promise<void> {
-    await this.dbService.deleteItem(this.alias, id);
+    await this.dbService.deleteItem(ENTITY, id);
   }
 }

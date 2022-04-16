@@ -1,4 +1,5 @@
 import style from './App.module.scss';
+import Loader from './component/Loader';
 import Navbar from './component/Navbar';
 import Snackbar from './component/Snackbar';
 import AppRoutes from './Routes';
@@ -12,6 +13,7 @@ const App = () => (
       <AppRoutes />
     </div>
     <Snackbar />
+    <Loader />
   </>
 );
 

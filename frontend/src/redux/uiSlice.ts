@@ -5,7 +5,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 export type UiState = {
   snackbarOpen: boolean;
   snackbarSeverity: AlertColor;
-  snackbarMessage: string | undefined;
+  snackbarMessage?: string;
+  isLoading: boolean;
 };
 
 // define the initial value of state
@@ -13,6 +14,7 @@ const initialState: UiState = {
   snackbarOpen: false,
   snackbarSeverity: 'success',
   snackbarMessage: undefined,
+  isLoading: false,
 };
 
 // define the actions in "reducers"
@@ -31,10 +33,13 @@ export const uiSlice = createSlice({
     closeSnackbar: (state: UiState) => {
       state.snackbarOpen = false;
     },
+    showLoading: (state: UiState, action: PayloadAction<boolean>) => {
+      state.isLoading = action.payload;
+    },
   },
 });
 
 // action creators are generated for each case reducer function
-export const { openSnackbar, closeSnackbar } = uiSlice.actions;
+export const { openSnackbar, closeSnackbar, showLoading } = uiSlice.actions;
 
 export default uiSlice.reducer;

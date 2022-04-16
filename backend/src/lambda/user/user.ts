@@ -9,7 +9,12 @@ import {
 } from '@y-celestial/service';
 import { bindings } from 'src/bindings';
 import { UserService } from 'src/logic/UserService';
-import { PostUserResponse } from 'src/model/api/User';
+import {
+  GetUserResponse,
+  PostUserResponse,
+  PutUserRequest,
+  PutUserResponse,
+} from 'src/model/api/User';
 
 export async function user(
   event: LambdaEvent,
@@ -18,7 +23,7 @@ export async function user(
   try {
     const service: UserService = bindings.get<UserService>(UserService);
 
-    let res: PostUserResponse;
+    let res: PostUserResponse | GetUserResponse | PutUserResponse;
 
     switch (event.resource) {
       case '/api/user':
@@ -45,6 +50,21 @@ async function apiUser(event: LambdaEvent, service: UserService) {
         throw new BadRequestError('out of time window');
 
       return service.createUser();
+    case 'GET':
+      if (event.headers?.['x-api-token'] === undefined)
+        throw new BadRequestError('headers required');
+
+      return service.getUser(event.headers['x-api-token']);
+    case 'PUT':
+      if (event.headers?.['x-api-token'] === undefined)
+        throw new BadRequestError('headers required');
+      if (event.body === null)
+        throw new BadRequestError('body should not be empty');
+
+      return service.modifyUser(
+        event.headers['x-api-token'],
+        JSON.parse(event.body) as PutUserRequest
+      );
     default:
       throw new InternalServerError('unknown http method');
   }

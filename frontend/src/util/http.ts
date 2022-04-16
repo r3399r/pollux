@@ -1,10 +1,9 @@
 import axios, { AxiosRequestConfig, AxiosRequestHeaders } from 'axios';
-// import { reset } from 'src/redux/authSlice';
-// import { dispatch } from 'src/redux/store';
 
-type Options<D> = {
+type Options<D = unknown> = {
   headers?: AxiosRequestHeaders;
   data?: D;
+  params?: any;
 };
 
 const defaultConfig: AxiosRequestConfig = {
@@ -12,15 +11,15 @@ const defaultConfig: AxiosRequestConfig = {
   timeout: 5000,
 };
 
-const get = async <T, K = unknown>(url: string, params?: K) =>
+const get = async <T>(url: string, options?: Options) =>
   axios.request<T>({
     ...defaultConfig,
+    ...options,
     url,
     method: 'get',
-    params,
   });
 
-const post = async <T, D>(url: string, options?: Options<D>) =>
+const post = async <T, D = unknown>(url: string, options?: Options<D>) =>
   axios.request<T>({
     ...defaultConfig,
     ...options,
@@ -28,7 +27,7 @@ const post = async <T, D>(url: string, options?: Options<D>) =>
     method: 'post',
   });
 
-const put = async <T, D>(url: string, options?: Options<D>) =>
+const put = async <T, D = unknown>(url: string, options?: Options<D>) =>
   axios.request<T>({
     ...defaultConfig,
     ...options,
@@ -37,31 +36,3 @@ const put = async <T, D>(url: string, options?: Options<D>) =>
   });
 
 export default { get, post, put };
-
-// const authRequest = async <T>(config: AxiosRequestConfig) => {
-//   try {
-//     const secret = localStorage.getItem('secret');
-
-//     return await axios.request<T>({
-//       ...defaultConfig,
-//       ...config,
-//       headers: { 'x-api-secret': secret ?? 'zzz' },
-//     });
-//   } catch (e) {
-//     const error = (e as AxiosError).response;
-//     if (error?.data.message === 'Unauthorized') {
-//       localStorage.removeItem('secret');
-//       dispatch(reset());
-//       throw new Error('Unauthorized');
-//     }
-//     throw e;
-//   }
-// };
-
-// export const authGet = async <T, K = unknown>(url: string, params?: K) =>
-//   await authRequest<T>({ url, params, method: 'get' });
-
-// export const authPut = async <T, D>(url: string, data: D) =>
-//   await authRequest<T>({ url, method: 'put', data });
-
-// export const authDelete = async <T>(url: string) => await authRequest<T>({ url, method: 'delete' });

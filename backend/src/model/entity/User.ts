@@ -7,6 +7,8 @@ import {
 } from '@y-celestial/service';
 import { inject, injectable } from 'inversify';
 
+export const ENTITY = 'user';
+
 export type User = DbBase & {
   id: string;
   nickname: string;
@@ -15,7 +17,7 @@ export type User = DbBase & {
 /**
  * Entity class for User
  */
-@entity('user')
+@entity(ENTITY)
 class UserEntity implements User {
   @primaryAttribute()
   public id: string;
@@ -38,14 +40,13 @@ class UserEntity implements User {
 export class UserModel implements ModelBase {
   @inject(DbService)
   private readonly dbService!: DbService;
-  private alias = 'user';
 
   async find(id: string) {
-    return await this.dbService.getItem<User>(this.alias, id);
+    return await this.dbService.getItem<User>(ENTITY, id);
   }
 
   async findAll() {
-    return await this.dbService.getItems<User>(this.alias);
+    return await this.dbService.getItems<User>(ENTITY);
   }
 
   async create(data: User): Promise<void> {
@@ -73,6 +74,6 @@ export class UserModel implements ModelBase {
   }
 
   async hardDelete(id: string): Promise<void> {
-    await this.dbService.deleteItem(this.alias, id);
+    await this.dbService.deleteItem(ENTITY, id);
   }
 }

@@ -1,7 +1,12 @@
 import { randBase58 } from '@y-celestial/service';
 import { inject, injectable } from 'inversify';
 import { v4 as uuidv4 } from 'uuid';
-import { PostUserResponse } from 'src/model/api/User';
+import {
+  GetUserResponse,
+  PostUserResponse,
+  PutUserRequest,
+  PutUserResponse,
+} from 'src/model/api/User';
 import { Token, TokenModel } from 'src/model/entity/Token';
 import { User, UserModel } from 'src/model/entity/User';
 
@@ -19,12 +24,31 @@ export class UserService {
     const user: User = { id: uuidv4(), nickname: '過客' };
     const token: Token = {
       token: randBase58(64),
-      purpose: 'general',
       userId: user.id,
     };
     await this.userModel.create(user);
     await this.tokenModel.create(token);
 
     return { ...user, token: token.token };
+  }
+
+  public async getUser(token: string): Promise<GetUserResponse> {
+    const tokenObj = await this.tokenModel.find(token);
+    const user = await this.userModel.find(tokenObj.userId);
+
+    return { id: user.id, nickname: user.nickname };
+  }
+
+  public async modifyUser(
+    token: string,
+    body: PutUserRequest
+  ): Promise<PutUserResponse> {
+    const tokenObj = await this.tokenModel.find(token);
+    const user = await this.userModel.find(tokenObj.userId);
+
+    const newUser = { id: user.id, nickname: body.nickname };
+    await this.userModel.replace(newUser);
+
+    return newUser;
   }
 }
