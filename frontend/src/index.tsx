@@ -1,3 +1,4 @@
+import { Backdrop, CircularProgress } from '@mui/material';
 import { MathJaxContext } from 'better-react-mathjax';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
@@ -16,7 +17,14 @@ const root = createRoot(rootElement);
 
 root.render(
   <Provider store={store}>
-    <PersistGate loading={null} persistor={persistor}>
+    <PersistGate
+      loading={
+        <Backdrop open>
+          <CircularProgress />
+        </Backdrop>
+      }
+      persistor={persistor}
+    >
       <MathJaxContext config={MathJaxConfig}>
         <ThemeProvider>
           <BrowserRouter>
