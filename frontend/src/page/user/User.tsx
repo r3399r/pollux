@@ -3,8 +3,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { Button } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from 'src/redux/store';
+import { useDispatch } from 'react-redux';
 import { openSnackbar, showLoading } from 'src/redux/uiSlice';
 import { activateUser, getUser, transferDevice } from 'src/service/userService';
 import EditForm from './component/EditForm';
@@ -14,14 +13,15 @@ import style from './User.module.scss';
 const User = () => {
   const [id, setId] = useState<string>();
   const [nickname, setNickname] = useState<string>();
-  const [isTransfering, setIsTransfering] = useState<boolean>(false);
   const [showEdit, setShowEdit] = useState<boolean>(false);
-  const { token } = useSelector((state: RootState) => state.auth);
+  const [token, setToken] = useState<string>();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (token !== undefined && isTransfering === false)
-      getUser()
+    const savedToken = localStorage.getItem('token');
+    if (savedToken !== null) {
+      setToken(savedToken);
+      getUser(savedToken)
         .then((res) => {
           setId(res.id);
           setNickname(res.nickname);
@@ -29,7 +29,8 @@ const User = () => {
         .catch(() => {
           dispatch(openSnackbar({ severity: 'error', message: '讀取使用者資料失敗' }));
         });
-  }, [token, isTransfering]);
+    }
+  }, []);
 
   const onEdit = () => {
     setShowEdit(true);
@@ -46,6 +47,11 @@ const User = () => {
   const onActivate = () => {
     dispatch(showLoading(true));
     activateUser()
+      .then((res) => {
+        setId(res.id);
+        setNickname(res.nickname);
+        setToken(res.token);
+      })
       .catch(() => {
         dispatch(openSnackbar({ severity: 'error', message: '啟用失敗，請重試' }));
       })
@@ -55,11 +61,11 @@ const User = () => {
   };
 
   const onSubmit = (token: string) => {
-    setIsTransfering(true);
     transferDevice(token)
       .then((res) => {
         setId(res.id);
         setNickname(res.nickname);
+        setToken(token);
       })
       .catch(() => {
         dispatch(openSnackbar({ severity: 'error', message: '代碼無效' }));

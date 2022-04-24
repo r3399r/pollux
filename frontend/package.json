@@ -32,7 +32,6 @@
     "react-hook-form": "^7.29.0",
     "react-redux": "^7.2.8",
     "react-router-dom": "^6.3.0",
-    "reduxjs-toolkit-persist": "^7.2.1",
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {

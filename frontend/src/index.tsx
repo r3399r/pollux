@@ -1,9 +1,7 @@
-import { Backdrop, CircularProgress } from '@mui/material';
 import { MathJaxContext } from 'better-react-mathjax';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
-import { PersistGate } from 'reduxjs-toolkit-persist/integration/react';
 import App from './App';
 import { MathJaxConfig } from './constant/MathJax';
 import ThemeProvider from './context/themer';
@@ -11,28 +9,19 @@ import { configStore } from './redux/store';
 import reportWebVitals from './reportWebVitals';
 import './style/index.scss';
 
-const { store, persistor } = configStore();
+const store = configStore();
 const rootElement = document.getElementById('root') as HTMLElement;
 const root = createRoot(rootElement);
 
 root.render(
   <Provider store={store}>
-    <PersistGate
-      loading={
-        <Backdrop open>
-          <CircularProgress />
-        </Backdrop>
-      }
-      persistor={persistor}
-    >
-      <MathJaxContext config={MathJaxConfig}>
-        <ThemeProvider>
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
-        </ThemeProvider>
-      </MathJaxContext>
-    </PersistGate>
+    <MathJaxContext config={MathJaxConfig}>
+      <ThemeProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </ThemeProvider>
+    </MathJaxContext>
   </Provider>,
 );
 

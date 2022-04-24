@@ -33,8 +33,8 @@ export class UserService {
   }
 
   public async getUser(token: string): Promise<GetUserResponse> {
-    const tokenObj = await this.tokenModel.find(token);
-    const user = await this.userModel.find(tokenObj.userId);
+    const { userId } = await this.tokenModel.find(token);
+    const user = await this.userModel.find(userId);
 
     return { id: user.id, nickname: user.nickname };
   }
@@ -43,8 +43,8 @@ export class UserService {
     token: string,
     body: PutUserRequest
   ): Promise<PutUserResponse> {
-    const tokenObj = await this.tokenModel.find(token);
-    const user = await this.userModel.find(tokenObj.userId);
+    const { userId } = await this.tokenModel.find(token);
+    const user = await this.userModel.find(userId);
 
     const newUser = { id: user.id, nickname: body.nickname };
     await this.userModel.replace(newUser);

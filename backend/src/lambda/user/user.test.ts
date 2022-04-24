@@ -30,6 +30,8 @@ describe('user', () => {
     bindings.rebind<UserService>(UserService).toConstantValue(mockService);
 
     mockService.createUser = jest.fn(() => dummyResult);
+    mockService.getUser = jest.fn(() => dummyResult);
+    mockService.modifyUser = jest.fn(() => dummyResult);
   });
 
   describe('/api/user', () => {
@@ -48,7 +50,7 @@ describe('user', () => {
       expect(mockService.createUser).toBeCalledTimes(1);
     });
 
-    it('should fail if missing headers', async () => {
+    it('POST should fail if missing headers', async () => {
       event = {
         resource: '/api/user',
         httpMethod: 'POST',
@@ -62,7 +64,7 @@ describe('user', () => {
       );
     });
 
-    it('should fail if timstamp far from now', async () => {
+    it('POST should fail if timstamp far from now', async () => {
       event = {
         resource: '/api/user',
         httpMethod: 'POST',
@@ -76,7 +78,7 @@ describe('user', () => {
       );
     });
 
-    it('should fail if timstamp is not number', async () => {
+    it('POST should fail if timstamp is not number', async () => {
       event = {
         resource: '/api/user',
         httpMethod: 'POST',
@@ -87,6 +89,78 @@ describe('user', () => {
       };
       await expect(user(event, lambdaContext)).resolves.toStrictEqual(
         errorOutput(new BadRequestError('timstamp should be number'))
+      );
+    });
+
+    it('GET should work', async () => {
+      event = {
+        resource: '/api/user',
+        httpMethod: 'GET',
+        headers: { ['x-api-token']: 'abcde' },
+        body: null,
+        pathParameters: null,
+        queryStringParameters: null,
+      };
+      await expect(user(event, lambdaContext)).resolves.toStrictEqual(
+        successOutput(dummyResult)
+      );
+      expect(mockService.getUser).toBeCalledTimes(1);
+    });
+
+    it('GET should fail if missing headers', async () => {
+      event = {
+        resource: '/api/user',
+        httpMethod: 'GET',
+        headers: null,
+        body: null,
+        pathParameters: null,
+        queryStringParameters: null,
+      };
+      await expect(user(event, lambdaContext)).resolves.toStrictEqual(
+        errorOutput(new BadRequestError('headers required'))
+      );
+    });
+
+    it('PUT should work', async () => {
+      event = {
+        resource: '/api/user',
+        httpMethod: 'PUT',
+        headers: { ['x-api-token']: 'abcde' },
+        body: JSON.stringify({ a: 1 }),
+        pathParameters: null,
+        queryStringParameters: null,
+      };
+      await expect(user(event, lambdaContext)).resolves.toStrictEqual(
+        successOutput(dummyResult)
+      );
+      expect(mockService.modifyUser).toBeCalledTimes(1);
+    });
+
+    it('PUT should fail if missing headers', async () => {
+      event = {
+        resource: '/api/user',
+        httpMethod: 'PUT',
+        headers: null,
+        body: JSON.stringify({ a: 1 }),
+        pathParameters: null,
+        queryStringParameters: null,
+      };
+      await expect(user(event, lambdaContext)).resolves.toStrictEqual(
+        errorOutput(new BadRequestError('headers required'))
+      );
+    });
+
+    it('PUT should fail if missing body', async () => {
+      event = {
+        resource: '/api/user',
+        httpMethod: 'PUT',
+        headers: { ['x-api-token']: 'abcde' },
+        body: null,
+        pathParameters: null,
+        queryStringParameters: null,
+      };
+      await expect(user(event, lambdaContext)).resolves.toStrictEqual(
+        errorOutput(new BadRequestError('body should not be empty'))
       );
     });
 
