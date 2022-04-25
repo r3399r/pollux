@@ -7,31 +7,23 @@ import {
   relatedAttributeOne,
 } from '@y-celestial/service';
 import { inject, injectable } from 'inversify';
-import { Type } from 'src/constant/Question';
 
-export const ENTITY = 'question';
+export const ENTITY = 'label';
 
-export type Question = DbBase & {
+export type Label = DbBase & {
   id: string;
-  labelId: string;
-  type: Type;
-  question: string;
-  answer?: string;
+  label: string;
   ownerId: string;
 };
 
 /**
- * Entity class for Question
+ * Entity class for Label
  */
 @entity(ENTITY)
-class QuestionEntity implements Question {
+class LabelEntity implements Label {
   @primaryAttribute()
   public id: string;
-  @relatedAttributeOne('label')
-  public labelId: string;
-  public type: Type;
-  public question: string;
-  public answer?: string;
+  public label: string;
   @relatedAttributeOne('user')
   public ownerId: string;
 
@@ -39,12 +31,9 @@ class QuestionEntity implements Question {
   public dateUpdated?: number;
   public dateDeleted?: number;
 
-  constructor(input: Question) {
+  constructor(input: Label) {
     this.id = input.id;
-    this.labelId = input.labelId;
-    this.type = input.type;
-    this.question = input.question;
-    this.answer = input.answer;
+    this.label = input.label;
     this.ownerId = input.ownerId;
     this.dateCreated = input.dateCreated;
     this.dateUpdated = input.dateUpdated;
@@ -53,21 +42,25 @@ class QuestionEntity implements Question {
 }
 
 @injectable()
-export class QuestionModel implements ModelBase {
+export class LabelModel implements ModelBase {
   @inject(DbService)
   private readonly dbService!: DbService;
 
   async find(id: string) {
-    return await this.dbService.getItem<Question>(ENTITY, id);
+    return await this.dbService.getItem<Label>(ENTITY, id);
   }
 
   async findAll() {
-    return await this.dbService.getItems<Question>(ENTITY);
+    return await this.dbService.getItems<Label>(ENTITY);
   }
 
-  async create(data: Question): Promise<void> {
-    await this.dbService.createItem<Question>(
-      new QuestionEntity({
+  async findAllByOwner(userId: string) {
+    return await this.dbService.getItemsByIndex<Label>(ENTITY, 'user', userId);
+  }
+
+  async create(data: Label): Promise<void> {
+    await this.dbService.createItem<Label>(
+      new LabelEntity({
         ...data,
         dateCreated: Date.now(),
         dateUpdated: Date.now(),
@@ -75,9 +68,9 @@ export class QuestionModel implements ModelBase {
     );
   }
 
-  async replace(data: Question): Promise<void> {
-    await this.dbService.putItem<Question>(
-      new QuestionEntity({
+  async replace(data: Label): Promise<void> {
+    await this.dbService.putItem<Label>(
+      new LabelEntity({
         ...data,
         dateUpdated: Date.now(),
       })
