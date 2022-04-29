@@ -9,4 +9,7 @@ export {
   PostQuestionResponse,
   PostQuestionLabelRequest,
   PostQuestionLabelResponse,
+  GetQuestionLabelResponse,
 } from 'src/model/api/Question';
+export { Label } from 'src/model/entity/Label';
+export { Type } from 'src/constant/Question';
