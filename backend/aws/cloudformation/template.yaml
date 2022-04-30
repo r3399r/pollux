@@ -358,7 +358,7 @@ Resources:
                 "question": {"type": "string"},
                 "answer": {"type": "string"}
               },
-              "required": ["labelId","type","question","answer"]
+              "required": ["labelId","type","question"]
             },
             "postQuestionLabel": {
               "type" : "object",

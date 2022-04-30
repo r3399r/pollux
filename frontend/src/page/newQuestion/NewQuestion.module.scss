@@ -1,5 +1,20 @@
+@import '/src/style/variables';
+
 .self {
   display: flex;
   flex-direction: column;
   gap: 20px;
+}
+.label {
+  display: flex;
+  gap: 10px;
+  .autocomplete {
+    flex: 1;
+  }
+}
+.preview {
+  padding: 12px;
+}
+.answer {
+  color: var(--text-error);
 }

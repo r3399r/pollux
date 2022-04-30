@@ -20,7 +20,7 @@ const FormRadio = <T extends FieldValues>({
   <Controller
     name={name}
     control={control}
-    // defaultValue={defaultValue ?? ('' as any)}
+    defaultValue={defaultValue ?? ('' as any)}
     render={({ field }) => (
       <RadioGroup defaultValue={defaultValue} row={row} {...field}>
         {items.map((v, i) => (

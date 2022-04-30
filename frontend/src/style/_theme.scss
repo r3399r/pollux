@@ -4,4 +4,6 @@ html[data-theme='light'] {
   color: $black;
   --navbar-background: #{$pale-orange};
   --navbar-color: #{$white};
+
+  --text-error: #{$red};
 }

@@ -19,10 +19,13 @@ export const questionSlice = createSlice({
     saveLabels: (state: QuestionState, action: PayloadAction<Label[]>) => {
       state.labels = action.payload;
     },
+    addLabel: (state: QuestionState, action: PayloadAction<Label>) => {
+      state.labels = [...(state.labels ?? []), action.payload];
+    },
   },
 });
 
 // action creators are generated for each case reducer function
-export const { saveLabels } = questionSlice.actions;
+export const { saveLabels, addLabel } = questionSlice.actions;
 
 export default questionSlice.reducer;
