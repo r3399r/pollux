@@ -65,6 +65,14 @@ export class QuestionModel implements ModelBase {
     return await this.dbService.getItems<Question>(ENTITY);
   }
 
+  async findAllByLabel(labelId: string) {
+    return await this.dbService.getItemsByIndex<Question>(
+      ENTITY,
+      'label',
+      labelId
+    );
+  }
+
   async create(data: Question): Promise<void> {
     await this.dbService.createItem<Question>(
       new QuestionEntity({

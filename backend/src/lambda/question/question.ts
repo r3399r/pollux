@@ -11,6 +11,7 @@ import { bindings } from 'src/bindings';
 import { QuestionService } from 'src/logic/QuestionService';
 import {
   GetQuestionLabelResponse,
+  GetQuestionResponse,
   PostQuestionLabelRequest,
   PostQuestionLabelResponse,
   PostQuestionRequest,
@@ -28,6 +29,7 @@ export async function question(
     let res:
       | PostQuestionResponse
       | PostQuestionLabelResponse
+      | GetQuestionResponse
       | GetQuestionLabelResponse;
 
     switch (event.resource) {
@@ -59,6 +61,8 @@ async function apiQuestion(event: LambdaEvent, service: QuestionService) {
         event.headers['x-api-token'],
         JSON.parse(event.body) as PostQuestionRequest
       );
+    case 'GET':
+      return service.getQuestion(event.headers['x-api-token']);
     default:
       throw new InternalServerError('unknown http method');
   }

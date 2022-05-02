@@ -3,6 +3,7 @@ import { inject, injectable } from 'inversify';
 import { v4 as uuidv4 } from 'uuid';
 import {
   GetQuestionLabelResponse,
+  GetQuestionResponse,
   PostQuestionLabelRequest,
   PostQuestionLabelResponse,
   PostQuestionRequest,
@@ -44,6 +45,21 @@ export class QuestionService {
     await this.questionModel.create(question);
 
     return question;
+  }
+
+  public async getQuestion(token: string): Promise<GetQuestionResponse> {
+    const { userId } = await this.tokenModel.find(token);
+
+    let res: Question[] = [];
+    const labels = await this.labelModel.findAllByOwner(userId);
+    await Promise.all(
+      labels.map(async (v) => {
+        const questions = await this.questionModel.findAllByLabel(v.id);
+        res = [...res, ...questions];
+      })
+    );
+
+    return res;
   }
 
   public async createLabel(

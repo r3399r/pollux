@@ -11,6 +11,8 @@ export type PostQuestionRequest = {
 
 export type PostQuestionResponse = Question;
 
+export type GetQuestionResponse = Question[];
+
 export type PostQuestionLabelRequest = {
   label: string;
 };
