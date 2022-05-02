@@ -1,8 +1,11 @@
+import EditorJS, { OutputBlockData } from '@editorjs/editorjs';
+import TableTool from '@editorjs/table';
 import { Autocomplete, Button, Card, createFilterOptions, Slider, TextField } from '@mui/material';
 import { Label, Type } from '@y-celestial/pollux-service';
 import { MathJax } from 'better-react-mathjax';
 import classNames from 'classnames';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { createReactEditorJS } from 'react-editor-js';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import FormCheckboxGroup from 'src/component/FormCheckboxGroup';
@@ -17,11 +20,11 @@ import style from './NewQuestion.module.scss';
 type QuestionForm = {
   label: string;
   type: Type;
-  question: string;
   answer: string;
 };
 
 const filter = createFilterOptions<string>();
+const ReactEditorJS = createReactEditorJS();
 
 const NewQuestion = () => {
   const {
@@ -43,6 +46,17 @@ const NewQuestion = () => {
   const [sliderValue, setSliderValue] = useState<number>(4);
   const [isCreatingLabel, setIsCreatingLabel] = useState<boolean>(false);
   const [isCreatingQuestion, setIsCreatingQuestion] = useState<boolean>(false);
+  const [questionOutput, setQuestionOutput] = useState<OutputBlockData[]>();
+  const editorCore = useRef<EditorJS | null>(null);
+
+  const handleInitialize = useCallback((instance) => {
+    editorCore.current = instance;
+  }, []);
+
+  const handleSave = useCallback(async () => {
+    const savedData = await editorCore.current?.save();
+    setQuestionOutput(savedData?.blocks);
+  }, []);
 
   const multipleOptions = useMemo(
     () => [...Array(sliderValue).keys()].map((v) => String(v + 1)),
@@ -84,7 +98,7 @@ const NewQuestion = () => {
       setError('label', { message: 'required' });
       hasError = true;
     }
-    if (!labels?.map((v) => v.label).includes(data.label)) {
+    if (data.label !== '' && !labels?.map((v) => v.label).includes(data.label)) {
       dispatch(openSnackbar({ severity: 'error', message: '請先新增標籤' }));
       hasError = true;
     }
@@ -92,8 +106,8 @@ const NewQuestion = () => {
       setError('type', { message: 'required' });
       hasError = true;
     }
-    if (data.question === '') {
-      setError('question', { message: 'required' });
+    if (questionOutput === undefined || questionOutput.length === 0) {
+      dispatch(openSnackbar({ severity: 'error', message: '題目不可為空' }));
       hasError = true;
     }
     if (data.type !== Type.Essay && data.answer === '') {
@@ -110,7 +124,7 @@ const NewQuestion = () => {
     createQuestion({
       labelId: labels!.find((v) => v.label === data.label)!.id,
       type: data.type,
-      question: data.question,
+      question: JSON.stringify(questionOutput),
       answer:
         data.type === Type.Essay
           ? undefined
@@ -181,18 +195,59 @@ const NewQuestion = () => {
           { value: Type.Essay, label: '問答題' },
         ]}
       />
-      <FormInput
-        control={control}
-        name="question"
-        multiline
-        minRows={4}
-        label="題目"
-        error={errors.question !== undefined}
-      />
+      <h3>題目</h3>
+      <Card variant="outlined">
+        <ReactEditorJS
+          onInitialize={handleInitialize}
+          onChange={handleSave}
+          tools={{ table: TableTool }}
+        />
+      </Card>
       <h3>題目預覽</h3>
       <Card variant="outlined" className={style.preview}>
         <MathJax>
-          <div>{watch('question') && getValues('question')}</div>
+          <div>
+            {questionOutput &&
+              questionOutput.map((v, i) => {
+                // type should be paragraph and table in current version
+                if (v.type === 'paragraph')
+                  return <p key={i} dangerouslySetInnerHTML={{ __html: v.data.text }} />;
+                else
+                  return (
+                    <div key={i} className={style.table}>
+                      <table>
+                        {v.data.withHeadings === true && (
+                          <thead>
+                            <tr>
+                              {v.data.content[0] &&
+                                v.data.content[0].map((c: string, idx: number) => (
+                                  <th key={idx}>{c}</th>
+                                ))}
+                            </tr>
+                          </thead>
+                        )}
+                        <tbody>
+                          {v.data.withHeadings == false && (
+                            <tr>
+                              {v.data.content[0] &&
+                                v.data.content[0].map((c: string, idx: number) => (
+                                  <td key={idx}>{c}</td>
+                                ))}
+                            </tr>
+                          )}
+                          {v.data.content.slice(1).map((r: string[], idx: number) => (
+                            <tr key={idx}>
+                              {r.map((c: string, idxx: number) => (
+                                <td key={idxx}>{c}</td>
+                              ))}
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  );
+              })}
+          </div>
         </MathJax>
       </Card>
       {watch('type') !== Type.Essay && (
