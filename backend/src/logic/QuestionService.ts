@@ -1,8 +1,9 @@
-import { ConflictError } from '@y-celestial/service';
+import { ConflictError, UnauthorizedError } from '@y-celestial/service';
 import { inject, injectable } from 'inversify';
 import { v4 as uuidv4 } from 'uuid';
 import {
   GetQuestionLabelResponse,
+  GetQuestionParams,
   GetQuestionResponse,
   PostQuestionLabelRequest,
   PostQuestionLabelResponse,
@@ -47,19 +48,16 @@ export class QuestionService {
     return question;
   }
 
-  public async getQuestion(token: string): Promise<GetQuestionResponse> {
+  public async getQuestion(
+    token: string,
+    params: GetQuestionParams
+  ): Promise<GetQuestionResponse> {
     const { userId } = await this.tokenModel.find(token);
+    const label = await this.labelModel.find(params.labelId);
 
-    let res: Question[] = [];
-    const labels = await this.labelModel.findAllByOwner(userId);
-    await Promise.all(
-      labels.map(async (v) => {
-        const questions = await this.questionModel.findAllByLabel(v.id);
-        res = [...res, ...questions];
-      })
-    );
+    if (label.ownerId !== userId) throw new UnauthorizedError('unauthorized');
 
-    return res;
+    return await this.questionModel.findAllByLabel(params.labelId);
   }
 
   public async createLabel(

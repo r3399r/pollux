@@ -11,6 +11,7 @@ import { bindings } from 'src/bindings';
 import { QuestionService } from 'src/logic/QuestionService';
 import {
   GetQuestionLabelResponse,
+  GetQuestionParams,
   GetQuestionResponse,
   PostQuestionLabelRequest,
   PostQuestionLabelResponse,
@@ -62,7 +63,13 @@ async function apiQuestion(event: LambdaEvent, service: QuestionService) {
         JSON.parse(event.body) as PostQuestionRequest
       );
     case 'GET':
-      return service.getQuestion(event.headers['x-api-token']);
+      if (event.queryStringParameters === null)
+        throw new BadRequestError('queryStringParameters should not be empty');
+
+      return service.getQuestion(
+        event.headers['x-api-token'],
+        event.queryStringParameters as GetQuestionParams
+      );
     default:
       throw new InternalServerError('unknown http method');
   }

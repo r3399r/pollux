@@ -99,6 +99,13 @@ Resources:
               },
               "get": {
                 "parameters" : [ {
+                  "name" : "labelId",
+                  "in" : "query",
+                  "required" : true,
+                  "schema" : {
+                    "type" : "string"
+                  }
+                }, {
                   "name" : "x-api-token",
                   "in" : "header",
                   "required" : true,

@@ -1,9 +1,9 @@
 import axios, { AxiosRequestConfig, AxiosRequestHeaders } from 'axios';
 
-type Options<D = unknown> = {
+type Options<D = unknown, P = any> = {
   headers?: AxiosRequestHeaders;
   data?: D;
-  params?: any;
+  params?: P;
 };
 
 const defaultConfig: AxiosRequestConfig = {
@@ -11,7 +11,7 @@ const defaultConfig: AxiosRequestConfig = {
   timeout: 5000,
 };
 
-const get = async <T>(url: string, options?: Options) =>
+const get = async <T, P = any>(url: string, options?: Options<unknown, P>) =>
   axios.request<T>({
     ...defaultConfig,
     ...options,

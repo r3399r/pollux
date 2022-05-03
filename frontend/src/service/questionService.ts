@@ -1,5 +1,6 @@
 import {
   GetQuestionLabelResponse,
+  GetQuestionParams,
   GetQuestionResponse,
   Label,
   PostQuestionLabelRequest,
@@ -47,10 +48,11 @@ export const createQuestion = async (data: PostQuestionRequest) => {
   });
 };
 
-export const getQuestions = async () => {
+export const getQuestions = async (labelId: string) => {
   const token = getToken();
-  const res = await http.get<GetQuestionResponse>('question', {
+  const res = await http.get<GetQuestionResponse, GetQuestionParams>('question', {
     headers: { ['x-api-token']: token },
+    params: { labelId },
   });
 
   return res.data;

@@ -10,6 +10,7 @@ export {
   PostQuestionLabelRequest,
   PostQuestionLabelResponse,
   GetQuestionLabelResponse,
+  GetQuestionParams,
   GetQuestionResponse,
 } from 'src/model/api/Question';
 export { Question } from 'src/model/entity/Question';
