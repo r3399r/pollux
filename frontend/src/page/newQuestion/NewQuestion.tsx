@@ -10,13 +10,13 @@ import {
   Slider,
   TextField,
 } from '@mui/material';
-import { Label, Type } from '@y-celestial/pollux-service';
+import { Label, Question, Type } from '@y-celestial/pollux-service';
 import classNames from 'classnames';
 import { ChangeEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createReactEditorJS } from 'react-editor-js';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import FormCheckboxGroup from 'src/component/FormCheckboxGroup';
 import FormInput from 'src/component/FormInput';
 import FormRadio from 'src/component/FormRadio';
@@ -53,6 +53,7 @@ const NewQuestion = () => {
     },
   });
   const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useDispatch();
   const [labels, setLabels] = useState<Label[]>();
   const [sliderValue, setSliderValue] = useState<number>(4);
@@ -61,6 +62,13 @@ const NewQuestion = () => {
   const [questionOutput, setQuestionOutput] = useState<OutputBlockData[]>();
   const [applyMathjax, setApplyMathjax] = useState<boolean>(true);
   const editorCore = useRef<EditorJS | null>(null);
+
+  const state = location.state as Question | null;
+
+  const multipleOptions = useMemo(
+    () => [...Array(sliderValue).keys()].map((v) => String(v + 1)),
+    [sliderValue],
+  );
 
   const handleInitialize = useCallback((instance) => {
     editorCore.current = instance;
@@ -71,23 +79,34 @@ const NewQuestion = () => {
     setQuestionOutput(savedData?.blocks);
   }, []);
 
-  const handleCheckbox = (event: ChangeEvent<HTMLInputElement>) => {
-    setApplyMathjax(event.target.checked);
-  };
-
-  const multipleOptions = useMemo(
-    () => [...Array(sliderValue).keys()].map((v) => String(v + 1)),
-    [sliderValue],
-  );
-
   useEffect(() => {
-    getLabels().then((res) => setLabels(res));
+    getLabels().then((res) => {
+      setLabels(res);
+      setValue('label', res.find((v) => v.id === state?.labelId)?.label ?? '');
+    });
+
+    if (state === null || state.answer === undefined) return;
+    setValue('type', state.type);
+    if (state.type === Type.Single) {
+      const [ans, opts] = state.answer.split('/');
+      setValue('answer', ans);
+      setSliderValue(Number(opts));
+    } else if (state.type === Type.Multiple) {
+      setValue('answer', state.answer);
+      setSliderValue(state.answer.split(',').length);
+    } else setValue('answer', state.answer);
+    setQuestionOutput(JSON.parse(state.question));
   }, []);
 
   useEffect(() => {
+    if (state !== null) return;
     setValue('answer', '');
     setSliderValue(watch('type') === Type.Single ? 4 : 5);
   }, [watch('type')]);
+
+  const handleCheckbox = (event: ChangeEvent<HTMLInputElement>) => {
+    setApplyMathjax(event.target.checked);
+  };
 
   const handleSliderChange = (_event: Event, newValue: number | number[]) => {
     if (typeof newValue === 'number') setSliderValue(newValue);
@@ -172,6 +191,7 @@ const NewQuestion = () => {
         <div className={style.label}>
           <Autocomplete
             className={style.autocomplete}
+            value={getValues('label')}
             onChange={(_event: unknown, newValue: string | null) => {
               setValue('label', newValue ?? '');
               clearErrors('label');
@@ -222,6 +242,7 @@ const NewQuestion = () => {
         <Card variant="outlined">
           <ReactEditorJS
             onInitialize={handleInitialize}
+            defaultValue={state === null ? undefined : { blocks: JSON.parse(state.question) }}
             onChange={handleSave}
             tools={{ table: TableTool }}
           />
@@ -274,7 +295,12 @@ const NewQuestion = () => {
           />
         )}
         {watch('type') === Type.Multiple && (
-          <FormCheckboxGroup control={control} name="answer" options={multipleOptions} />
+          <FormCheckboxGroup
+            control={control}
+            name="answer"
+            options={multipleOptions}
+            defaultValue={state === null ? undefined : getValues('answer').split(',')}
+          />
         )}
         {watch('type') === Type.FillInBlank && (
           <FormInput control={control} name="answer" error={errors.answer !== undefined} />

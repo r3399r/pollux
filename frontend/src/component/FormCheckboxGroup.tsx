@@ -6,6 +6,7 @@ type FormCheckboxGroupProps<T> = {
   name: Path<T>;
   control: Control<T>;
   options: string[];
+  defaultValue?: string[];
   row?: boolean;
 };
 
@@ -13,6 +14,7 @@ const FormCheckboxGroup = <T extends FieldValues>({
   name,
   control,
   options,
+  defaultValue,
   row = true,
 }: FormCheckboxGroupProps<T>) => {
   const { field } = useController({
@@ -22,8 +24,11 @@ const FormCheckboxGroup = <T extends FieldValues>({
   const [checked, setChecked] = useState<boolean[]>([]);
 
   useEffect(() => {
-    field.onChange(options.map(() => false).join());
-    setChecked(options.map(() => false));
+    let value = options.map(() => false);
+    if (defaultValue !== undefined) value = defaultValue.map((v) => (v === 'true' ? true : false));
+
+    field.onChange(value.join());
+    setChecked(value);
   }, [options]);
 
   const handleChange = (i: number) => (event: ChangeEvent<HTMLInputElement>) => {

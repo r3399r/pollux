@@ -4,8 +4,10 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { Collapse, IconButton, TableCell, TableRow } from '@mui/material';
 import { Question } from '@y-celestial/pollux-service';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Preview from 'src/component/Preview';
 import QuestionPreview from 'src/component/QuestionPreview';
+import { Page } from 'src/constant/Page';
 import { parseAnswer, typeLocale } from 'src/service/questionService';
 import style from './MyQuestionRow.module.scss';
 
@@ -17,6 +19,7 @@ type RowProps = {
 
 const MyQuestionRow = ({ question, index, label }: RowProps) => {
   const [open, setOpen] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   return (
     <>
@@ -29,7 +32,10 @@ const MyQuestionRow = ({ question, index, label }: RowProps) => {
         <TableCell>{parseAnswer(question)}</TableCell>
         <TableCell className={style.config}>
           {open && (
-            <IconButton size="small">
+            <IconButton
+              size="small"
+              onClick={() => navigate(Page.NewQuestion, { state: question })}
+            >
               <EditIcon />
             </IconButton>
           )}
