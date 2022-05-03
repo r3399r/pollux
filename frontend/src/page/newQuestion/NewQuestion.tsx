@@ -22,9 +22,10 @@ import FormInput from 'src/component/FormInput';
 import FormRadio from 'src/component/FormRadio';
 import FormSelect from 'src/component/FormSelect';
 import Loader from 'src/component/Loader';
+import Preview from 'src/component/Preview';
+import QuestionPreview from 'src/component/QuestionPreview';
 import { openSnackbar } from 'src/redux/uiSlice';
 import { createLabel, createQuestion, getLabels } from 'src/service/questionService';
-import Preview from './component/Preview';
 import style from './NewQuestion.module.scss';
 
 type QuestionForm = {
@@ -234,48 +235,7 @@ const NewQuestion = () => {
         </div>
         <Card variant="outlined" className={style.preview}>
           <Preview applyMathjax={applyMathjax}>
-            <div>
-              {questionOutput &&
-                questionOutput.map((v, i) => {
-                  // type should be paragraph and table in current version
-                  if (v.type === 'paragraph')
-                    return <p key={i} dangerouslySetInnerHTML={{ __html: v.data.text }} />;
-                  else
-                    return (
-                      <div key={i} className={style.table}>
-                        <table>
-                          {v.data.withHeadings === true && (
-                            <thead>
-                              <tr>
-                                {v.data.content[0] &&
-                                  v.data.content[0].map((c: string, idx: number) => (
-                                    <th key={idx}>{c}</th>
-                                  ))}
-                              </tr>
-                            </thead>
-                          )}
-                          <tbody>
-                            {v.data.withHeadings == false && (
-                              <tr>
-                                {v.data.content[0] &&
-                                  v.data.content[0].map((c: string, idx: number) => (
-                                    <td key={idx}>{c}</td>
-                                  ))}
-                              </tr>
-                            )}
-                            {v.data.content.slice(1).map((r: string[], idx: number) => (
-                              <tr key={idx}>
-                                {r.map((c: string, idxx: number) => (
-                                  <td key={idxx}>{c}</td>
-                                ))}
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </div>
-                    );
-                })}
-            </div>
+            <QuestionPreview blocks={questionOutput} />
           </Preview>
         </Card>
         {watch('type') !== Type.Essay && (

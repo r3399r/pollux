@@ -1,0 +1,18 @@
+.main {
+  & > * {
+    border-bottom: unset !important;
+  }
+}
+.collapse {
+  & > * {
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+  }
+}
+.preview {
+  padding-bottom: 16px;
+}
+.config {
+  width: 80px;
+  text-align: right;
+}

@@ -6,6 +6,7 @@ import {
   PostQuestionLabelResponse,
   PostQuestionRequest,
   PostQuestionResponse,
+  Question,
   Type,
 } from '@y-celestial/pollux-service';
 import { addLabel, saveLabels } from 'src/redux/qustionSlice';
@@ -62,4 +63,16 @@ export const typeLocale = (type: Type): string => {
   if (type === Type.FillInBlank) return '填充題';
 
   return '問答題';
+};
+
+export const parseAnswer = (question: Question): string | undefined => {
+  if (question.type === Type.Single) return `(${question.answer?.split('/')[0]})`;
+  if (question.type === Type.Multiple)
+    return question.answer
+      ?.split(',')
+      .map((v, i) => (v === 'true' ? `(${i + 1})` : ''))
+      .join('');
+  if (question.type === Type.Essay) return '-';
+
+  return question.answer;
 };
