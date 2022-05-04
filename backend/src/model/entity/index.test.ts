@@ -43,6 +43,13 @@ describe('entities', () => {
       const model = bindings.get<QuestionModel>(QuestionModel);
       await doTest<QuestionModel, Question>(model);
     });
+
+    it('findAllByLabel should work', async () => {
+      const model = bindings.get<QuestionModel>(QuestionModel);
+      expect(await model.findAllByLabel('label-id')).toStrictEqual([
+        dummyResult,
+      ]);
+    });
   });
 
   describe('token', () => {

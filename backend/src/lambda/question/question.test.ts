@@ -32,6 +32,8 @@ describe('question', () => {
       .toConstantValue(mockService);
 
     mockService.createQuestion = jest.fn(() => dummyResult);
+    mockService.getQuestion = jest.fn(() => dummyResult);
+    mockService.reviseQuestion = jest.fn(() => dummyResult);
     mockService.createLabel = jest.fn(() => dummyResult);
     mockService.getLabel = jest.fn(() => [dummyResult]);
   });
@@ -50,6 +52,21 @@ describe('question', () => {
         successOutput(dummyResult)
       );
       expect(mockService.createQuestion).toBeCalledTimes(1);
+    });
+
+    it('GET should work', async () => {
+      event = {
+        resource: '/api/question',
+        httpMethod: 'GET',
+        headers: { ['x-api-token']: 'abcde' },
+        body: null,
+        pathParameters: null,
+        queryStringParameters: { c: 'abc' },
+      };
+      await expect(question(event, lambdaContext)).resolves.toStrictEqual(
+        successOutput(dummyResult)
+      );
+      expect(mockService.getQuestion).toBeCalledTimes(1);
     });
 
     it('should fail if missing headers', async () => {
@@ -80,6 +97,22 @@ describe('question', () => {
       );
     });
 
+    it('should fail if missing queryStringParameters', async () => {
+      event = {
+        resource: '/api/question',
+        httpMethod: 'GET',
+        headers: { ['x-api-token']: 'abcde' },
+        body: null,
+        pathParameters: null,
+        queryStringParameters: null,
+      };
+      await expect(question(event, lambdaContext)).resolves.toStrictEqual(
+        errorOutput(
+          new BadRequestError('queryStringParameters should not be empty')
+        )
+      );
+    });
+
     it('unknown http method should fail', async () => {
       event = {
         resource: '/api/question',
@@ -87,6 +120,79 @@ describe('question', () => {
         headers: { ['x-api-token']: 'abcde' },
         body: JSON.stringify({ a: 1 }),
         pathParameters: null,
+        queryStringParameters: null,
+      };
+      await expect(question(event, lambdaContext)).resolves.toStrictEqual(
+        errorOutput(new InternalServerError('unknown http method'))
+      );
+    });
+  });
+
+  describe('/api/question/{id}', () => {
+    it('PUT should work', async () => {
+      event = {
+        resource: '/api/question/{id}',
+        httpMethod: 'PUT',
+        headers: { ['x-api-token']: 'abcde' },
+        body: JSON.stringify({ a: 1 }),
+        pathParameters: { id: 'id' },
+        queryStringParameters: null,
+      };
+      await expect(question(event, lambdaContext)).resolves.toStrictEqual(
+        successOutput(dummyResult)
+      );
+      expect(mockService.reviseQuestion).toBeCalledTimes(1);
+    });
+
+    it('should fail if missing headers', async () => {
+      event = {
+        resource: '/api/question/{id}',
+        httpMethod: 'PUT',
+        headers: null,
+        body: JSON.stringify({ a: 1 }),
+        pathParameters: { id: 'id' },
+        queryStringParameters: null,
+      };
+      await expect(question(event, lambdaContext)).resolves.toStrictEqual(
+        errorOutput(new BadRequestError('headers required'))
+      );
+    });
+
+    it('should fail if missing pathParameters', async () => {
+      event = {
+        resource: '/api/question/{id}',
+        httpMethod: 'PUT',
+        headers: { ['x-api-token']: 'abcde' },
+        body: JSON.stringify({ a: 1 }),
+        pathParameters: null,
+        queryStringParameters: null,
+      };
+      await expect(question(event, lambdaContext)).resolves.toStrictEqual(
+        errorOutput(new BadRequestError('missing pathParameters'))
+      );
+    });
+
+    it('should fail if missing body', async () => {
+      event = {
+        resource: '/api/question/{id}',
+        httpMethod: 'PUT',
+        headers: { ['x-api-token']: 'abcde' },
+        body: null,
+        pathParameters: { id: 'id' },
+        queryStringParameters: null,
+      };
+      await expect(question(event, lambdaContext)).resolves.toStrictEqual(
+        errorOutput(new BadRequestError('body should not be empty'))
+      );
+    });
+
+    it('unknown http method should fail', async () => {
+      event = {
+        resource: '/api/question/{id}',
+        httpMethod: 'XXX',
+        headers: { ['x-api-token']: 'abcde' },
+        body: JSON.stringify({ a: 1 }),
+        pathParameters: { id: 'id' },
         queryStringParameters: null,
       };
       await expect(question(event, lambdaContext)).resolves.toStrictEqual(

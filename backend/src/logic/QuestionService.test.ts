@@ -1,4 +1,4 @@
-import { ConflictError } from '@y-celestial/service';
+import { ConflictError, UnauthorizedError } from '@y-celestial/service';
 import { bindings } from 'src/bindings';
 import { PostQuestionRequest } from 'src/model/api/Question';
 import { LabelModel } from 'src/model/entity/Label';
@@ -27,9 +27,15 @@ describe('QuestionService', () => {
     bindings.rebind<LabelModel>(LabelModel).toConstantValue(mockLabelModel);
 
     mockQuestionModel.create = jest.fn();
+    mockQuestionModel.find = jest.fn(() => ({ ownerId: 'user-id' }));
+    mockQuestionModel.replace = jest.fn();
+    mockQuestionModel.findAllByLabel = jest.fn(() => []);
     mockTokenModel.find = jest.fn(() => ({ userId: 'user-id' }));
     mockLabelModel.create = jest.fn();
-    mockLabelModel.find = jest.fn(() => ({ id: 'label-id' }));
+    mockLabelModel.find = jest.fn(() => ({
+      id: 'label-id',
+      ownerId: 'user-id',
+    }));
     mockLabelModel.findAllByOwner = jest.fn(() => [
       { id: 'label-id', label: 'label1' },
     ]);
@@ -43,6 +49,47 @@ describe('QuestionService', () => {
       expect(mockQuestionModel.create).toBeCalledTimes(1);
       expect(mockTokenModel.find).toBeCalledTimes(1);
       expect(mockLabelModel.find).toBeCalledTimes(1);
+    });
+  });
+
+  describe('reviseQuestion', () => {
+    it('should work', async () => {
+      await service.reviseQuestion('token', 'id', {} as PostQuestionRequest);
+      expect(mockQuestionModel.find).toBeCalledTimes(1);
+      expect(mockQuestionModel.replace).toBeCalledTimes(1);
+      expect(mockTokenModel.find).toBeCalledTimes(1);
+    });
+
+    it('should fail with unauthorized', async () => {
+      mockQuestionModel.find = jest.fn(() => ({ ownerId: 'user-id2' }));
+      await expect(() =>
+        service.reviseQuestion('token', 'id', {} as PostQuestionRequest)
+      ).rejects.toThrow(UnauthorizedError);
+      expect(mockQuestionModel.find).toBeCalledTimes(1);
+      expect(mockQuestionModel.replace).toBeCalledTimes(0);
+      expect(mockTokenModel.find).toBeCalledTimes(1);
+    });
+  });
+
+  describe('getQuestion', () => {
+    it('should work', async () => {
+      await service.getQuestion('token', { labelId: 'label-id' });
+      expect(mockTokenModel.find).toBeCalledTimes(1);
+      expect(mockLabelModel.find).toBeCalledTimes(1);
+      expect(mockQuestionModel.findAllByLabel).toBeCalledTimes(1);
+    });
+
+    it('should fail with unauthorized', async () => {
+      mockLabelModel.find = jest.fn(() => ({
+        id: 'label-id',
+        ownerId: 'user-id2',
+      }));
+      await expect(() =>
+        service.getQuestion('token', { labelId: 'label-id' })
+      ).rejects.toThrow(UnauthorizedError);
+      expect(mockTokenModel.find).toBeCalledTimes(1);
+      expect(mockLabelModel.find).toBeCalledTimes(1);
+      expect(mockQuestionModel.findAllByLabel).toBeCalledTimes(0);
     });
   });
 
