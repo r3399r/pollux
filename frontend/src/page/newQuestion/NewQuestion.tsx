@@ -94,6 +94,7 @@ const NewQuestion = () => {
     if (state === null) return;
     setInitialized(false);
     setValue('type', state.type);
+    setQuestionOutput(JSON.parse(state.question));
     setTimeout(() => {
       setInitialized(true);
       if (state.answer === undefined) return;
@@ -105,7 +106,6 @@ const NewQuestion = () => {
         setValue('answer', state.answer);
         setSliderValue(state.answer.split(',').length);
       } else setValue('answer', state.answer);
-      setQuestionOutput(JSON.parse(state.question));
     }, 500);
   }, []);
 
