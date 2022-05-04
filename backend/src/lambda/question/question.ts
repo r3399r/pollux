@@ -33,7 +33,8 @@ export async function question(
       | GetQuestionResponse
       | PutQuestionIdResponse
       | PostQuestionLabelResponse
-      | GetQuestionLabelResponse;
+      | GetQuestionLabelResponse
+      | void;
 
     switch (event.resource) {
       case '/api/question':
@@ -94,6 +95,11 @@ async function apiQuestionId(event: LambdaEvent, service: QuestionService) {
         event.headers['x-api-token'],
         event.pathParameters.id,
         JSON.parse(event.body) as PostQuestionRequest
+      );
+    case 'DELETE':
+      return service.deleteQuestion(
+        event.headers['x-api-token'],
+        event.pathParameters.id
       );
     default:
       throw new InternalServerError('unknown http method');

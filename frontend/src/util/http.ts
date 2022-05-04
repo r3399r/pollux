@@ -35,4 +35,12 @@ const put = async <T, D = unknown>(url: string, options?: Options<D>) =>
     method: 'put',
   });
 
-export default { get, post, put };
+const sendDelete = async <T, D = unknown>(url: string, options?: Options<D>) =>
+  axios.request<T>({
+    ...defaultConfig,
+    ...options,
+    url,
+    method: 'delete',
+  });
+
+export default { get, post, put, delete: sendDelete };

@@ -68,6 +68,11 @@ export const getQuestions = async (labelId: string) => {
   return res.data;
 };
 
+export const deleteQuestion = async (id: string) => {
+  const token = getToken();
+  await http.delete(`question/${id}`, { headers: { ['x-api-token']: token } });
+};
+
 export const typeLocale = (type: Type): string => {
   if (type === Type.TrueFalse) return '是非題';
   if (type === Type.Single) return '單選題';

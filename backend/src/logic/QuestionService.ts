@@ -89,6 +89,14 @@ export class QuestionService {
     return await this.questionModel.findAllByLabel(params.labelId);
   }
 
+  public async deleteQuestion(token: string, id: string) {
+    const { userId } = await this.tokenModel.find(token);
+    const question = await this.questionModel.find(id);
+    if (question.ownerId !== userId)
+      throw new UnauthorizedError('unauthorized');
+    await this.questionModel.hardDelete(id);
+  }
+
   public async createLabel(
     token: string,
     data: PostQuestionLabelRequest
