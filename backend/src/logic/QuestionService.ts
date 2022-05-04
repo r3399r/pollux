@@ -57,6 +57,10 @@ export class QuestionService {
   ): Promise<PutQuestionIdResponse> {
     const { userId } = await this.tokenModel.find(token);
     const oldQuestion = await this.questionModel.find(id);
+
+    // check input label exists
+    await this.labelModel.find(data.labelId);
+
     if (oldQuestion.ownerId !== userId)
       throw new UnauthorizedError('unauthorized');
 
@@ -67,13 +71,6 @@ export class QuestionService {
       question: data.question,
       answer: data.answer,
     };
-
-    // delete label if not used anymore
-    const questionsOfLabel = await this.questionModel.findAllByLabel(
-      oldQuestion.labelId
-    );
-    if (questionsOfLabel.length === 0)
-      await this.labelModel.hardDelete(oldQuestion.labelId);
 
     await this.questionModel.replace(newQuestion);
 
