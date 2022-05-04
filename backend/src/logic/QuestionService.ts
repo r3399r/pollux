@@ -68,6 +68,13 @@ export class QuestionService {
       answer: data.answer,
     };
 
+    // delete label if not used anymore
+    const questionsOfLabel = await this.questionModel.findAllByLabel(
+      oldQuestion.labelId
+    );
+    if (questionsOfLabel.length === 0)
+      await this.labelModel.hardDelete(oldQuestion.labelId);
+
     await this.questionModel.replace(newQuestion);
 
     return newQuestion;

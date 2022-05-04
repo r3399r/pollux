@@ -29,7 +29,7 @@ describe('QuestionService', () => {
     mockQuestionModel.create = jest.fn();
     mockQuestionModel.find = jest.fn(() => ({ ownerId: 'user-id' }));
     mockQuestionModel.replace = jest.fn();
-    mockQuestionModel.findAllByLabel = jest.fn(() => []);
+    mockQuestionModel.findAllByLabel = jest.fn(() => [{ id: '1' }]);
     mockTokenModel.find = jest.fn(() => ({ userId: 'user-id' }));
     mockLabelModel.create = jest.fn();
     mockLabelModel.find = jest.fn(() => ({
@@ -39,6 +39,7 @@ describe('QuestionService', () => {
     mockLabelModel.findAllByOwner = jest.fn(() => [
       { id: 'label-id', label: 'label1' },
     ]);
+    mockLabelModel.hardDelete = jest.fn();
 
     service = bindings.get<QuestionService>(QuestionService);
   });
@@ -58,6 +59,16 @@ describe('QuestionService', () => {
       expect(mockQuestionModel.find).toBeCalledTimes(1);
       expect(mockQuestionModel.replace).toBeCalledTimes(1);
       expect(mockTokenModel.find).toBeCalledTimes(1);
+      expect(mockLabelModel.hardDelete).toBeCalledTimes(0);
+    });
+
+    it('should work if label not used', async () => {
+      mockQuestionModel.findAllByLabel = jest.fn(() => []);
+      await service.reviseQuestion('token', 'id', {} as PostQuestionRequest);
+      expect(mockQuestionModel.find).toBeCalledTimes(1);
+      expect(mockQuestionModel.replace).toBeCalledTimes(1);
+      expect(mockTokenModel.find).toBeCalledTimes(1);
+      expect(mockLabelModel.hardDelete).toBeCalledTimes(1);
     });
 
     it('should fail with unauthorized', async () => {
