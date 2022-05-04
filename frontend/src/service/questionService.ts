@@ -7,6 +7,8 @@ import {
   PostQuestionLabelResponse,
   PostQuestionRequest,
   PostQuestionResponse,
+  PutQuestionIdRequest,
+  PutQuestionIdResponse,
   Question,
   Type,
 } from '@y-celestial/pollux-service';
@@ -43,6 +45,14 @@ export const createLabel = async (label: string) => {
 export const createQuestion = async (data: PostQuestionRequest) => {
   const token = getToken();
   await http.post<PostQuestionResponse, PostQuestionRequest>('question', {
+    headers: { ['x-api-token']: token },
+    data,
+  });
+};
+
+export const reviseQuestion = async (id: string, data: PutQuestionIdRequest) => {
+  const token = getToken();
+  await http.put<PutQuestionIdResponse, PutQuestionIdRequest>(`question/${id}`, {
     headers: { ['x-api-token']: token },
     data,
   });

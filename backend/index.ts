@@ -7,6 +7,8 @@ export {
 export {
   PostQuestionRequest,
   PostQuestionResponse,
+  PutQuestionIdRequest,
+  PutQuestionIdResponse,
   PostQuestionLabelRequest,
   PostQuestionLabelResponse,
   GetQuestionLabelResponse,

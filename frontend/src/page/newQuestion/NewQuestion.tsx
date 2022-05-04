@@ -25,7 +25,12 @@ import Loader from 'src/component/Loader';
 import Preview from 'src/component/Preview';
 import QuestionPreview from 'src/component/QuestionPreview';
 import { openSnackbar } from 'src/redux/uiSlice';
-import { createLabel, createQuestion, getLabels } from 'src/service/questionService';
+import {
+  createLabel,
+  createQuestion,
+  getLabels,
+  reviseQuestion,
+} from 'src/service/questionService';
 import style from './NewQuestion.module.scss';
 
 type QuestionForm = {
@@ -58,9 +63,10 @@ const NewQuestion = () => {
   const [labels, setLabels] = useState<Label[]>();
   const [sliderValue, setSliderValue] = useState<number>(4);
   const [isCreatingLabel, setIsCreatingLabel] = useState<boolean>(false);
-  const [isCreatingQuestion, setIsCreatingQuestion] = useState<boolean>(false);
+  const [isSendingQuestion, setIsSendingQuestion] = useState<boolean>(false);
   const [questionOutput, setQuestionOutput] = useState<OutputBlockData[]>();
   const [applyMathjax, setApplyMathjax] = useState<boolean>(true);
+  const [initialized, setInitialized] = useState<boolean>(true);
   const editorCore = useRef<EditorJS | null>(null);
 
   const state = location.state as Question | null;
@@ -85,21 +91,25 @@ const NewQuestion = () => {
       setValue('label', res.find((v) => v.id === state?.labelId)?.label ?? '');
     });
 
-    if (state === null || state.answer === undefined) return;
+    if (state === null) return;
+    setInitialized(false);
     setValue('type', state.type);
-    if (state.type === Type.Single) {
-      const [ans, opts] = state.answer.split('/');
-      setValue('answer', ans);
-      setSliderValue(Number(opts));
-    } else if (state.type === Type.Multiple) {
-      setValue('answer', state.answer);
-      setSliderValue(state.answer.split(',').length);
-    } else setValue('answer', state.answer);
-    setQuestionOutput(JSON.parse(state.question));
+    setTimeout(() => {
+      setInitialized(true);
+      if (state.answer === undefined) return;
+      if (state.type === Type.Single) {
+        const [ans, opts] = state.answer.split('/');
+        setValue('answer', ans);
+        setSliderValue(Number(opts));
+      } else if (state.type === Type.Multiple) {
+        setValue('answer', state.answer);
+        setSliderValue(state.answer.split(',').length);
+      } else setValue('answer', state.answer);
+      setQuestionOutput(JSON.parse(state.question));
+    }, 500);
   }, []);
 
   useEffect(() => {
-    if (state !== null) return;
     setValue('answer', '');
     setSliderValue(watch('type') === Type.Single ? 4 : 5);
   }, [watch('type')]);
@@ -156,27 +166,49 @@ const NewQuestion = () => {
     }
     if (hasError) return;
 
-    setIsCreatingQuestion(true);
-    createQuestion({
-      labelId: labels!.find((v) => v.label === data.label)!.id,
-      type: data.type,
-      question: JSON.stringify(questionOutput),
-      answer:
-        data.type === Type.Essay
-          ? undefined
-          : data.type === Type.Single
-          ? `${data.answer}/${sliderValue}`
-          : data.answer,
-    })
-      .then(() => {
-        dispatch(openSnackbar({ severity: 'success', message: '題目新增成功' }));
+    setIsSendingQuestion(true);
+    if (state === null)
+      createQuestion({
+        labelId: labels!.find((v) => v.label === data.label)!.id,
+        type: data.type,
+        question: JSON.stringify(questionOutput),
+        answer:
+          data.type === Type.Essay
+            ? undefined
+            : data.type === Type.Single
+            ? `${data.answer}/${sliderValue}`
+            : data.answer,
       })
-      .catch(() => {
-        dispatch(openSnackbar({ severity: 'error', message: '題目新增失敗' }));
+        .then(() => {
+          dispatch(openSnackbar({ severity: 'success', message: '題目新增成功' }));
+        })
+        .catch(() => {
+          dispatch(openSnackbar({ severity: 'error', message: '題目新增失敗' }));
+        })
+        .finally(() => {
+          setIsSendingQuestion(false);
+        });
+    else
+      reviseQuestion(state.id, {
+        labelId: labels!.find((v) => v.label === data.label)!.id,
+        type: data.type,
+        question: JSON.stringify(questionOutput),
+        answer:
+          data.type === Type.Essay
+            ? undefined
+            : data.type === Type.Single
+            ? `${data.answer}/${sliderValue}`
+            : data.answer,
       })
-      .finally(() => {
-        setIsCreatingQuestion(false);
-      });
+        .then(() => {
+          dispatch(openSnackbar({ severity: 'success', message: '題目修改成功' }));
+        })
+        .catch(() => {
+          dispatch(openSnackbar({ severity: 'error', message: '題目修改失敗' }));
+        })
+        .finally(() => {
+          setIsSendingQuestion(false);
+        });
   };
 
   if (labels === undefined) return <Loader />;
@@ -299,14 +331,16 @@ const NewQuestion = () => {
             control={control}
             name="answer"
             options={multipleOptions}
-            defaultValue={state === null ? undefined : getValues('answer').split(',')}
+            defaultValue={
+              state === null || initialized ? undefined : getValues('answer').split(',')
+            }
           />
         )}
         {watch('type') === Type.FillInBlank && (
           <FormInput control={control} name="answer" error={errors.answer !== undefined} />
         )}
         <div>
-          <Button type="submit" variant="contained" disabled={isCreatingQuestion}>
+          <Button type="submit" variant="contained" disabled={isSendingQuestion}>
             確認送出
           </Button>
         </div>

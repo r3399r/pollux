@@ -11,6 +11,15 @@ export type PostQuestionRequest = {
 
 export type PostQuestionResponse = Question;
 
+export type PutQuestionIdRequest = {
+  labelId: string;
+  type: Type;
+  question: string;
+  answer?: string;
+};
+
+export type PutQuestionIdResponse = Question;
+
 export type GetQuestionParams = { labelId: string };
 
 export type GetQuestionResponse = Question[];

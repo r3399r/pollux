@@ -148,6 +148,61 @@ Resources:
                 }
               }
             },
+            "/api/question/{id}": {
+              "put": {
+                "parameters" : [ {
+                  "name" : "x-api-token",
+                  "in" : "header",
+                  "required" : true,
+                  "schema" : {
+                    "type" : "string"
+                  }
+                } ],
+                "requestBody": {
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "$ref": "#/components/schemas/putQuestionId"
+                      }
+                    }
+                  },
+                  "required": true
+                },
+                "responses": {
+                  "200": {
+                    "description": "200 response",
+                    "headers": {
+                      "Access-Control-Allow-Origin": {
+                        "schema": {"type": "string"}
+                      }
+                    },
+                    "content": {
+                      "application/json": {
+                        "schema": {
+                          "$ref": "#/components/schemas/Empty"
+                        }
+                      }
+                    }
+                  }
+                },
+                "x-amazon-apigateway-request-validator" : "Validate body, query string parameters, and headers",
+                "x-amazon-apigateway-integration": {
+                  "type": "aws_proxy",
+                  "httpMethod": "POST",
+                  "uri": !Sub "arn:aws:apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/arn:aws:lambda:ap-northeast-1:278497686406:function:${Project}-${TargetEnvr}-question/invocations",
+                  "responses": {
+                    "default": {
+                      "statusCode": "200",
+                      "responseParameters": {
+                        "method.response.header.Access-Control-Allow-Origin": "'*'"
+                      }
+                    }
+                  },
+                  "passthroughBehavior": "when_no_match",
+                  "contentHandling": "CONVERT_TO_TEXT"
+                }
+              }
+            },
             "/api/question/label": {
               "post": {
                 "parameters" : [ {
@@ -401,6 +456,16 @@ Resources:
               }
             },
             "postQuestion": {
+              "type" : "object",
+              "properties": {
+                "labelId": {"type": "string"},
+                "type": {"type": "string", "enum": ["T","S","M","F","E"]},
+                "question": {"type": "string"},
+                "answer": {"type": "string"}
+              },
+              "required": ["labelId","type","question"]
+            },
+            "putQuestionId": {
               "type" : "object",
               "properties": {
                 "labelId": {"type": "string"},

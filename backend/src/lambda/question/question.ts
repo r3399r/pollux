@@ -17,6 +17,7 @@ import {
   PostQuestionLabelResponse,
   PostQuestionRequest,
   PostQuestionResponse,
+  PutQuestionIdResponse,
 } from 'src/model/api/Question';
 
 export async function question(
@@ -29,13 +30,17 @@ export async function question(
 
     let res:
       | PostQuestionResponse
-      | PostQuestionLabelResponse
       | GetQuestionResponse
+      | PutQuestionIdResponse
+      | PostQuestionLabelResponse
       | GetQuestionLabelResponse;
 
     switch (event.resource) {
       case '/api/question':
         res = await apiQuestion(event, service);
+        break;
+      case '/api/question/{id}':
+        res = await apiQuestionId(event, service);
         break;
       case '/api/question/label':
         res = await apiQuestionLabel(event, service);
@@ -69,6 +74,26 @@ async function apiQuestion(event: LambdaEvent, service: QuestionService) {
       return service.getQuestion(
         event.headers['x-api-token'],
         event.queryStringParameters as GetQuestionParams
+      );
+    default:
+      throw new InternalServerError('unknown http method');
+  }
+}
+
+async function apiQuestionId(event: LambdaEvent, service: QuestionService) {
+  if (event.headers === null) throw new BadRequestError('headers required');
+  if (event.pathParameters === null)
+    throw new BadRequestError('missing pathParameters');
+
+  switch (event.httpMethod) {
+    case 'PUT':
+      if (event.body === null)
+        throw new BadRequestError('body should not be empty');
+
+      return service.reviseQuestion(
+        event.headers['x-api-token'],
+        event.pathParameters.id,
+        JSON.parse(event.body) as PostQuestionRequest
       );
     default:
       throw new InternalServerError('unknown http method');

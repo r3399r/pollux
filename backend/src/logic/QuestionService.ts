@@ -9,6 +9,8 @@ import {
   PostQuestionLabelResponse,
   PostQuestionRequest,
   PostQuestionResponse,
+  PutQuestionIdRequest,
+  PutQuestionIdResponse,
 } from 'src/model/api/Question';
 import { Label, LabelModel } from 'src/model/entity/Label';
 import { Question, QuestionModel } from 'src/model/entity/Question';
@@ -46,6 +48,29 @@ export class QuestionService {
     await this.questionModel.create(question);
 
     return question;
+  }
+
+  public async reviseQuestion(
+    token: string,
+    id: string,
+    data: PutQuestionIdRequest
+  ): Promise<PutQuestionIdResponse> {
+    const { userId } = await this.tokenModel.find(token);
+    const oldQuestion = await this.questionModel.find(id);
+    if (oldQuestion.ownerId !== userId)
+      throw new UnauthorizedError('unauthorized');
+
+    const newQuestion = {
+      ...oldQuestion,
+      labelId: data.labelId,
+      type: data.type,
+      question: data.question,
+      answer: data.answer,
+    };
+
+    await this.questionModel.replace(newQuestion);
+
+    return newQuestion;
   }
 
   public async getQuestion(
