@@ -550,7 +550,7 @@ Resources:
               "type" : "object",
               "properties": {
                 "name": {"type": "string"},
-                "questionId": {"type": "array", { "items": { "type": "string"}}}
+                "questionId": {"type": "array", "items": {"type": "string"}}
               },
               "required": ["name","questionId"]
             },
