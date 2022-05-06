@@ -1,5 +1,7 @@
 import { DbService, ModelBase } from '@y-celestial/service';
 import { bindings } from 'src/bindings';
+import { Bank, BankModel } from './Bank';
+import { BankQuestion, BankQuestionModel } from './BankQuestion';
 import { Label, LabelModel } from './Label';
 import { Question, QuestionModel } from './Question';
 import { Token, TokenModel } from './Token';
@@ -36,6 +38,20 @@ describe('entities', () => {
     mockDbService.createItem = jest.fn();
     mockDbService.putItem = jest.fn();
     mockDbService.deleteItem = jest.fn();
+  });
+
+  describe('bank', () => {
+    it('should work for general functions', async () => {
+      const model = bindings.get<BankModel>(BankModel);
+      await doTest<BankModel, Bank>(model);
+    });
+  });
+
+  describe('bankQuestion', () => {
+    it('should work for general functions', async () => {
+      const model = bindings.get<BankQuestionModel>(BankQuestionModel);
+      await doTest<BankQuestionModel, BankQuestion>(model);
+    });
   });
 
   describe('question', () => {

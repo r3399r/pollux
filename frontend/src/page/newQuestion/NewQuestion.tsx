@@ -214,138 +214,136 @@ const NewQuestion = () => {
   if (labels === undefined) return <Loader />;
 
   return (
-    <>
-      <Button variant="outlined" onClick={() => navigate(-1)}>
-        回上一頁
-      </Button>
+    <form className={style.self} onSubmit={handleSubmit(onSubmit)}>
+      <div>
+        <Button variant="outlined" onClick={() => navigate(-1)}>
+          回上一頁
+        </Button>
+      </div>
       <h1>新增題目</h1>
-      <form className={style.self} onSubmit={handleSubmit(onSubmit)}>
-        <div className={style.label}>
-          <Autocomplete
-            className={style.autocomplete}
-            value={getValues('label')}
-            onChange={(_event: unknown, newValue: string | null) => {
-              setValue('label', newValue ?? '');
-              clearErrors('label');
-            }}
-            disablePortal
-            freeSolo
-            filterOptions={(options, params) => {
-              const filtered = filter(options, params);
-              const { inputValue } = params;
+      <div className={style.label}>
+        <Autocomplete
+          className={style.autocomplete}
+          value={getValues('label')}
+          onChange={(_event: unknown, newValue: string | null) => {
+            setValue('label', newValue ?? '');
+            clearErrors('label');
+          }}
+          disablePortal
+          freeSolo
+          filterOptions={(options, params) => {
+            const filtered = filter(options, params);
+            const { inputValue } = params;
 
-              const isExisting = options.some((option) => inputValue === option);
-              if (inputValue !== '' && !isExisting) filtered.push(inputValue);
+            const isExisting = options.some((option) => inputValue === option);
+            if (inputValue !== '' && !isExisting) filtered.push(inputValue);
 
-              return filtered;
-            }}
-            options={labels.map((v) => v.label)}
-            clearOnBlur
-            renderInput={(params) => (
-              <TextField {...params} size="small" label="標籤" error={errors.label !== undefined} />
-            )}
-          />
-          {watch('label') && !labels.map((v) => v.label).includes(getValues('label')) && (
-            <Button
-              type="button"
-              onClick={onCreateLabel}
-              variant="outlined"
-              disabled={isCreatingLabel}
-            >
-              新增此標籤
-            </Button>
+            return filtered;
+          }}
+          options={labels.map((v) => v.label)}
+          clearOnBlur
+          renderInput={(params) => (
+            <TextField {...params} size="small" label="標籤" error={errors.label !== undefined} />
           )}
-        </div>
-        <FormSelect
+        />
+        {watch('label') && !labels.map((v) => v.label).includes(getValues('label')) && (
+          <Button
+            type="button"
+            onClick={onCreateLabel}
+            variant="outlined"
+            disabled={isCreatingLabel}
+          >
+            新增此標籤
+          </Button>
+        )}
+      </div>
+      <FormSelect
+        control={control}
+        name="type"
+        label="題型"
+        size="small"
+        error={errors.type !== undefined}
+        options={[
+          { value: Type.TrueFalse, label: '是非題' },
+          { value: Type.Single, label: '單選題' },
+          { value: Type.Multiple, label: '多選題' },
+          { value: Type.FillInBlank, label: '填充題' },
+          { value: Type.Essay, label: '問答題' },
+        ]}
+      />
+      <h3>題目</h3>
+      <Card variant="outlined">
+        <ReactEditorJS
+          onInitialize={handleInitialize}
+          defaultValue={state === null ? undefined : { blocks: JSON.parse(state.question) }}
+          onChange={handleSave}
+          tools={{ table: TableTool }}
+        />
+      </Card>
+      <div>
+        <h3>題目預覽</h3>
+        <FormControlLabel
+          control={<Checkbox defaultChecked value={applyMathjax} onChange={handleCheckbox} />}
+          label="套用 MathJax"
+        />
+      </div>
+      <Card variant="outlined" className={style.preview}>
+        <Preview applyMathjax={applyMathjax}>
+          <QuestionPreview blocks={questionOutput} />
+        </Preview>
+      </Card>
+      {watch('type') !== Type.Essay && (
+        <h3 className={classNames({ [style.answer]: errors.answer !== undefined })}>答案</h3>
+      )}
+      {watch('type') === Type.TrueFalse && (
+        <FormRadio
           control={control}
-          name="type"
-          label="題型"
-          size="small"
-          error={errors.type !== undefined}
-          options={[
-            { value: Type.TrueFalse, label: '是非題' },
-            { value: Type.Single, label: '單選題' },
-            { value: Type.Multiple, label: '多選題' },
-            { value: Type.FillInBlank, label: '填充題' },
-            { value: Type.Essay, label: '問答題' },
+          name="answer"
+          items={[
+            { value: 'true', label: '是' },
+            { value: 'false', label: '否' },
           ]}
         />
-        <h3>題目</h3>
-        <Card variant="outlined">
-          <ReactEditorJS
-            onInitialize={handleInitialize}
-            defaultValue={state === null ? undefined : { blocks: JSON.parse(state.question) }}
-            onChange={handleSave}
-            tools={{ table: TableTool }}
-          />
-        </Card>
-        <div>
-          <h3>題目預覽</h3>
-          <FormControlLabel
-            control={<Checkbox defaultChecked value={applyMathjax} onChange={handleCheckbox} />}
-            label="套用 MathJax"
-          />
-        </div>
-        <Card variant="outlined" className={style.preview}>
-          <Preview applyMathjax={applyMathjax}>
-            <QuestionPreview blocks={questionOutput} />
-          </Preview>
-        </Card>
-        {watch('type') !== Type.Essay && (
-          <h3 className={classNames({ [style.answer]: errors.answer !== undefined })}>答案</h3>
-        )}
-        {watch('type') === Type.TrueFalse && (
-          <FormRadio
-            control={control}
-            name="answer"
-            items={[
-              { value: 'true', label: '是' },
-              { value: 'false', label: '否' },
-            ]}
-          />
-        )}
-        {(watch('type') === Type.Single || watch('type') === Type.Multiple) && (
-          <Slider
-            defaultValue={sliderValue}
-            value={sliderValue}
-            onChange={handleSliderChange}
-            valueLabelDisplay="auto"
-            step={1}
-            marks
-            min={2}
-            max={10}
-          />
-        )}
-        {watch('type') === Type.Single && (
-          <FormRadio
-            control={control}
-            name="answer"
-            items={[...Array(sliderValue).keys()].map((v) => ({
-              value: String(v + 1),
-              label: String(v + 1),
-            }))}
-          />
-        )}
-        {watch('type') === Type.Multiple && (
-          <FormCheckboxGroup
-            control={control}
-            name="answer"
-            options={multipleOptions}
-            defaultValue={
-              state === null || initialized ? undefined : getValues('answer').split(',')
-            }
-          />
-        )}
-        {watch('type') === Type.FillInBlank && (
-          <FormInput control={control} name="answer" error={errors.answer !== undefined} />
-        )}
-        <div>
-          <Button type="submit" variant="contained" disabled={isSendingQuestion}>
-            確認送出
-          </Button>
-        </div>
-      </form>
-    </>
+      )}
+      {(watch('type') === Type.Single || watch('type') === Type.Multiple) && (
+        <Slider
+          defaultValue={sliderValue}
+          value={sliderValue}
+          onChange={handleSliderChange}
+          valueLabelDisplay="auto"
+          step={1}
+          marks
+          min={2}
+          max={10}
+        />
+      )}
+      {watch('type') === Type.Single && (
+        <FormRadio
+          control={control}
+          name="answer"
+          items={[...Array(sliderValue).keys()].map((v) => ({
+            value: String(v + 1),
+            label: String(v + 1),
+          }))}
+        />
+      )}
+      {watch('type') === Type.Multiple && (
+        <FormCheckboxGroup
+          control={control}
+          name="answer"
+          options={multipleOptions}
+          defaultValue={state === null || initialized ? undefined : getValues('answer').split(',')}
+        />
+      )}
+      {watch('type') === Type.FillInBlank && (
+        <FormInput control={control} name="answer" error={errors.answer !== undefined} />
+      )}
+      <div>
+        <Button type="submit" variant="contained" disabled={isSendingQuestion}>
+          確認送出
+        </Button>
+      </div>
+    </form>
   );
 };
 

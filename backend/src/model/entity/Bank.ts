@@ -9,22 +9,22 @@ import {
 import { inject, injectable } from 'inversify';
 import { ENTITY as USER_ENTITY } from './User';
 
-export const ENTITY = 'label';
+export const ENTITY = 'bank';
 
-export type Label = DbBase & {
+export type Bank = DbBase & {
   id: string;
-  label: string;
+  name: string;
   ownerId: string;
 };
 
 /**
- * Entity class for Label
+ * Entity class for Bank
  */
 @entity(ENTITY)
-class LabelEntity implements Label {
+class BankEntity implements Bank {
   @primaryAttribute()
   public id: string;
-  public label: string;
+  public name: string;
   @relatedAttributeOne(USER_ENTITY)
   public ownerId: string;
 
@@ -32,9 +32,9 @@ class LabelEntity implements Label {
   public dateUpdated?: number;
   public dateDeleted?: number;
 
-  constructor(input: Label) {
+  constructor(input: Bank) {
     this.id = input.id;
-    this.label = input.label;
+    this.name = input.name;
     this.ownerId = input.ownerId;
     this.dateCreated = input.dateCreated;
     this.dateUpdated = input.dateUpdated;
@@ -43,29 +43,21 @@ class LabelEntity implements Label {
 }
 
 @injectable()
-export class LabelModel implements ModelBase {
+export class BankModel implements ModelBase {
   @inject(DbService)
   private readonly dbService!: DbService;
 
   async find(id: string) {
-    return await this.dbService.getItem<Label>(ENTITY, id);
+    return await this.dbService.getItem<Bank>(ENTITY, id);
   }
 
   async findAll() {
-    return await this.dbService.getItems<Label>(ENTITY);
+    return await this.dbService.getItems<Bank>(ENTITY);
   }
 
-  async findAllByOwner(userId: string) {
-    return await this.dbService.getItemsByIndex<Label>(
-      ENTITY,
-      USER_ENTITY,
-      userId
-    );
-  }
-
-  async create(data: Label): Promise<void> {
-    await this.dbService.createItem<Label>(
-      new LabelEntity({
+  async create(data: Bank): Promise<void> {
+    await this.dbService.createItem<Bank>(
+      new BankEntity({
         ...data,
         dateCreated: Date.now(),
         dateUpdated: Date.now(),
@@ -73,9 +65,9 @@ export class LabelModel implements ModelBase {
     );
   }
 
-  async replace(data: Label): Promise<void> {
-    await this.dbService.putItem<Label>(
-      new LabelEntity({
+  async replace(data: Bank): Promise<void> {
+    await this.dbService.putItem<Bank>(
+      new BankEntity({
         ...data,
         dateUpdated: Date.now(),
       })

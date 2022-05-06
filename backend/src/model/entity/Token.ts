@@ -7,6 +7,7 @@ import {
   relatedAttributeOne,
 } from '@y-celestial/service';
 import { inject, injectable } from 'inversify';
+import { ENTITY as USER_ENTITY } from './User';
 
 export const ENTITY = 'token';
 
@@ -25,7 +26,7 @@ class TokenEntity implements Token {
   public token: string;
   public expiredDate?: number;
 
-  @relatedAttributeOne('user')
+  @relatedAttributeOne(USER_ENTITY)
   public userId: string;
 
   public dateCreated?: number;

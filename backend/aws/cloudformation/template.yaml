@@ -43,6 +43,61 @@ Resources:
             "title": !Sub "${Project}-${TargetEnvr}-api"
           },
           "paths": {
+            "/api/bank": {
+              "post": {
+                "parameters" : [ {
+                  "name" : "x-api-token",
+                  "in" : "header",
+                  "required" : true,
+                  "schema" : {
+                    "type" : "string"
+                  }
+                } ],
+                "requestBody": {
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "$ref": "#/components/schemas/postBank"
+                      }
+                    }
+                  },
+                  "required": true
+                },
+                "responses": {
+                  "200": {
+                    "description": "200 response",
+                    "headers": {
+                      "Access-Control-Allow-Origin": {
+                        "schema": {"type": "string"}
+                      }
+                    },
+                    "content": {
+                      "application/json": {
+                        "schema": {
+                          "$ref": "#/components/schemas/Empty"
+                        }
+                      }
+                    }
+                  }
+                },
+                "x-amazon-apigateway-request-validator" : "Validate body, query string parameters, and headers",
+                "x-amazon-apigateway-integration": {
+                  "type": "aws_proxy",
+                  "httpMethod": "POST",
+                  "uri": !Sub "arn:aws:apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/arn:aws:lambda:ap-northeast-1:278497686406:function:${Project}-${TargetEnvr}-bank/invocations",
+                  "responses": {
+                    "default": {
+                      "statusCode": "200",
+                      "responseParameters": {
+                        "method.response.header.Access-Control-Allow-Origin": "'*'"
+                      }
+                    }
+                  },
+                  "passthroughBehavior": "when_no_match",
+                  "contentHandling": "CONVERT_TO_TEXT"
+                }
+              }
+            },
             "/api/question": {
               "post": {
                 "parameters" : [ {
@@ -491,6 +546,14 @@ Resources:
               "type": "object",
               "title": "Empty Schema"
             },
+            "postBank": {
+              "type" : "object",
+              "properties": {
+                "name": {"type": "string"},
+                "questionId": {"type": "array", { "items": { "type": "string"}}}
+              },
+              "required": ["name","questionId"]
+            },
             "putUser": {
               "type" : "object",
               "required": ["nickname"],
@@ -537,6 +600,28 @@ Resources:
             }
           }
         }
+  LambdaBank:
+    Type: AWS::Serverless::Function
+    Properties:
+      Architectures: [arm64]
+      Handler: index.bank
+      Runtime: !Sub ${NodeJsVer}
+      FunctionName: !Sub ${Project}-${TargetEnvr}-bank
+      Role: !Sub "arn:aws:iam::${AWS::AccountId}:role/${LambdaExecutionRole}"
+      CodeUri: ../../dist/webpack/lambda
+      MemorySize: 128
+      Environment:
+        Variables:
+          ENVR: !Sub ${TargetEnvr}
+          ALIAS: !Sub ${Alias}
+  InvokePermissionBank:
+    Type: AWS::Lambda::Permission
+    DependsOn: [ServerlessApi, LambdaBank]
+    Properties:
+      FunctionName: !Sub ${Project}-${TargetEnvr}-bank
+      Action: 'lambda:InvokeFunction'
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ServerlessApi}/*
   LambdaQuestion:
     Type: AWS::Serverless::Function
     Properties:

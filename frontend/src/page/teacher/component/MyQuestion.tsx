@@ -95,7 +95,7 @@ const MyQuestion = () => {
           ))}
         </TextField>
         {questions?.map((v, i) => (
-          <Card key={v.id} className={style.card}>
+          <Card key={v.id} className={style.card} variant="outlined">
             <div className={style.head}>
               <div className={style.item}>No. {i + 1}</div>
               <div className={style.item}>{typeLocale(v.type)}</div>

@@ -8,6 +8,8 @@ import {
 } from '@y-celestial/service';
 import { inject, injectable } from 'inversify';
 import { Type } from 'src/constant/Question';
+import { ENTITY as LABEL_ENTITY } from './Label';
+import { ENTITY as USER_ENTITY } from './User';
 
 export const ENTITY = 'question';
 
@@ -27,12 +29,12 @@ export type Question = DbBase & {
 class QuestionEntity implements Question {
   @primaryAttribute()
   public id: string;
-  @relatedAttributeOne('label')
+  @relatedAttributeOne(LABEL_ENTITY)
   public labelId: string;
   public type: Type;
   public question: string;
   public answer?: string;
-  @relatedAttributeOne('user')
+  @relatedAttributeOne(USER_ENTITY)
   public ownerId: string;
 
   public dateCreated?: number;
@@ -68,8 +70,16 @@ export class QuestionModel implements ModelBase {
   async findAllByLabel(labelId: string) {
     return await this.dbService.getItemsByIndex<Question>(
       ENTITY,
-      'label',
+      LABEL_ENTITY,
       labelId
+    );
+  }
+
+  async findAllByOwner(ownerId: string) {
+    return await this.dbService.getItemsByIndex<Question>(
+      ENTITY,
+      USER_ENTITY,
+      ownerId
     );
   }
 

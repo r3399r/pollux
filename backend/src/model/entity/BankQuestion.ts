@@ -7,35 +7,40 @@ import {
   relatedAttributeOne,
 } from '@y-celestial/service';
 import { inject, injectable } from 'inversify';
-import { ENTITY as USER_ENTITY } from './User';
+import { ENTITY as BANK_ENTITY } from './Bank';
+import { ENTITY as QUESTION_ENTITY } from './Question';
 
-export const ENTITY = 'label';
+export const ENTITY = 'bankQuestion';
 
-export type Label = DbBase & {
+export type BankQuestion = DbBase & {
   id: string;
-  label: string;
-  ownerId: string;
+  bankId: string;
+  questionId: string;
+  order: number;
 };
 
 /**
- * Entity class for Label
+ * Entity class for BankQuestion
  */
 @entity(ENTITY)
-class LabelEntity implements Label {
+class BankQuestionEntity implements BankQuestion {
   @primaryAttribute()
   public id: string;
-  public label: string;
-  @relatedAttributeOne(USER_ENTITY)
-  public ownerId: string;
+  @relatedAttributeOne(BANK_ENTITY)
+  public bankId: string;
+  @relatedAttributeOne(QUESTION_ENTITY)
+  public questionId: string;
+  public order: number;
 
   public dateCreated?: number;
   public dateUpdated?: number;
   public dateDeleted?: number;
 
-  constructor(input: Label) {
+  constructor(input: BankQuestion) {
     this.id = input.id;
-    this.label = input.label;
-    this.ownerId = input.ownerId;
+    this.bankId = input.bankId;
+    this.questionId = input.questionId;
+    this.order = input.order;
     this.dateCreated = input.dateCreated;
     this.dateUpdated = input.dateUpdated;
     this.dateDeleted = input.dateDeleted;
@@ -43,29 +48,21 @@ class LabelEntity implements Label {
 }
 
 @injectable()
-export class LabelModel implements ModelBase {
+export class BankQuestionModel implements ModelBase {
   @inject(DbService)
   private readonly dbService!: DbService;
 
   async find(id: string) {
-    return await this.dbService.getItem<Label>(ENTITY, id);
+    return await this.dbService.getItem<BankQuestion>(ENTITY, id);
   }
 
   async findAll() {
-    return await this.dbService.getItems<Label>(ENTITY);
+    return await this.dbService.getItems<BankQuestion>(ENTITY);
   }
 
-  async findAllByOwner(userId: string) {
-    return await this.dbService.getItemsByIndex<Label>(
-      ENTITY,
-      USER_ENTITY,
-      userId
-    );
-  }
-
-  async create(data: Label): Promise<void> {
-    await this.dbService.createItem<Label>(
-      new LabelEntity({
+  async create(data: BankQuestion): Promise<void> {
+    await this.dbService.createItem<BankQuestion>(
+      new BankQuestionEntity({
         ...data,
         dateCreated: Date.now(),
         dateUpdated: Date.now(),
@@ -73,9 +70,9 @@ export class LabelModel implements ModelBase {
     );
   }
 
-  async replace(data: Label): Promise<void> {
-    await this.dbService.putItem<Label>(
-      new LabelEntity({
+  async replace(data: BankQuestion): Promise<void> {
+    await this.dbService.putItem<BankQuestion>(
+      new BankQuestionEntity({
         ...data,
         dateUpdated: Date.now(),
       })
