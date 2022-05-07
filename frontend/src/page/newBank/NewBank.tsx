@@ -6,13 +6,16 @@ import { useNavigate } from 'react-router-dom';
 import Loader from 'src/component/Loader';
 import Preview from 'src/component/Preview';
 import QuestionPreview from 'src/component/QuestionPreview';
+import { Page } from 'src/constant/Page';
 import { openSnackbar } from 'src/redux/uiSlice';
+import { createBank } from 'src/service/bankService';
 import { getLabels, getQuestions, parseAnswer, typeLocale } from 'src/service/questionService';
 import style from './NewBank.module.scss';
 
 const NewBank = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [bankName, setBankName] = useState<string>('');
   const [labels, setLabels] = useState<Label[]>();
   const [questions, setQuestions] = useState<Question[]>([]);
   const [filter, setFilter] = useState<string>('');
@@ -43,6 +46,17 @@ const NewBank = () => {
     setBankQuestions([...bankQuestions].filter((v) => v.id !== id));
   };
 
+  const onSubmit = () => {
+    if (bankName === '' || bankQuestions.length === 0) return;
+    createBank({ name: bankName, questionId: bankQuestions.map((v) => v.id) })
+      .then(() => {
+        navigate(`${Page.Teacher}?t=2`);
+      })
+      .catch(() => {
+        dispatch(openSnackbar({ severity: 'error', message: '題庫新建失敗' }));
+      });
+  };
+
   if (labels === undefined) return <Loader />;
 
   return (
@@ -53,7 +67,12 @@ const NewBank = () => {
         </Button>
       </div>
       <h1>建立新題庫</h1>
-      <TextField size="small" label="題庫名稱" />
+      <TextField
+        size="small"
+        label="題庫名稱"
+        value={bankName}
+        onChange={(v) => setBankName(v.target.value)}
+      />
       {bankQuestions.map((v, i) => (
         <Card key={v.id} variant="outlined">
           <CardActionArea onClick={onBankCardClick(v.id)}>
@@ -73,7 +92,9 @@ const NewBank = () => {
         </Card>
       ))}
       <div>
-        <Button variant="contained">儲存</Button>
+        <Button variant="contained" onClick={onSubmit}>
+          儲存
+        </Button>
       </div>
       <Divider />
       <h2>題目清單</h2>

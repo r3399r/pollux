@@ -49,7 +49,7 @@
     "@types/react-dom": "^17.0.14",
     "@typescript-eslint/eslint-plugin": "^5.18.0",
     "@typescript-eslint/parser": "^5.18.0",
-    "@y-celestial/pollux-service": "^1.0.6",
+    "@y-celestial/pollux-service": "^1.0.7",
     "cross-env": "^7.0.3",
     "del-cli": "^4.0.1",
     "eslint": "^8.12.0",
