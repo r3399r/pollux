@@ -36,6 +36,7 @@ describe('question', () => {
     mockService.reviseQuestion = jest.fn(() => dummyResult);
     mockService.createLabel = jest.fn(() => dummyResult);
     mockService.getLabel = jest.fn(() => [dummyResult]);
+    mockService.deleteQuestion = jest.fn(() => dummyResult);
   });
 
   describe('/api/question', () => {
@@ -67,20 +68,6 @@ describe('question', () => {
         successOutput(dummyResult)
       );
       expect(mockService.getQuestion).toBeCalledTimes(1);
-    });
-
-    it('should fail if missing headers', async () => {
-      event = {
-        resource: '/api/question',
-        httpMethod: 'POST',
-        headers: null,
-        body: JSON.stringify({ a: 1 }),
-        pathParameters: null,
-        queryStringParameters: null,
-      };
-      await expect(question(event, lambdaContext)).resolves.toStrictEqual(
-        errorOutput(new BadRequestError('headers required'))
-      );
     });
 
     it('should fail if missing body', async () => {
@@ -144,18 +131,19 @@ describe('question', () => {
       expect(mockService.reviseQuestion).toBeCalledTimes(1);
     });
 
-    it('should fail if missing headers', async () => {
+    it('DELETE should work', async () => {
       event = {
         resource: '/api/question/{id}',
-        httpMethod: 'PUT',
-        headers: null,
-        body: JSON.stringify({ a: 1 }),
+        httpMethod: 'DELETE',
+        headers: { ['x-api-token']: 'abcde' },
+        body: null,
         pathParameters: { id: 'id' },
         queryStringParameters: null,
       };
       await expect(question(event, lambdaContext)).resolves.toStrictEqual(
-        errorOutput(new BadRequestError('headers required'))
+        successOutput(dummyResult)
       );
+      expect(mockService.deleteQuestion).toBeCalledTimes(1);
     });
 
     it('should fail if missing pathParameters', async () => {
@@ -215,20 +203,6 @@ describe('question', () => {
         successOutput(dummyResult)
       );
       expect(mockService.createLabel).toBeCalledTimes(1);
-    });
-
-    it('should fail if missing headers', async () => {
-      event = {
-        resource: '/api/question/label',
-        httpMethod: 'POST',
-        headers: null,
-        body: JSON.stringify({ a: 1 }),
-        pathParameters: null,
-        queryStringParameters: null,
-      };
-      await expect(question(event, lambdaContext)).resolves.toStrictEqual(
-        errorOutput(new BadRequestError('headers required'))
-      );
     });
 
     it('POST should fail if missing body', async () => {

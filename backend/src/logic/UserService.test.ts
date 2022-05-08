@@ -1,7 +1,9 @@
+import { LambdaEvent } from '@y-celestial/service';
 import { bindings } from 'src/bindings';
 import { PutUserRequest } from 'src/model/api/User';
 import { TokenModel } from 'src/model/entity/Token';
 import { UserModel } from 'src/model/entity/User';
+import { LambdaSetup } from 'src/util/LambdaSetup';
 import { UserService } from './UserService';
 
 /**
@@ -13,6 +15,10 @@ describe('UserService', () => {
   let mockTokenModel: any;
 
   beforeEach(() => {
+    LambdaSetup.setup({
+      headers: { 'x-api-token': 'token' },
+    } as unknown as LambdaEvent);
+
     mockUserModel = {};
     mockTokenModel = {};
 
@@ -38,7 +44,7 @@ describe('UserService', () => {
 
   describe('getUser', () => {
     it('should work', async () => {
-      expect(await service.getUser('token')).toStrictEqual({
+      expect(await service.getUser()).toStrictEqual({
         id: 'id',
         nickname: 'nickname',
       });
@@ -49,7 +55,7 @@ describe('UserService', () => {
 
   describe('modifyUser', () => {
     it('should work', async () => {
-      await service.modifyUser('token', {} as PutUserRequest);
+      await service.modifyUser({} as PutUserRequest);
       expect(mockUserModel.find).toBeCalledTimes(1);
       expect(mockUserModel.replace).toBeCalledTimes(1);
       expect(mockTokenModel.find).toBeCalledTimes(1);

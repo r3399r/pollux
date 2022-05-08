@@ -45,6 +45,13 @@ describe('entities', () => {
       const model = bindings.get<BankModel>(BankModel);
       await doTest<BankModel, Bank>(model);
     });
+
+    it('findAllByOwner should work', async () => {
+      const model = bindings.get<BankModel>(BankModel);
+      expect(await model.findAllByOwner('user-id')).toStrictEqual([
+        dummyResult,
+      ]);
+    });
   });
 
   describe('bankQuestion', () => {
@@ -63,6 +70,13 @@ describe('entities', () => {
     it('findAllByLabel should work', async () => {
       const model = bindings.get<QuestionModel>(QuestionModel);
       expect(await model.findAllByLabel('label-id')).toStrictEqual([
+        dummyResult,
+      ]);
+    });
+
+    it('findAllByOwner should work', async () => {
+      const model = bindings.get<QuestionModel>(QuestionModel);
+      expect(await model.findAllByOwner('user-id')).toStrictEqual([
         dummyResult,
       ]);
     });

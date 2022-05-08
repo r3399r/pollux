@@ -9,6 +9,7 @@ import {
 } from 'src/model/api/User';
 import { Token, TokenModel } from 'src/model/entity/Token';
 import { User, UserModel } from 'src/model/entity/User';
+import { tokenSymbol } from 'src/util/LambdaSetup';
 
 /**
  * Service class for User
@@ -19,6 +20,8 @@ export class UserService {
   private readonly userModel!: UserModel;
   @inject(TokenModel)
   private readonly tokenModel!: TokenModel;
+  @inject(tokenSymbol)
+  private readonly token!: string;
 
   public async createUser(): Promise<PostUserResponse> {
     const user: User = { id: uuidv4(), nickname: '過客' };
@@ -32,18 +35,15 @@ export class UserService {
     return { ...user, token: token.token };
   }
 
-  public async getUser(token: string): Promise<GetUserResponse> {
-    const { userId } = await this.tokenModel.find(token);
+  public async getUser(): Promise<GetUserResponse> {
+    const { userId } = await this.tokenModel.find(this.token);
     const user = await this.userModel.find(userId);
 
     return { id: user.id, nickname: user.nickname };
   }
 
-  public async modifyUser(
-    token: string,
-    body: PutUserRequest
-  ): Promise<PutUserResponse> {
-    const { userId } = await this.tokenModel.find(token);
+  public async modifyUser(body: PutUserRequest): Promise<PutUserResponse> {
+    const { userId } = await this.tokenModel.find(this.token);
     const user = await this.userModel.find(userId);
 
     const newUser = { id: user.id, nickname: body.nickname };

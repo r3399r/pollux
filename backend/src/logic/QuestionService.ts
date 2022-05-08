@@ -15,6 +15,7 @@ import {
 import { Label, LabelModel } from 'src/model/entity/Label';
 import { Question, QuestionModel } from 'src/model/entity/Question';
 import { TokenModel } from 'src/model/entity/Token';
+import { tokenSymbol } from 'src/util/LambdaSetup';
 
 /**
  * Service class for Question
@@ -27,15 +28,16 @@ export class QuestionService {
   private readonly tokenModel!: TokenModel;
   @inject(LabelModel)
   private readonly labelModel!: LabelModel;
+  @inject(tokenSymbol)
+  private readonly token!: string;
 
   public async createQuestion(
-    token: string,
     data: PostQuestionRequest
   ): Promise<PostQuestionResponse> {
     // check if input label id exists
     const { id: labelId } = await this.labelModel.find(data.labelId);
 
-    const { userId } = await this.tokenModel.find(token);
+    const { userId } = await this.tokenModel.find(this.token);
     const question: Question = {
       id: uuidv4(),
       labelId,
@@ -51,11 +53,10 @@ export class QuestionService {
   }
 
   public async reviseQuestion(
-    token: string,
     id: string,
     data: PutQuestionIdRequest
   ): Promise<PutQuestionIdResponse> {
-    const { userId } = await this.tokenModel.find(token);
+    const { userId } = await this.tokenModel.find(this.token);
     const oldQuestion = await this.questionModel.find(id);
 
     // check input label exists
@@ -78,10 +79,9 @@ export class QuestionService {
   }
 
   public async getQuestion(
-    token: string,
     params: GetQuestionParams
   ): Promise<GetQuestionResponse> {
-    const { userId } = await this.tokenModel.find(token);
+    const { userId } = await this.tokenModel.find(this.token);
     const label = await this.labelModel.find(params.labelId);
 
     if (label.ownerId !== userId) throw new UnauthorizedError('unauthorized');
@@ -89,8 +89,8 @@ export class QuestionService {
     return await this.questionModel.findAllByLabel(params.labelId);
   }
 
-  public async deleteQuestion(token: string, id: string) {
-    const { userId } = await this.tokenModel.find(token);
+  public async deleteQuestion(id: string) {
+    const { userId } = await this.tokenModel.find(this.token);
     const question = await this.questionModel.find(id);
     if (question.ownerId !== userId)
       throw new UnauthorizedError('unauthorized');
@@ -98,10 +98,9 @@ export class QuestionService {
   }
 
   public async createLabel(
-    token: string,
     data: PostQuestionLabelRequest
   ): Promise<PostQuestionLabelResponse> {
-    const { userId } = await this.tokenModel.find(token);
+    const { userId } = await this.tokenModel.find(this.token);
     const labels = await this.labelModel.findAllByOwner(userId);
 
     if (labels.map((v) => v.label).includes(data.label))
@@ -117,8 +116,8 @@ export class QuestionService {
     return newLabel;
   }
 
-  public async getLabel(token: string): Promise<GetQuestionLabelResponse> {
-    const { userId } = await this.tokenModel.find(token);
+  public async getLabel(): Promise<GetQuestionLabelResponse> {
+    const { userId } = await this.tokenModel.find(this.token);
 
     return await this.labelModel.findAllByOwner(userId);
   }

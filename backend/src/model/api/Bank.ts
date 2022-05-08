@@ -6,3 +6,5 @@ export type PostBankRequest = {
 };
 
 export type PostBankResponse = Bank;
+
+export type GetBankResponse = Bank[];

@@ -1,9 +1,14 @@
-import { ConflictError, UnauthorizedError } from '@y-celestial/service';
+import {
+  ConflictError,
+  LambdaEvent,
+  UnauthorizedError,
+} from '@y-celestial/service';
 import { bindings } from 'src/bindings';
 import { PostQuestionRequest } from 'src/model/api/Question';
 import { LabelModel } from 'src/model/entity/Label';
 import { QuestionModel } from 'src/model/entity/Question';
 import { TokenModel } from 'src/model/entity/Token';
+import { LambdaSetup } from 'src/util/LambdaSetup';
 import { QuestionService } from './QuestionService';
 
 /**
@@ -16,6 +21,10 @@ describe('QuestionService', () => {
   let mockLabelModel: any;
 
   beforeEach(() => {
+    LambdaSetup.setup({
+      headers: { 'x-api-token': 'token' },
+    } as unknown as LambdaEvent);
+
     mockQuestionModel = {};
     mockTokenModel = {};
     mockLabelModel = {};
@@ -30,6 +39,7 @@ describe('QuestionService', () => {
     mockQuestionModel.find = jest.fn(() => ({ ownerId: 'user-id' }));
     mockQuestionModel.replace = jest.fn();
     mockQuestionModel.findAllByLabel = jest.fn(() => [{ id: '1' }]);
+    mockQuestionModel.hardDelete = jest.fn();
     mockTokenModel.find = jest.fn(() => ({ userId: 'user-id' }));
     mockLabelModel.create = jest.fn();
     mockLabelModel.find = jest.fn(() => ({
@@ -45,7 +55,7 @@ describe('QuestionService', () => {
 
   describe('createQuestion', () => {
     it('should work', async () => {
-      await service.createQuestion('token', {} as PostQuestionRequest);
+      await service.createQuestion({} as PostQuestionRequest);
       expect(mockQuestionModel.create).toBeCalledTimes(1);
       expect(mockTokenModel.find).toBeCalledTimes(1);
       expect(mockLabelModel.find).toBeCalledTimes(1);
@@ -54,7 +64,7 @@ describe('QuestionService', () => {
 
   describe('reviseQuestion', () => {
     it('should work', async () => {
-      await service.reviseQuestion('token', 'id', {} as PostQuestionRequest);
+      await service.reviseQuestion('id', {} as PostQuestionRequest);
       expect(mockQuestionModel.find).toBeCalledTimes(1);
       expect(mockQuestionModel.replace).toBeCalledTimes(1);
       expect(mockTokenModel.find).toBeCalledTimes(1);
@@ -63,7 +73,7 @@ describe('QuestionService', () => {
     it('should fail with unauthorized', async () => {
       mockQuestionModel.find = jest.fn(() => ({ ownerId: 'user-id2' }));
       await expect(() =>
-        service.reviseQuestion('token', 'id', {} as PostQuestionRequest)
+        service.reviseQuestion('id', {} as PostQuestionRequest)
       ).rejects.toThrow(UnauthorizedError);
       expect(mockQuestionModel.find).toBeCalledTimes(1);
       expect(mockQuestionModel.replace).toBeCalledTimes(0);
@@ -73,7 +83,7 @@ describe('QuestionService', () => {
 
   describe('getQuestion', () => {
     it('should work', async () => {
-      await service.getQuestion('token', { labelId: 'label-id' });
+      await service.getQuestion({ labelId: 'label-id' });
       expect(mockTokenModel.find).toBeCalledTimes(1);
       expect(mockLabelModel.find).toBeCalledTimes(1);
       expect(mockQuestionModel.findAllByLabel).toBeCalledTimes(1);
@@ -85,7 +95,7 @@ describe('QuestionService', () => {
         ownerId: 'user-id2',
       }));
       await expect(() =>
-        service.getQuestion('token', { labelId: 'label-id' })
+        service.getQuestion({ labelId: 'label-id' })
       ).rejects.toThrow(UnauthorizedError);
       expect(mockTokenModel.find).toBeCalledTimes(1);
       expect(mockLabelModel.find).toBeCalledTimes(1);
@@ -93,9 +103,28 @@ describe('QuestionService', () => {
     });
   });
 
+  describe('deleteQuestion', () => {
+    it('should work', async () => {
+      await service.deleteQuestion('id');
+      expect(mockTokenModel.find).toBeCalledTimes(1);
+      expect(mockQuestionModel.find).toBeCalledTimes(1);
+      expect(mockQuestionModel.hardDelete).toBeCalledTimes(1);
+    });
+
+    it('should fail with unauthorized', async () => {
+      mockQuestionModel.find = jest.fn(() => ({ ownerId: 'user-id2' }));
+      await expect(() => service.deleteQuestion('id')).rejects.toThrow(
+        UnauthorizedError
+      );
+      expect(mockTokenModel.find).toBeCalledTimes(1);
+      expect(mockQuestionModel.find).toBeCalledTimes(1);
+      expect(mockQuestionModel.hardDelete).toBeCalledTimes(0);
+    });
+  });
+
   describe('createLabel', () => {
     it('should work', async () => {
-      await service.createLabel('token', { label: 'label' });
+      await service.createLabel({ label: 'label' });
       expect(mockTokenModel.find).toBeCalledTimes(1);
       expect(mockLabelModel.findAllByOwner).toBeCalledTimes(1);
       expect(mockLabelModel.create).toBeCalledTimes(1);
@@ -103,7 +132,7 @@ describe('QuestionService', () => {
 
     it('should fail with conlict', async () => {
       await expect(() =>
-        service.createLabel('token', { label: 'label1' })
+        service.createLabel({ label: 'label1' })
       ).rejects.toThrow(ConflictError);
       expect(mockTokenModel.find).toBeCalledTimes(1);
       expect(mockLabelModel.findAllByOwner).toBeCalledTimes(1);
@@ -113,7 +142,7 @@ describe('QuestionService', () => {
 
   describe('getLabel', () => {
     it('should work', async () => {
-      await service.getLabel('token');
+      await service.getLabel();
       expect(mockTokenModel.find).toBeCalledTimes(1);
       expect(mockLabelModel.findAllByOwner).toBeCalledTimes(1);
     });

@@ -9,16 +9,23 @@ import {
 } from '@y-celestial/service';
 import { bindings } from 'src/bindings';
 import { BankService } from 'src/logic/BankService';
-import { PostBankRequest, PostBankResponse } from 'src/model/api/Bank';
+import {
+  GetBankResponse,
+  PostBankRequest,
+  PostBankResponse,
+} from 'src/model/api/Bank';
+import { LambdaSetup } from 'src/util/LambdaSetup';
 
 export async function bank(
   event: LambdaEvent,
   _context?: LambdaContext
 ): Promise<LambdaOutput> {
   try {
+    LambdaSetup.setup(event);
+
     const service: BankService = bindings.get<BankService>(BankService);
 
-    let res: PostBankResponse;
+    let res: PostBankResponse | GetBankResponse;
 
     switch (event.resource) {
       case '/api/bank':
@@ -35,17 +42,14 @@ export async function bank(
 }
 
 async function apiBank(event: LambdaEvent, service: BankService) {
-  if (event.headers === null) throw new BadRequestError('headers required');
-
   switch (event.httpMethod) {
     case 'POST':
       if (event.body === null)
         throw new BadRequestError('body should not be empty');
 
-      return service.createBank(
-        event.headers['x-api-token'],
-        JSON.parse(event.body) as PostBankRequest
-      );
+      return service.createBank(JSON.parse(event.body) as PostBankRequest);
+    case 'GET':
+      return service.getBank();
     default:
       throw new InternalServerError('unknown http method');
   }

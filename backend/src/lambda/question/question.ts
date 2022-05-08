@@ -57,15 +57,12 @@ export async function question(
 }
 
 async function apiQuestion(event: LambdaEvent, service: QuestionService) {
-  if (event.headers === null) throw new BadRequestError('headers required');
-
   switch (event.httpMethod) {
     case 'POST':
       if (event.body === null)
         throw new BadRequestError('body should not be empty');
 
       return service.createQuestion(
-        event.headers['x-api-token'],
         JSON.parse(event.body) as PostQuestionRequest
       );
     case 'GET':
@@ -73,7 +70,6 @@ async function apiQuestion(event: LambdaEvent, service: QuestionService) {
         throw new BadRequestError('queryStringParameters should not be empty');
 
       return service.getQuestion(
-        event.headers['x-api-token'],
         event.queryStringParameters as GetQuestionParams
       );
     default:
@@ -82,7 +78,6 @@ async function apiQuestion(event: LambdaEvent, service: QuestionService) {
 }
 
 async function apiQuestionId(event: LambdaEvent, service: QuestionService) {
-  if (event.headers === null) throw new BadRequestError('headers required');
   if (event.pathParameters === null)
     throw new BadRequestError('missing pathParameters');
 
@@ -92,34 +87,27 @@ async function apiQuestionId(event: LambdaEvent, service: QuestionService) {
         throw new BadRequestError('body should not be empty');
 
       return service.reviseQuestion(
-        event.headers['x-api-token'],
         event.pathParameters.id,
         JSON.parse(event.body) as PostQuestionRequest
       );
     case 'DELETE':
-      return service.deleteQuestion(
-        event.headers['x-api-token'],
-        event.pathParameters.id
-      );
+      return service.deleteQuestion(event.pathParameters.id);
     default:
       throw new InternalServerError('unknown http method');
   }
 }
 
 async function apiQuestionLabel(event: LambdaEvent, service: QuestionService) {
-  if (event.headers === null) throw new BadRequestError('headers required');
-
   switch (event.httpMethod) {
     case 'POST':
       if (event.body === null)
         throw new BadRequestError('body should not be empty');
 
       return service.createLabel(
-        event.headers['x-api-token'],
         JSON.parse(event.body) as PostQuestionLabelRequest
       );
     case 'GET':
-      return service.getLabel(event.headers['x-api-token']);
+      return service.getLabel();
     default:
       throw new InternalServerError('unknown http method');
   }

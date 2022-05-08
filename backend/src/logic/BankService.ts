@@ -1,11 +1,16 @@
 import { UnauthorizedError } from '@y-celestial/service';
 import { inject, injectable } from 'inversify';
 import { v4 as uuidv4 } from 'uuid';
-import { PostBankRequest, PostBankResponse } from 'src/model/api/Bank';
+import {
+  GetBankResponse,
+  PostBankRequest,
+  PostBankResponse,
+} from 'src/model/api/Bank';
 import { Bank, BankModel } from 'src/model/entity/Bank';
 import { BankQuestionModel } from 'src/model/entity/BankQuestion';
 import { QuestionModel } from 'src/model/entity/Question';
 import { TokenModel } from 'src/model/entity/Token';
+import { tokenSymbol } from 'src/util/LambdaSetup';
 
 /**
  * Service class for Bank
@@ -20,14 +25,13 @@ export class BankService {
   private readonly questionModel!: QuestionModel;
   @inject(BankQuestionModel)
   private readonly bankQuestionModel!: BankQuestionModel;
+  @inject(tokenSymbol)
+  private readonly token!: string;
 
-  public async createBank(
-    token: string,
-    data: PostBankRequest
-  ): Promise<PostBankResponse> {
-    const { userId } = await this.tokenModel.find(token);
+  public async createBank(data: PostBankRequest): Promise<PostBankResponse> {
+    const { userId } = await this.tokenModel.find(this.token);
 
-    // check question exist and is owned by user
+    // check if question exist and is owned by user
     const questions = await this.questionModel.findAllByOwner(userId);
     const questionIds = questions.map((v) => v.id);
     const isIncluded = data.questionId.every(
@@ -51,5 +55,11 @@ export class BankService {
       });
 
     return bank;
+  }
+
+  public async getBank(): Promise<GetBankResponse> {
+    const { userId } = await this.tokenModel.find(this.token);
+
+    return await this.bankModel.findAllByOwner(userId);
   }
 }

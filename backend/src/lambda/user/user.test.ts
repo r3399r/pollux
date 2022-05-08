@@ -107,20 +107,6 @@ describe('user', () => {
       expect(mockService.getUser).toBeCalledTimes(1);
     });
 
-    it('GET should fail if missing headers', async () => {
-      event = {
-        resource: '/api/user',
-        httpMethod: 'GET',
-        headers: null,
-        body: null,
-        pathParameters: null,
-        queryStringParameters: null,
-      };
-      await expect(user(event, lambdaContext)).resolves.toStrictEqual(
-        errorOutput(new BadRequestError('headers required'))
-      );
-    });
-
     it('PUT should work', async () => {
       event = {
         resource: '/api/user',
@@ -134,20 +120,6 @@ describe('user', () => {
         successOutput(dummyResult)
       );
       expect(mockService.modifyUser).toBeCalledTimes(1);
-    });
-
-    it('PUT should fail if missing headers', async () => {
-      event = {
-        resource: '/api/user',
-        httpMethod: 'PUT',
-        headers: null,
-        body: JSON.stringify({ a: 1 }),
-        pathParameters: null,
-        queryStringParameters: null,
-      };
-      await expect(user(event, lambdaContext)).resolves.toStrictEqual(
-        errorOutput(new BadRequestError('headers required'))
-      );
     });
 
     it('PUT should fail if missing body', async () => {

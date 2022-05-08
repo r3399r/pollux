@@ -15,12 +15,15 @@ import {
   PutUserRequest,
   PutUserResponse,
 } from 'src/model/api/User';
+import { LambdaSetup } from 'src/util/LambdaSetup';
 
 export async function user(
   event: LambdaEvent,
   _context?: LambdaContext
 ): Promise<LambdaOutput> {
   try {
+    LambdaSetup.setup(event);
+
     const service: UserService = bindings.get<UserService>(UserService);
 
     let res: PostUserResponse | GetUserResponse | PutUserResponse;
@@ -51,20 +54,12 @@ async function apiUser(event: LambdaEvent, service: UserService) {
 
       return service.createUser();
     case 'GET':
-      if (event.headers?.['x-api-token'] === undefined)
-        throw new BadRequestError('headers required');
-
-      return service.getUser(event.headers['x-api-token']);
+      return service.getUser();
     case 'PUT':
-      if (event.headers?.['x-api-token'] === undefined)
-        throw new BadRequestError('headers required');
       if (event.body === null)
         throw new BadRequestError('body should not be empty');
 
-      return service.modifyUser(
-        event.headers['x-api-token'],
-        JSON.parse(event.body) as PutUserRequest
-      );
+      return service.modifyUser(JSON.parse(event.body) as PutUserRequest);
     default:
       throw new InternalServerError('unknown http method');
   }

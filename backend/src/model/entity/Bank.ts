@@ -55,6 +55,14 @@ export class BankModel implements ModelBase {
     return await this.dbService.getItems<Bank>(ENTITY);
   }
 
+  async findAllByOwner(userId: string) {
+    return await this.dbService.getItemsByIndex<Bank>(
+      ENTITY,
+      USER_ENTITY,
+      userId
+    );
+  }
+
   async create(data: Bank): Promise<void> {
     await this.dbService.createItem<Bank>(
       new BankEntity({
