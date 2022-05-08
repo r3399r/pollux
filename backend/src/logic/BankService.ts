@@ -5,6 +5,8 @@ import {
   GetBankResponse,
   PostBankRequest,
   PostBankResponse,
+  PutBankIdRequest,
+  PutBankIdResponse,
 } from 'src/model/api/Bank';
 import { Bank, BankModel } from 'src/model/entity/Bank';
 import { BankQuestionModel } from 'src/model/entity/BankQuestion';
@@ -61,5 +63,61 @@ export class BankService {
     const { userId } = await this.tokenModel.find(this.token);
 
     return await this.bankModel.findAllByOwner(userId);
+  }
+
+  public async modifyBank(
+    id: string,
+    data: PutBankIdRequest
+  ): Promise<PutBankIdResponse> {
+    const { userId } = await this.tokenModel.find(this.token);
+    const bank = await this.bankModel.find(id);
+
+    if (bank.ownerId !== userId) throw new UnauthorizedError('unauthorized');
+
+    if (bank.name !== data.name)
+      await this.bankModel.replace({ ...bank, name: data.name });
+
+    const bankQuestions = await this.bankQuestionModel.findAllByBank(id);
+
+    if (bankQuestions.length >= data.questionId.length)
+      // new bank has less questions than before
+      for (const [i, bq] of bankQuestions.entries()) {
+        if (i >= data.questionId.length)
+          await this.bankQuestionModel.hardDelete(bq.id);
+        else if (bq.questionId !== data.questionId[i])
+          await this.bankQuestionModel.replace({
+            ...bq,
+            questionId: data.questionId[i],
+            order: i,
+          });
+      }
+    // new bank has more questions than before
+    else
+      for (const [i, qId] of data.questionId.entries())
+        if (i >= bankQuestions.length)
+          await this.bankQuestionModel.create({
+            id: uuidv4(),
+            bankId: id,
+            questionId: qId,
+            order: i,
+          });
+        else if (qId !== bankQuestions[i].id)
+          await this.bankQuestionModel.replace({
+            ...bankQuestions[i],
+            questionId: data.questionId[i],
+            order: i,
+          });
+
+    return bank;
+  }
+
+  public async deleteBank(id: string): Promise<void> {
+    const { userId } = await this.tokenModel.find(this.token);
+    const bank = await this.bankModel.find(id);
+
+    if (bank.ownerId !== userId) throw new UnauthorizedError('unauthorized');
+
+    await this.bankQuestionModel.hardDeleteAllByBank(bank.id);
+    await this.bankModel.hardDelete(id);
   }
 }

@@ -60,6 +60,14 @@ export class BankQuestionModel implements ModelBase {
     return await this.dbService.getItems<BankQuestion>(ENTITY);
   }
 
+  async findAllByBank(bankId: string) {
+    return await this.dbService.getItemsByIndex<BankQuestion>(
+      ENTITY,
+      BANK_ENTITY,
+      bankId
+    );
+  }
+
   async create(data: BankQuestion): Promise<void> {
     await this.dbService.createItem<BankQuestion>(
       new BankQuestionEntity({
@@ -86,5 +94,10 @@ export class BankQuestionModel implements ModelBase {
 
   async hardDelete(id: string): Promise<void> {
     await this.dbService.deleteItem(ENTITY, id);
+  }
+
+  async hardDeleteAllByBank(bankId: string) {
+    const res = await this.findAllByBank(bankId);
+    for (const o of res) await this.hardDelete(o.id);
   }
 }

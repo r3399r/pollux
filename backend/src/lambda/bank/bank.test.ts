@@ -31,6 +31,8 @@ describe('bank', () => {
 
     mockService.getBank = jest.fn(() => dummyResult);
     mockService.createBank = jest.fn(() => dummyResult);
+    mockService.modifyBank = jest.fn(() => dummyResult);
+    mockService.deleteBank = jest.fn(() => dummyResult);
   });
 
   describe('/api/bank', () => {
@@ -85,6 +87,80 @@ describe('bank', () => {
         headers: { ['x-api-token']: 'abcde' },
         body: JSON.stringify({ a: 1 }),
         pathParameters: null,
+        queryStringParameters: null,
+      };
+      await expect(bank(event, lambdaContext)).resolves.toStrictEqual(
+        errorOutput(new InternalServerError('unknown http method'))
+      );
+    });
+  });
+
+  describe('/api/bank/{id}', () => {
+    it('PUT should work', async () => {
+      event = {
+        resource: '/api/bank/{id}',
+        httpMethod: 'PUT',
+        headers: { ['x-api-token']: 'abcde' },
+        body: JSON.stringify({ a: 1 }),
+        pathParameters: { id: 'id' },
+        queryStringParameters: null,
+      };
+      await expect(bank(event, lambdaContext)).resolves.toStrictEqual(
+        successOutput(dummyResult)
+      );
+      expect(mockService.modifyBank).toBeCalledTimes(1);
+    });
+
+    it('DELETE should work', async () => {
+      event = {
+        resource: '/api/bank/{id}',
+        httpMethod: 'DELETE',
+        headers: { ['x-api-token']: 'abcde' },
+        body: null,
+        pathParameters: { id: 'id' },
+        queryStringParameters: null,
+      };
+      await expect(bank(event, lambdaContext)).resolves.toStrictEqual(
+        successOutput(dummyResult)
+      );
+      expect(mockService.deleteBank).toBeCalledTimes(1);
+    });
+
+    it('should fail if missing pathParameters', async () => {
+      event = {
+        resource: '/api/bank/{id}',
+        httpMethod: 'PUT',
+        headers: { ['x-api-token']: 'abcde' },
+        body: JSON.stringify({ a: 1 }),
+        pathParameters: null,
+        queryStringParameters: null,
+      };
+      await expect(bank(event, lambdaContext)).resolves.toStrictEqual(
+        errorOutput(new BadRequestError('missing pathParameters'))
+      );
+    });
+
+    it('should fail if missing body', async () => {
+      event = {
+        resource: '/api/bank/{id}',
+        httpMethod: 'PUT',
+        headers: { ['x-api-token']: 'abcde' },
+        body: null,
+        pathParameters: { id: 'id' },
+        queryStringParameters: null,
+      };
+      await expect(bank(event, lambdaContext)).resolves.toStrictEqual(
+        errorOutput(new BadRequestError('body should not be empty'))
+      );
+    });
+
+    it('unknown http method should fail', async () => {
+      event = {
+        resource: '/api/bank/{id}',
+        httpMethod: 'XXX',
+        headers: { ['x-api-token']: 'abcde' },
+        body: JSON.stringify({ a: 1 }),
+        pathParameters: { id: 'id' },
         queryStringParameters: null,
       };
       await expect(bank(event, lambdaContext)).resolves.toStrictEqual(
