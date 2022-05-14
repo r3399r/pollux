@@ -19,12 +19,15 @@ import {
   PostQuestionResponse,
   PutQuestionIdResponse,
 } from 'src/model/api/Question';
+import { LambdaSetup } from 'src/util/LambdaSetup';
 
 export async function question(
   event: LambdaEvent,
   _context?: LambdaContext
 ): Promise<LambdaOutput> {
   try {
+    LambdaSetup.setup(event);
+
     const service: QuestionService =
       bindings.get<QuestionService>(QuestionService);
 
