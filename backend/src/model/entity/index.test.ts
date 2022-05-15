@@ -59,6 +59,17 @@ describe('entities', () => {
       const model = bindings.get<BankQuestionModel>(BankQuestionModel);
       await doTest<BankQuestionModel, BankQuestion>(model);
     });
+
+    it('findAllByBank should work', async () => {
+      const model = bindings.get<BankQuestionModel>(BankQuestionModel);
+      expect(await model.findAllByBank('user-id')).toStrictEqual([dummyResult]);
+    });
+
+    it('hardDeleteAllByBank should work', async () => {
+      const model = bindings.get<BankQuestionModel>(BankQuestionModel);
+      await model.hardDeleteAllByBank('user-id');
+      expect(mockDbService.deleteItem).toBeCalledTimes(1);
+    });
   });
 
   describe('question', () => {

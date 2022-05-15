@@ -15,7 +15,13 @@ export {
   GetQuestionParams,
   GetQuestionResponse,
 } from 'src/model/api/Question';
-export { PostBankRequest, PostBankResponse } from 'src/model/api/Bank';
+export {
+  PostBankRequest,
+  PostBankResponse,
+  GetBankResponse,
+  PutBankIdRequest,
+  PutBankIdResponse,
+} from 'src/model/api/Bank';
 export { Question } from 'src/model/entity/Question';
 export { Label } from 'src/model/entity/Label';
 export { Type } from 'src/constant/Question';
