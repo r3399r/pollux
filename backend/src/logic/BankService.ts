@@ -2,6 +2,7 @@ import { UnauthorizedError } from '@y-celestial/service';
 import { inject, injectable } from 'inversify';
 import { v4 as uuidv4 } from 'uuid';
 import {
+  GetBankIdResponse,
   GetBankResponse,
   PostBankRequest,
   PostBankResponse,
@@ -63,6 +64,23 @@ export class BankService {
     const { userId } = await this.tokenModel.find(this.token);
 
     return await this.bankModel.findAllByOwner(userId);
+  }
+
+  public async getBankById(id: string): Promise<GetBankIdResponse> {
+    const { userId } = await this.tokenModel.find(this.token);
+    const bank = await this.bankModel.find(id);
+
+    if (bank.ownerId !== userId) throw new UnauthorizedError('unauthorized');
+
+    const bankQuestions = await this.bankQuestionModel.findAllByBank(bank.id);
+
+    const res: GetBankIdResponse = [];
+    for (const bq of bankQuestions) {
+      const q = await this.questionModel.find(bq.questionId);
+      res.push({ ...q, order: bq.order });
+    }
+
+    return res;
   }
 
   public async modifyBank(

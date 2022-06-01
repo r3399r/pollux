@@ -2,7 +2,8 @@ export enum Page {
   Landing = '/',
   Student = '/student',
   Teacher = '/teacher',
-  NewBank = '/teacher/newBank',
+  Bank = '/teacher/bank',
+  NewBank = '/teacher/bank/new',
   NewQuestion = '/teacher/newQuestion',
   User = '/user',
 }

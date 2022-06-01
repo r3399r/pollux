@@ -3,3 +3,15 @@
   flex-direction: column;
   gap: 15px;
 }
+
+.card {
+  padding: 12px;
+  .head {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    .flex {
+      flex: 1;
+    }
+  }
+}

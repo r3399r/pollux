@@ -94,13 +94,13 @@ const MyQuestion = () => {
             </MenuItem>
           ))}
         </TextField>
-        {questions?.map((v, i) => (
+        {questions.map((v, i) => (
           <Card key={v.id} className={style.card} variant="outlined">
             <div className={style.head}>
               <div className={style.item}>No. {i + 1}</div>
               <div className={style.item}>{typeLocale(v.type)}</div>
               <div className={style.answer}>答: {parseAnswer(v)}</div>
-              <div className={style.icon}>
+              <div>
                 <IconButton size="small" onClick={() => navigate(Page.NewQuestion, { state: v })}>
                   <EditIcon />
                 </IconButton>

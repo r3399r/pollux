@@ -10,6 +10,7 @@ import {
 import { bindings } from 'src/bindings';
 import { BankService } from 'src/logic/BankService';
 import {
+  GetBankIdResponse,
   GetBankResponse,
   PostBankRequest,
   PostBankResponse,
@@ -27,7 +28,12 @@ export async function bank(
 
     const service: BankService = bindings.get<BankService>(BankService);
 
-    let res: PostBankResponse | GetBankResponse | void | PutBankIdResponse;
+    let res:
+      | PostBankResponse
+      | GetBankResponse
+      | void
+      | PutBankIdResponse
+      | GetBankIdResponse;
 
     switch (event.resource) {
       case '/api/bank':
@@ -65,6 +71,8 @@ async function apiBankId(event: LambdaEvent, service: BankService) {
     throw new BadRequestError('missing pathParameters');
 
   switch (event.httpMethod) {
+    case 'GET':
+      return service.getBankById(event.pathParameters.id);
     case 'PUT':
       if (event.body === null)
         throw new BadRequestError('body should not be empty');
