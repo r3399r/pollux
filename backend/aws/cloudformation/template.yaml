@@ -966,3 +966,26 @@ Resources:
                 }
             ]
           }'
+  #############################
+  ##### Cognito User Pool #####
+  #############################
+  CognitoUserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      AccountRecoverySetting:
+        RecoveryMechanisms:
+        - Name: verified_email
+          Priority: 1
+      AliasAttributes: [email]
+      AutoVerifiedAttributes: [email]
+      EmailVerificationMessage: 您的驗證碼為 {####}。
+      EmailVerificationSubject: 雙子學園 Gemini
+      Policies:
+        PasswordPolicy:
+          MinimumLength: 8
+          RequireLowercase: true
+          RequireNumbers: true
+          RequireSymbols: false
+          RequireUppercase: true
+          TemporaryPasswordValidityDays: 7
+      UserPoolName: !Sub ${Project}-${TargetEnvr}
