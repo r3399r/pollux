@@ -8,7 +8,7 @@ type Options<D = unknown, P = any> = {
 
 const defaultConfig: AxiosRequestConfig = {
   baseURL: '/api/',
-  timeout: 5000,
+  timeout: 30000,
 };
 
 const get = async <T, P = any>(url: string, options?: Options<unknown, P>) =>
