@@ -16,7 +16,7 @@ const Input = forwardRef<HTMLInputElement, Props>(
       )}
       <input
         className={classNames(style.input, className, {
-          [style.error]: error !== undefined,
+          [style.error]: error !== undefined && error !== false,
           [style.disabled]: disabled,
         })}
         disabled={disabled}

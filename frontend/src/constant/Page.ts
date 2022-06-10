@@ -6,4 +6,5 @@ export enum Page {
   NewBank = '/teacher/bank/new',
   NewQuestion = '/teacher/newQuestion',
   User = '/user',
+  Login = '/login',
 }

@@ -1,3 +1,4 @@
+import { Login } from '@mui/icons-material';
 import HistoryEduIcon from '@mui/icons-material/HistoryEdu';
 import HomeIcon from '@mui/icons-material/Home';
 import SchoolIcon from '@mui/icons-material/School';
@@ -45,6 +46,12 @@ const Drawer = ({ open, onClose }: DrawerProps) => {
             <SettingsIcon />
           </ListItemIcon>
           <ListItemText primary={'個人設定'} />
+        </ListItem>
+        <ListItem button onClick={goto(Page.Login)}>
+          <ListItemIcon>
+            <Login />
+          </ListItemIcon>
+          <ListItemText primary={'登入'} />
         </ListItem>
       </List>
     </MuiDrawer>

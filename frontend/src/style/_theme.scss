@@ -1,9 +1,36 @@
 @import './color';
 
 html[data-theme='light'] {
-  color: $black;
+  color: $black-700;
+  --alert: #{$red};
+
   --navbar-background: #{$pale-orange};
   --navbar-color: #{$white};
 
+  --text: #{$black-700};
   --text-error: #{$red};
+
+  --button-primary-color: #{$white};
+  --button-primary-bg: #{$green-500};
+  --button-primary-bg-hover: #{$green-600};
+  --button-primary-bg-active: #{$green-700};
+  --button-primary-bg-disabled: #{$green-500-30};
+  --button-secondary-color: #{$white};
+  --button-secondary-bg: #{$black-700};
+  --button-secondary-bg-hover: #{$black-500};
+  --button-secondary-bg-active: #{$grey-700};
+  --button-secondary-bg-disabled: #{$grey-300};
+  --button-outlined-color: #{$black-700};
+  --button-outlined-color-disabled: #{$grey-300};
+  --button-outlined-border-disabled: #{$grey-300};
+  --butoon-text: #{$green-500};
+  --button-text-active: #{$green-700};
+  --button-text-disabled: #{$green-500-30};
+
+  --input-bg: #{$light-200};
+  --input-placeholder: #{$grey-500};
+  --input-focus: #{$green-500};
+  --input-disabled: #{$grey-300};
+  --input-disabled-bg: #{$light-200-50};
+  --input-hint: #{$grey-700};
 }

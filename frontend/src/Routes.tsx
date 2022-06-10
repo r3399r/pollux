@@ -2,6 +2,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { Page } from './constant/Page';
 import BankDetail from './page/bankDetail/BankDetail';
 import Landing from './page/landing/Landing';
+import Login from './page/login/Login';
 import NewBank from './page/newBank/NewBank';
 import NewQuestion from './page/newQuestion/NewQuestion';
 import Student from './page/student/Student';
@@ -17,6 +18,7 @@ const AppRoutes = () => (
     <Route path={`${Page.Bank}/:id`} element={<BankDetail />} />
     <Route path={Page.NewQuestion} element={<NewQuestion />} />
     <Route path={Page.User} element={<User />} />
+    <Route path={Page.Login} element={<Login />} />
     <Route path="/*" element={<Navigate to={Page.Landing} />} />
   </Routes>
 );
