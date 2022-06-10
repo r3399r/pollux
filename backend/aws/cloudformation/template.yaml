@@ -43,6 +43,241 @@ Resources:
             "title": !Sub "${Project}-${TargetEnvr}-api"
           },
           "paths": {
+            "/api/auth/register": {
+              "post": {
+                "requestBody": {
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "$ref": "#/components/schemas/postAuthRegister"
+                      }
+                    }
+                  },
+                  "required": true
+                },
+                "responses": {
+                  "200": {
+                    "description": "200 response",
+                    "headers": {
+                      "Access-Control-Allow-Origin": {
+                        "schema": {"type": "string"}
+                      }
+                    },
+                    "content": {
+                      "application/json": {
+                        "schema": {
+                          "$ref": "#/components/schemas/Empty"
+                        }
+                      }
+                    }
+                  }
+                },
+                "x-amazon-apigateway-request-validator" : "Validate body, query string parameters, and headers",
+                "x-amazon-apigateway-integration": {
+                  "type": "aws_proxy",
+                  "httpMethod": "POST",
+                  "uri": !Sub "arn:aws:apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/arn:aws:lambda:ap-northeast-1:278497686406:function:${Project}-${TargetEnvr}-auth/invocations",
+                  "responses": {
+                    "default": {
+                      "statusCode": "200",
+                      "responseParameters": {
+                        "method.response.header.Access-Control-Allow-Origin": "'*'"
+                      }
+                    }
+                  },
+                  "passthroughBehavior": "when_no_match",
+                  "contentHandling": "CONVERT_TO_TEXT"
+                }
+              }
+            },
+            "/api/auth/verify": {
+              "post": {
+                "requestBody": {
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "$ref": "#/components/schemas/postAuthVerify"
+                      }
+                    }
+                  },
+                  "required": true
+                },
+                "responses": {
+                  "200": {
+                    "description": "200 response",
+                    "headers": {
+                      "Access-Control-Allow-Origin": {
+                        "schema": {"type": "string"}
+                      }
+                    },
+                    "content": {
+                      "application/json": {
+                        "schema": {
+                          "$ref": "#/components/schemas/Empty"
+                        }
+                      }
+                    }
+                  }
+                },
+                "x-amazon-apigateway-request-validator" : "Validate body, query string parameters, and headers",
+                "x-amazon-apigateway-integration": {
+                  "type": "aws_proxy",
+                  "httpMethod": "POST",
+                  "uri": !Sub "arn:aws:apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/arn:aws:lambda:ap-northeast-1:278497686406:function:${Project}-${TargetEnvr}-auth/invocations",
+                  "responses": {
+                    "default": {
+                      "statusCode": "200",
+                      "responseParameters": {
+                        "method.response.header.Access-Control-Allow-Origin": "'*'"
+                      }
+                    }
+                  },
+                  "passthroughBehavior": "when_no_match",
+                  "contentHandling": "CONVERT_TO_TEXT"
+                }
+              }
+            },
+            "/api/auth/resend": {
+              "post": {
+                "requestBody": {
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "$ref": "#/components/schemas/postAuthResend"
+                      }
+                    }
+                  },
+                  "required": true
+                },
+                "responses": {
+                  "200": {
+                    "description": "200 response",
+                    "headers": {
+                      "Access-Control-Allow-Origin": {
+                        "schema": {"type": "string"}
+                      }
+                    },
+                    "content": {
+                      "application/json": {
+                        "schema": {
+                          "$ref": "#/components/schemas/Empty"
+                        }
+                      }
+                    }
+                  }
+                },
+                "x-amazon-apigateway-request-validator" : "Validate body, query string parameters, and headers",
+                "x-amazon-apigateway-integration": {
+                  "type": "aws_proxy",
+                  "httpMethod": "POST",
+                  "uri": !Sub "arn:aws:apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/arn:aws:lambda:ap-northeast-1:278497686406:function:${Project}-${TargetEnvr}-auth/invocations",
+                  "responses": {
+                    "default": {
+                      "statusCode": "200",
+                      "responseParameters": {
+                        "method.response.header.Access-Control-Allow-Origin": "'*'"
+                      }
+                    }
+                  },
+                  "passthroughBehavior": "when_no_match",
+                  "contentHandling": "CONVERT_TO_TEXT"
+                }
+              }
+            },
+            "/api/auth/forgot": {
+              "post": {
+                "requestBody": {
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "$ref": "#/components/schemas/postAuthForgot"
+                      }
+                    }
+                  },
+                  "required": true
+                },
+                "responses": {
+                  "200": {
+                    "description": "200 response",
+                    "headers": {
+                      "Access-Control-Allow-Origin": {
+                        "schema": {"type": "string"}
+                      }
+                    },
+                    "content": {
+                      "application/json": {
+                        "schema": {
+                          "$ref": "#/components/schemas/Empty"
+                        }
+                      }
+                    }
+                  }
+                },
+                "x-amazon-apigateway-request-validator" : "Validate body, query string parameters, and headers",
+                "x-amazon-apigateway-integration": {
+                  "type": "aws_proxy",
+                  "httpMethod": "POST",
+                  "uri": !Sub "arn:aws:apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/arn:aws:lambda:ap-northeast-1:278497686406:function:${Project}-${TargetEnvr}-auth/invocations",
+                  "responses": {
+                    "default": {
+                      "statusCode": "200",
+                      "responseParameters": {
+                        "method.response.header.Access-Control-Allow-Origin": "'*'"
+                      }
+                    }
+                  },
+                  "passthroughBehavior": "when_no_match",
+                  "contentHandling": "CONVERT_TO_TEXT"
+                }
+              }
+            },
+            "/api/auth/confirm": {
+              "post": {
+                "requestBody": {
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "$ref": "#/components/schemas/postAuthConfirm"
+                      }
+                    }
+                  },
+                  "required": true
+                },
+                "responses": {
+                  "200": {
+                    "description": "200 response",
+                    "headers": {
+                      "Access-Control-Allow-Origin": {
+                        "schema": {"type": "string"}
+                      }
+                    },
+                    "content": {
+                      "application/json": {
+                        "schema": {
+                          "$ref": "#/components/schemas/Empty"
+                        }
+                      }
+                    }
+                  }
+                },
+                "x-amazon-apigateway-request-validator" : "Validate body, query string parameters, and headers",
+                "x-amazon-apigateway-integration": {
+                  "type": "aws_proxy",
+                  "httpMethod": "POST",
+                  "uri": !Sub "arn:aws:apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/arn:aws:lambda:ap-northeast-1:278497686406:function:${Project}-${TargetEnvr}-auth/invocations",
+                  "responses": {
+                    "default": {
+                      "statusCode": "200",
+                      "responseParameters": {
+                        "method.response.header.Access-Control-Allow-Origin": "'*'"
+                      }
+                    }
+                  },
+                  "passthroughBehavior": "when_no_match",
+                  "contentHandling": "CONVERT_TO_TEXT"
+                }
+              }
+            },
             "/api/bank": {
               "post": {
                 "parameters" : [ {
@@ -730,6 +965,45 @@ Resources:
               "type": "object",
               "title": "Empty Schema"
             },
+            "postAuthRegister": {
+              "type" : "object",
+              "properties": {
+                "email": {"type": "string"},
+                "password": {"type": "string"},
+              },
+              "required": ["email","password"]
+            },
+            "postAuthVerify": {
+              "type" : "object",
+              "properties": {
+                "email": {"type": "string"},
+                "code": {"type": "string"},
+              },
+              "required": ["email","code"]
+            },
+            "postAuthResend": {
+              "type" : "object",
+              "properties": {
+                "email": {"type": "string"},
+              },
+              "required": ["email"]
+            },
+            "postAuthForgot": {
+              "type" : "object",
+              "properties": {
+                "email": {"type": "string"},
+              },
+              "required": ["email"]
+            },
+            "postAuthConfirm": {
+              "type" : "object",
+              "properties": {
+                "email": {"type": "string"},
+                "newPassword": {"type": "string"},
+                "code": {"type": "string"},
+              },
+              "required": ["email","newPassword","code"]
+            },
             "postBank": {
               "type" : "object",
               "properties": {
@@ -792,6 +1066,31 @@ Resources:
             }
           }
         }
+  LambdaAuth:
+    Type: AWS::Serverless::Function
+    DependsOn: [CognitoUserPool, CognitoUserPoolClient]
+    Properties:
+      Architectures: [arm64]
+      Handler: index.auth
+      Runtime: !Sub ${NodeJsVer}
+      FunctionName: !Sub ${Project}-${TargetEnvr}-auth
+      Role: !Sub "arn:aws:iam::${AWS::AccountId}:role/${LambdaExecutionRole}"
+      CodeUri: ../../dist/webpack/lambda
+      MemorySize: 128
+      Environment:
+        Variables:
+          ENVR: !Sub ${TargetEnvr}
+          ALIAS: !Sub ${Alias}
+          USER_POOL_ID: !Sub ${CognitoUserPool}
+          CLIENT_ID: !Sub ${CognitoUserPoolClient}
+  InvokePermissionAuth:
+    Type: AWS::Lambda::Permission
+    DependsOn: [ServerlessApi, LambdaAuth]
+    Properties:
+      FunctionName: !Sub ${Project}-${TargetEnvr}-auth
+      Action: 'lambda:InvokeFunction'
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ServerlessApi}/*
   LambdaBank:
     Type: AWS::Serverless::Function
     Properties:
@@ -976,10 +1275,9 @@ Resources:
         RecoveryMechanisms:
         - Name: verified_email
           Priority: 1
-      AliasAttributes: [email]
       AutoVerifiedAttributes: [email]
-      EmailVerificationMessage: ÊÇ®ÁöÑÈ©óË≠âÁ¢ºÁÇ∫ {####}„ÄÇ
-      EmailVerificationSubject: ÈõôÂ≠êÂ≠∏Âúí Gemini
+      EmailVerificationMessage: ±z™∫≈Á√“ΩX¨∞ {####}°C
+      EmailVerificationSubject: Gemini Academy
       Policies:
         PasswordPolicy:
           MinimumLength: 8
@@ -988,4 +1286,10 @@ Resources:
           RequireSymbols: false
           RequireUppercase: true
           TemporaryPasswordValidityDays: 7
+      UsernameAttributes: [email]
       UserPoolName: !Sub ${Project}-${TargetEnvr}
+  CognitoUserPoolClient:
+    Type: AWS::Cognito::UserPoolClient
+    DependsOn: [CognitoUserPool]
+    Properties:
+      UserPoolId: !Sub ${CognitoUserPool}

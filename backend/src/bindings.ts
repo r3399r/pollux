@@ -1,6 +1,7 @@
 import { bindings as celestialBindings } from '@y-celestial/service';
 import { Container, interfaces } from 'inversify';
 import 'reflect-metadata';
+import { AuthService } from './logic/AuthService';
 import { BankService } from './logic/BankService';
 import { QuestionService } from './logic/QuestionService';
 import { UserService } from './logic/UserService';
@@ -22,6 +23,7 @@ container.bind<TokenModel>(TokenModel).toSelf();
 container.bind<UserModel>(UserModel).toSelf();
 
 // service
+container.bind<AuthService>(AuthService).toSelf();
 container.bind<BankService>(BankService).toSelf();
 container.bind<QuestionService>(QuestionService).toSelf();
 container.bind<UserService>(UserService).toSelf();
