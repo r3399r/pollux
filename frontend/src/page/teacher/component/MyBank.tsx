@@ -60,7 +60,7 @@ const MyBank = () => {
         <Button variant="contained" onClick={() => navigate(Page.NewBank)}>
           建立新題庫
         </Button>
-        {banks.map((v, i) => (
+        {banks.map((v) => (
           <Card key={v.id} className={style.card} variant="outlined">
             <div className={style.head}>
               <div>{format(v.dateCreated ?? Date.now(), 'yyyy-MM-dd')}</div>
