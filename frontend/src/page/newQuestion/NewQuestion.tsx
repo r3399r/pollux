@@ -76,7 +76,7 @@ const NewQuestion = () => {
     [sliderValue],
   );
 
-  const handleInitialize = useCallback((instance) => {
+  const handleInitialize = useCallback((instance: any) => {
     editorCore.current = instance;
   }, []);
 

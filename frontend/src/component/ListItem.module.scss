@@ -1,0 +1,18 @@
+.self {
+  height: 41px;
+  padding: 0 15px;
+  background-color: var(--list-item-bg);
+
+  display: flex;
+  align-items: center;
+
+  cursor: pointer;
+  color: var(--text);
+
+  &:hover {
+    background-color: var(--list-item-bg-hover);
+  }
+}
+.focus {
+  color: var(--primary);
+}
