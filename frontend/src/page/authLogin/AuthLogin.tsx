@@ -4,14 +4,10 @@ import Button from 'src/component/Button';
 import Form from 'src/component/Form';
 import FormInput from 'src/component/FormInput';
 import { Page } from 'src/constant/Page';
-import style from './Login.module.scss';
+import { LoginForm } from 'src/model/Form';
+import style from './AuthLogin.module.scss';
 
-type LoginForm = {
-  email: string;
-  password: string;
-};
-
-const Login = () => {
+const AuthLogin = () => {
   const methods = useForm<LoginForm>();
   const navigate = useNavigate();
 
@@ -36,4 +32,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default AuthLogin;

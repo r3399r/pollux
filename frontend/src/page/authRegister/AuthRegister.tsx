@@ -5,17 +5,12 @@ import Button from 'src/component/Button';
 import Form from 'src/component/Form';
 import FormInput from 'src/component/FormInput';
 import { Page } from 'src/constant/Page';
+import { RegisterForm } from 'src/model/Form';
 import { openSnackbar } from 'src/redux/uiSlice';
 import { register } from 'src/service/authService';
-import style from './Register.module.scss';
+import style from './AuthRegister.module.scss';
 
-type RegisterForm = {
-  email: string;
-  password: string;
-  confirmPassword: string;
-};
-
-const Register = () => {
+const AuthRegister = () => {
   const methods = useForm<RegisterForm>();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -72,4 +67,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default AuthRegister;

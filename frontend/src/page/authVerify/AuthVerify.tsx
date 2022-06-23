@@ -6,14 +6,10 @@ import Button from 'src/component/Button';
 import Form from 'src/component/Form';
 import FormInput from 'src/component/FormInput';
 import { Page } from 'src/constant/Page';
+import { VerifyForm } from 'src/model/Form';
 import { openSnackbar } from 'src/redux/uiSlice';
 import { resend, verify } from 'src/service/authService';
 import style from './AuthVerify.module.scss';
-
-type VerifyForm = {
-  email: string;
-  code: string;
-};
 
 const AuthVerify = () => {
   const methods = useForm<VerifyForm>();
