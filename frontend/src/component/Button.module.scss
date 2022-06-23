@@ -70,6 +70,8 @@
   background-color: transparent;
   min-width: fit-content !important;
   min-height: fit-content !important;
+  padding: 0;
+  font-size: 16px !important;
 
   &:hover:enabled {
     text-decoration: underline;

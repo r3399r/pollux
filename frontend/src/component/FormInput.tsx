@@ -16,7 +16,7 @@ const FormInput = ({ name, required, ...props }: Props) => {
     formState: { errors },
   } = useFormContext();
 
-  return <Input {...props} {...register(name, { required })} error={errors[name] !== undefined} />;
+  return <Input {...props} {...register(name, { required })} error={errors[name]?.message} />;
 };
 
 export default FormInput;

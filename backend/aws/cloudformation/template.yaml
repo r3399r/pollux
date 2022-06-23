@@ -1276,7 +1276,7 @@ Resources:
         - Name: verified_email
           Priority: 1
       AutoVerifiedAttributes: [email]
-      EmailVerificationMessage: 您的驗證碼為 {####}。
+      EmailVerificationMessage: Your code is {####}
       EmailVerificationSubject: Gemini Academy
       Policies:
         PasswordPolicy:
