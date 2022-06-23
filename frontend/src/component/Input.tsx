@@ -24,7 +24,9 @@ const Input = forwardRef<HTMLInputElement, Props>(
         ref={ref}
         {...props}
       />
-      {typeof error === 'string' && <div className={style.errorMessage}>{error}</div>}
+      {typeof error === 'string' && error !== '' && (
+        <div className={style.errorMessage}>{error}</div>
+      )}
       {hint && <div className={style.hint}>{hint}</div>}
     </div>
   ),

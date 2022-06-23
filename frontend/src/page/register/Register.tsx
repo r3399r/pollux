@@ -29,6 +29,7 @@ const Register = () => {
     register({ email: data.email, password: data.password })
       .then(() => {
         dispatch(openSnackbar({ severity: 'success', message: '已寄送驗證信至您的信箱' }));
+        navigate(Page.AuthVerify, { state: { email: data.email } });
       })
       .catch((e) => {
         dispatch(openSnackbar({ severity: 'error', message: e }));
@@ -61,6 +62,12 @@ const Register = () => {
       <Button size="large" type="submit">
         註冊
       </Button>
+      <div>
+        Email 已註冊嗎？
+        <Button appearance="text" type="button" onClick={() => navigate(Page.AuthVerify)}>
+          前往認證
+        </Button>
+      </div>
     </Form>
   );
 };

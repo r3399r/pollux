@@ -8,4 +8,5 @@ export enum Page {
   User = '/user',
   Login = '/login',
   Register = '/register',
+  AuthVerify = '/verify',
 }
