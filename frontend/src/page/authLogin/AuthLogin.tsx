@@ -19,15 +19,21 @@ const AuthLogin = () => {
     <Form methods={methods} onSubmit={onSubmit} className={style.self}>
       <div>
         還沒有帳號嗎？
-        <Button appearance="text" type="button" onClick={() => navigate(Page.Register)}>
+        <Button appearance="text" type="button" onClick={() => navigate(Page.AuthRegister)}>
           註冊
         </Button>
       </div>
       <FormInput name="email" label="Email" type="email" required />
-      <FormInput name="password" label="Password" type="password" required />
+      <FormInput name="password" label="密碼" type="password" required />
       <Button size="large" type="submit">
         登入
       </Button>
+      <div>
+        忘記密碼？
+        <Button appearance="text" type="button" onClick={() => navigate(Page.AuthForgotPassword)}>
+          這裡
+        </Button>
+      </div>
     </Form>
   );
 };

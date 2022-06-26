@@ -35,7 +35,7 @@ const AuthRegister = () => {
     <Form methods={methods} onSubmit={onSubmit} className={style.self}>
       <div>
         已經有帳號嗎？
-        <Button appearance="text" type="button" onClick={() => navigate(Page.Login)}>
+        <Button appearance="text" type="button" onClick={() => navigate(Page.AuthLogin)}>
           登入
         </Button>
       </div>

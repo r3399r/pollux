@@ -47,7 +47,7 @@ const Drawer = ({ open, onClose }: DrawerProps) => {
           </ListItemIcon>
           <ListItemText primary={'個人設定'} />
         </ListItem>
-        <ListItem button onClick={goto(Page.Login)}>
+        <ListItem button onClick={goto(Page.AuthLogin)}>
           <ListItemIcon>
             <Login />
           </ListItemIcon>

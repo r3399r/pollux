@@ -13,3 +13,9 @@ export type VerifyForm = {
   email: string;
   code: string;
 };
+
+export type ForgotForm = {
+  email: string;
+  newPassword: string;
+  code: string;
+};
