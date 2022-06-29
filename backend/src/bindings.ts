@@ -4,6 +4,7 @@ import 'reflect-metadata';
 import { BankService } from './logic/BankService';
 import { QuestionService } from './logic/QuestionService';
 import { UserService } from './logic/UserService';
+import { VariableService } from './logic/VariableService';
 import { BankModel } from './model/entity/Bank';
 import { BankQuestionModel } from './model/entity/BankQuestion';
 import { LabelModel } from './model/entity/Label';
@@ -25,6 +26,7 @@ container.bind<UserModel>(UserModel).toSelf();
 container.bind<BankService>(BankService).toSelf();
 container.bind<QuestionService>(QuestionService).toSelf();
 container.bind<UserService>(UserService).toSelf();
+container.bind<VariableService>(VariableService).toSelf();
 
 const mergedContainer: interfaces.Container = Container.merge(
   container,

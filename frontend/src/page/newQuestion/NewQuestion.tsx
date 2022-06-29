@@ -17,10 +17,10 @@ import { createReactEditorJS } from 'react-editor-js';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
-import FormCheckboxGroup from 'src/component/FormCheckboxGroup';
-import FormInput from 'src/component/FormInput';
-import FormRadio from 'src/component/FormRadio';
-import FormSelect from 'src/component/FormSelect';
+import FormCheckboxGroup from 'src/component/FormCheckboxGroup2';
+import FormInput from 'src/component/FormInput2';
+import FormRadio from 'src/component/FormRadio2';
+import FormSelect from 'src/component/FormSelect2';
 import Loader from 'src/component/Loader';
 import Preview from 'src/component/Preview';
 import QuestionPreview from 'src/component/QuestionPreview';
@@ -76,7 +76,7 @@ const NewQuestion = () => {
     [sliderValue],
   );
 
-  const handleInitialize = useCallback((instance) => {
+  const handleInitialize = useCallback((instance: any) => {
     editorCore.current = instance;
   }, []);
 

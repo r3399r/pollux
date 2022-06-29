@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import FormInput from 'src/component/FormInput';
+import FormInput from 'src/component/FormInput2';
 import style from './TransferForm.module.scss';
 
 type Form = {

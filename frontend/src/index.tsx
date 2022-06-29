@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import { MathJaxConfig } from './constant/MathJax';
-import ThemeProvider from './context/themer';
+import ThemeProvider from './context/ThemeContext';
 import { configStore } from './redux/store';
 import reportWebVitals from './reportWebVitals';
 import './style/index.scss';

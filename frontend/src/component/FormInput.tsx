@@ -1,27 +1,22 @@
-import { TextField, TextFieldProps } from '@mui/material';
-import { Control, Controller, FieldValues, Path, RegisterOptions } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
+import Input, { Props as InputProps } from './Input';
 
-type FormInputProps<T> = TextFieldProps & {
-  name: Path<T>;
-  control: Control<T>;
-  rules?: RegisterOptions;
+/** usage note:
+ *  Please see Form.tsx
+ */
+
+type Props = InputProps & {
+  name: string;
+  required?: boolean;
 };
 
-const FormInput = <T extends FieldValues>({
-  name,
-  control,
-  rules,
-  ...props
-}: FormInputProps<T>) => (
-  <Controller
-    control={control}
-    name={name}
-    rules={rules}
-    defaultValue={'' as any}
-    render={({ field: { onChange, value } }) => (
-      <TextField onChange={onChange} value={value} autoComplete="off" {...props} />
-    )}
-  />
-);
+const FormInput = ({ name, required, ...props }: Props) => {
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext();
+
+  return <Input {...props} {...register(name, { required })} error={errors[name]?.message} />;
+};
 
 export default FormInput;

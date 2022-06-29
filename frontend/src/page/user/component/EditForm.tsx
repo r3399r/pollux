@@ -1,7 +1,7 @@
 import { Button } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import FormInput from 'src/component/FormInput';
+import FormInput from 'src/component/FormInput2';
 import { openSnackbar, showLoading } from 'src/redux/uiSlice';
 import { editNickname } from 'src/service/userService';
 import style from './EditForm.module.scss';
