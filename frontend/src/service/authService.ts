@@ -1,18 +1,43 @@
-import {
-  PostConfirmRequest,
-  PostForgotRequest,
-  PostRegisterRequest,
-  PostResendRequest,
-  PostVerifyRequest,
-} from '@y-celestial/pollux-service';
-import { AxiosError } from 'axios';
+import { GetVariableParam, GetVariableResponse } from '@y-celestial/pollux-service';
+import { CognitoUser, CognitoUserPool } from 'amazon-cognito-identity-js';
+import { dispatch, getState } from 'src/redux/store';
+import { setVariable, VariableState } from 'src/redux/variableSlice';
 import http from 'src/util/http';
 
-export const register = async (data: PostRegisterRequest) => {
+const getUserPoolVariable = async (): Promise<VariableState> => {
+  const state = getState().variable;
+  if (state.userPoolClientId === undefined || state.userPoolId === undefined) {
+    const res = await http.get<GetVariableResponse, GetVariableParam>('variable', {
+      params: { name: 'USER_POOL_ID,USER_POOL_CLIENT_ID' },
+    });
+    const variable = {
+      userPoolClientId: res.data.USER_POOL_CLIENT_ID,
+      userPoolId: res.data.USER_POOL_ID,
+    };
+    dispatch(setVariable(variable));
+
+    return variable;
+  }
+
+  return state;
+};
+
+export const register = async (email: string, password: string) => {
   try {
-    await http.post('auth/register', { data });
+    const { userPoolClientId, userPoolId } = await getUserPoolVariable();
+    const userPool = new CognitoUserPool({
+      UserPoolId: userPoolId ?? '',
+      ClientId: userPoolClientId ?? '',
+    });
+
+    await new Promise((resolve, reject) => {
+      userPool.signUp(email, password, [], [], (err, result) => {
+        if (err || result === undefined) reject(err);
+        else resolve(result.user);
+      });
+    });
   } catch (err) {
-    const message = (err as AxiosError).response?.data?.message;
+    const message = (err as Error).message;
     switch (message) {
       case 'An account with the given email already exists.':
         throw '此 email 已註冊';
@@ -30,11 +55,26 @@ export const register = async (data: PostRegisterRequest) => {
   }
 };
 
-export const resend = async (data: PostResendRequest) => {
+export const resend = async (email: string) => {
   try {
-    await http.post('auth/resend', { data });
+    const { userPoolClientId, userPoolId } = await getUserPoolVariable();
+    const userPool = new CognitoUserPool({
+      UserPoolId: userPoolId ?? '',
+      ClientId: userPoolClientId ?? '',
+    });
+    const cognitoUser = new CognitoUser({
+      Username: email,
+      Pool: userPool,
+    });
+
+    await new Promise((resolve, reject) => {
+      cognitoUser.resendConfirmationCode((err) => {
+        if (err) reject(err);
+        else resolve(undefined);
+      });
+    });
   } catch (err) {
-    const message = (err as AxiosError).response?.data?.message;
+    const message = (err as Error).message;
     switch (message) {
       case 'Username/client id combination not found.':
         throw '此 email 未註冊過';
@@ -44,11 +84,26 @@ export const resend = async (data: PostResendRequest) => {
   }
 };
 
-export const verify = async (data: PostVerifyRequest) => {
+export const verify = async (email: string, code: string) => {
   try {
-    await http.post('auth/verify', { data });
+    const { userPoolClientId, userPoolId } = await getUserPoolVariable();
+    const userPool = new CognitoUserPool({
+      UserPoolId: userPoolId ?? '',
+      ClientId: userPoolClientId ?? '',
+    });
+    const cognitoUser = new CognitoUser({
+      Username: email,
+      Pool: userPool,
+    });
+
+    await new Promise((resolve, reject) => {
+      cognitoUser.confirmRegistration(code, true, (err) => {
+        if (err) reject(err);
+        else resolve(undefined);
+      });
+    });
   } catch (err) {
-    const message = (err as AxiosError).response?.data?.message;
+    const message = (err as Error).message;
     switch (message) {
       case 'Invalid verification code provided, please try again.':
         throw '錯誤的認證碼，請重試';
@@ -60,11 +115,30 @@ export const verify = async (data: PostVerifyRequest) => {
   }
 };
 
-export const forgot = async (data: PostForgotRequest) => {
+export const forgot = async (email: string) => {
   try {
-    await http.post('auth/forgot', { data });
+    const { userPoolClientId, userPoolId } = await getUserPoolVariable();
+    const userPool = new CognitoUserPool({
+      UserPoolId: userPoolId ?? '',
+      ClientId: userPoolClientId ?? '',
+    });
+    const cognitoUser = new CognitoUser({
+      Username: email,
+      Pool: userPool,
+    });
+
+    await new Promise((resolve, reject) => {
+      cognitoUser.forgotPassword({
+        onSuccess: (data) => {
+          resolve(data);
+        },
+        onFailure: (err) => {
+          reject(err);
+        },
+      });
+    });
   } catch (err) {
-    const message = (err as AxiosError).response?.data?.message;
+    const message = (err as Error).message;
     switch (message) {
       case 'Cannot reset password for the user as there is no registered/verified email or phone_number':
         throw '此 email 尚未認證';
@@ -76,13 +150,32 @@ export const forgot = async (data: PostForgotRequest) => {
   }
 };
 
-export const confirm = async (data: PostConfirmRequest) => {
+export const confirm = async (email: string, newPassword: string, code: string) => {
   try {
-    await http.post('auth/confirm', { data });
+    const { userPoolClientId, userPoolId } = await getUserPoolVariable();
+    const userPool = new CognitoUserPool({
+      UserPoolId: userPoolId ?? '',
+      ClientId: userPoolClientId ?? '',
+    });
+    const cognitoUser = new CognitoUser({
+      Username: email,
+      Pool: userPool,
+    });
+
+    await new Promise((resolve, reject) => {
+      cognitoUser.confirmPassword(code, newPassword, {
+        onSuccess() {
+          resolve(undefined);
+        },
+        onFailure(err) {
+          reject(err);
+        },
+      });
+    });
   } catch (err) {
-    const message = (err as AxiosError).response?.data?.message;
+    const message = (err as Error).message;
     switch (message) {
-      case 'Invalid code provided, please request a code again.':
+      case 'Invalid verification code provided, please try again.':
         throw '錯誤的認證碼，請重試';
       case 'Password does not conform to policy: Password not long enough':
         throw '密碼長度需至少 8 碼';

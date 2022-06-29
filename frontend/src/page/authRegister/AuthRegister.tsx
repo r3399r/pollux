@@ -21,7 +21,7 @@ const AuthRegister = () => {
 
       return;
     }
-    register({ email: data.email, password: data.password })
+    register(data.email, data.password)
       .then(() => {
         dispatch(openSnackbar({ severity: 'success', message: '已寄送驗證信至您的信箱' }));
         navigate(Page.AuthVerify, { state: { email: data.email } });

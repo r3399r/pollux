@@ -33,7 +33,7 @@ const AuthVerify = () => {
   }, [leftTime]);
 
   const onSubmit = (data: VerifyForm) => {
-    verify(data)
+    verify(data.email, data.code)
       .then(() => {
         dispatch(openSnackbar({ severity: 'success', message: '已認證成功' }));
         navigate(Page.AuthLogin);
@@ -44,7 +44,7 @@ const AuthVerify = () => {
   };
 
   const onResend = () => {
-    resend({ email: methods.getValues('email') })
+    resend(methods.getValues('email'))
       .then(() => {
         dispatch(openSnackbar({ severity: 'success', message: '已寄送驗證信至您的信箱' }));
         setLeftTime(30);

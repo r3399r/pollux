@@ -21,6 +21,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "outDir": "lib",
+    "resolveJsonModule": true,
     "paths": {
       "src/*": [
         "src/*"
@@ -47,5 +48,8 @@
     "src/**/*.ts",
     "test/**/*.ts",
     "index.ts"
+  ],
+  "exclude": [
+    "src/doc/*"
   ]
 }

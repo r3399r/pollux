@@ -27,7 +27,7 @@ const AuthForgotPassword = () => {
   }, [leftTime]);
 
   const onSubmit = (data: ForgotForm) => {
-    confirm(data)
+    confirm(data.email, data.newPassword, data.code)
       .then(() => {
         dispatch(openSnackbar({ severity: 'success', message: '設定成功，請使用新密碼登入' }));
         navigate(Page.AuthLogin);
@@ -38,7 +38,7 @@ const AuthForgotPassword = () => {
   };
 
   const onForgot = () => {
-    forgot({ email: methods.getValues('email') })
+    forgot(methods.getValues('email'))
       .then(() => {
         dispatch(openSnackbar({ severity: 'success', message: '已寄送驗證信至您的信箱' }));
         setLeftTime(30);
