@@ -48,8 +48,5 @@
     "src/**/*.ts",
     "test/**/*.ts",
     "index.ts"
-  ],
-  "exclude": [
-    "src/doc/*"
   ]
 }

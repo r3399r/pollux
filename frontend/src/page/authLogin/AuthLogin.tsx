@@ -1,18 +1,28 @@
 import { useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Button from 'src/component/Button';
 import Form from 'src/component/Form';
 import FormInput from 'src/component/FormInput';
 import { Page } from 'src/constant/Page';
 import { LoginForm } from 'src/model/Form';
+import { openSnackbar } from 'src/redux/uiSlice';
+import { login } from 'src/service/authService';
 import style from './AuthLogin.module.scss';
 
 const AuthLogin = () => {
   const methods = useForm<LoginForm>();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const onSubmit = (data: LoginForm) => {
-    console.log(data);
+    login(data.email, data.password)
+      .then(() => {
+        dispatch(openSnackbar({ severity: 'success', message: '已登入' }));
+      })
+      .catch((e) => {
+        dispatch(openSnackbar({ severity: 'error', message: e }));
+      });
   };
 
   return (

@@ -1,6 +1,12 @@
 import { GetVariableParam, GetVariableResponse } from '@y-celestial/pollux-service';
-import { CognitoUser, CognitoUserPool } from 'amazon-cognito-identity-js';
+import {
+  AuthenticationDetails,
+  CognitoUser,
+  CognitoUserPool,
+  CognitoUserSession,
+} from 'amazon-cognito-identity-js';
 import { dispatch, getState } from 'src/redux/store';
+import { setIsLogin, showLoading } from 'src/redux/uiSlice';
 import { setVariable, VariableState } from 'src/redux/variableSlice';
 import http from 'src/util/http';
 
@@ -20,6 +26,50 @@ const getUserPoolVariable = async (): Promise<VariableState> => {
   }
 
   return state;
+};
+
+export const login = async (username: string, password: string) => {
+  try {
+    dispatch(showLoading(true));
+    const { userPoolClientId, userPoolId } = await getUserPoolVariable();
+    const authenticationDetails = new AuthenticationDetails({
+      Username: username,
+      Password: password,
+    });
+    const userPool = new CognitoUserPool({
+      UserPoolId: userPoolId ?? '',
+      ClientId: userPoolClientId ?? '',
+    });
+    const cognitoUser = new CognitoUser({
+      Username: username,
+      Pool: userPool,
+    });
+    const userSession: CognitoUserSession = await new Promise((resolve, reject) => {
+      cognitoUser.authenticateUser(authenticationDetails, {
+        onSuccess: (r) => resolve(r),
+        onFailure: (e) => reject(e),
+      });
+    });
+
+    localStorage.setItem('accessToken', userSession.getAccessToken().getJwtToken());
+    localStorage.setItem('refreshToken', userSession.getRefreshToken().getToken());
+
+    dispatch(setIsLogin(true));
+  } catch (err) {
+    const message = (err as Error).message;
+    switch (message) {
+      case 'Incorrect username or password.':
+        throw 'email 或密碼錯誤';
+      case 'User does not exist.':
+        throw 'email 不存在';
+      case 'User is not confirmed.':
+        throw 'email 尚未認證';
+      default:
+        throw '請聯繫客服';
+    }
+  } finally {
+    dispatch(showLoading(false));
+  }
 };
 
 export const register = async (email: string, password: string) => {
