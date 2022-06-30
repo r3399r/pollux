@@ -33,6 +33,7 @@ Resources:
   ##############################################
   ServerlessApi:
     Type: AWS::Serverless::Api
+    DependsOn: [CognitoUserPool]
     Properties:
       StageName: !Sub ${TargetEnvr}
       EndpointConfiguration: REGIONAL
@@ -628,14 +629,6 @@ Resources:
                 }
               },
               "get": {
-                "parameters" : [ {
-                  "name" : "x-api-token",
-                  "in" : "header",
-                  "required" : true,
-                  "schema" : {
-                    "type" : "string"
-                  }
-                } ],
                 "responses": {
                   "200": {
                     "description": "200 response",
@@ -653,6 +646,7 @@ Resources:
                     }
                   }
                 },
+                "security": [{"cognito": []}],
                 "x-amazon-apigateway-request-validator" : "Validate query string parameters and headers",
                 "x-amazon-apigateway-integration": {
                   "type": "aws_proxy",
@@ -767,6 +761,18 @@ Resources:
                   "passthroughBehavior": "when_no_match",
                   "contentHandling": "CONVERT_TO_TEXT"
                 }
+              }
+            }
+          },
+          "securityDefinitions": {
+            "cognito": {
+              "type": "apiKey",
+              "name": "Authorization",
+              "in": "header",
+              "x-amazon-apigateway-authtype": "cognito_user_pools",
+              "x-amazon-apigateway-authorizer": {
+                "providerARNs": [ !GetAtt CognitoUserPool.Arn],
+                "type": "cognito_user_pools"
               }
             }
           },
