@@ -2,6 +2,7 @@ import { LambdaEvent } from '@y-celestial/service';
 import { bindings } from 'src/bindings';
 
 export const tokenSymbol = Symbol('token');
+export const cognitoSymbol = Symbol('cognito');
 
 /**
  * initial lambda config
@@ -9,6 +10,10 @@ export const tokenSymbol = Symbol('token');
 export class LambdaSetup {
   public static setup(event: LambdaEvent): void {
     this.bind<string>(tokenSymbol, event.headers?.['x-api-token'] ?? '');
+    this.bind<string | null>(
+      cognitoSymbol,
+      event.requestContext.authorizer?.claims.sub ?? null
+    );
   }
 
   private static bind<T>(bindingId: symbol, values: T): void {

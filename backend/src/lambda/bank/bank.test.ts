@@ -44,6 +44,7 @@ describe('bank', () => {
         body: JSON.stringify({ a: 1 }),
         pathParameters: null,
         queryStringParameters: null,
+        requestContext: {},
       };
       await expect(bank(event, lambdaContext)).resolves.toStrictEqual(
         successOutput(dummyResult)
@@ -59,6 +60,7 @@ describe('bank', () => {
         body: null,
         pathParameters: null,
         queryStringParameters: null,
+        requestContext: {},
       };
       await expect(bank(event, lambdaContext)).resolves.toStrictEqual(
         successOutput(dummyResult)
@@ -74,6 +76,7 @@ describe('bank', () => {
         body: null,
         pathParameters: null,
         queryStringParameters: null,
+        requestContext: {},
       };
       await expect(bank(event, lambdaContext)).resolves.toStrictEqual(
         errorOutput(new BadRequestError('body should not be empty'))
@@ -88,6 +91,7 @@ describe('bank', () => {
         body: JSON.stringify({ a: 1 }),
         pathParameters: null,
         queryStringParameters: null,
+        requestContext: {},
       };
       await expect(bank(event, lambdaContext)).resolves.toStrictEqual(
         errorOutput(new InternalServerError('unknown http method'))
@@ -104,6 +108,7 @@ describe('bank', () => {
         body: JSON.stringify({ a: 1 }),
         pathParameters: { id: 'id' },
         queryStringParameters: null,
+        requestContext: {},
       };
       await expect(bank(event, lambdaContext)).resolves.toStrictEqual(
         successOutput(dummyResult)
@@ -119,6 +124,7 @@ describe('bank', () => {
         body: null,
         pathParameters: { id: 'id' },
         queryStringParameters: null,
+        requestContext: {},
       };
       await expect(bank(event, lambdaContext)).resolves.toStrictEqual(
         successOutput(dummyResult)
@@ -134,6 +140,7 @@ describe('bank', () => {
         body: JSON.stringify({ a: 1 }),
         pathParameters: null,
         queryStringParameters: null,
+        requestContext: {},
       };
       await expect(bank(event, lambdaContext)).resolves.toStrictEqual(
         errorOutput(new BadRequestError('missing pathParameters'))
@@ -148,6 +155,7 @@ describe('bank', () => {
         body: null,
         pathParameters: { id: 'id' },
         queryStringParameters: null,
+        requestContext: {},
       };
       await expect(bank(event, lambdaContext)).resolves.toStrictEqual(
         errorOutput(new BadRequestError('body should not be empty'))
@@ -162,6 +170,7 @@ describe('bank', () => {
         body: JSON.stringify({ a: 1 }),
         pathParameters: { id: 'id' },
         queryStringParameters: null,
+        requestContext: {},
       };
       await expect(bank(event, lambdaContext)).resolves.toStrictEqual(
         errorOutput(new InternalServerError('unknown http method'))

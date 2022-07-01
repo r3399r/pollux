@@ -48,6 +48,7 @@ describe('question', () => {
         body: JSON.stringify({ a: 1 }),
         pathParameters: null,
         queryStringParameters: null,
+        requestContext: {},
       };
       await expect(question(event, lambdaContext)).resolves.toStrictEqual(
         successOutput(dummyResult)
@@ -63,6 +64,7 @@ describe('question', () => {
         body: null,
         pathParameters: null,
         queryStringParameters: { c: 'abc' },
+        requestContext: {},
       };
       await expect(question(event, lambdaContext)).resolves.toStrictEqual(
         successOutput(dummyResult)
@@ -78,6 +80,7 @@ describe('question', () => {
         body: null,
         pathParameters: null,
         queryStringParameters: null,
+        requestContext: {},
       };
       await expect(question(event, lambdaContext)).resolves.toStrictEqual(
         errorOutput(new BadRequestError('body should not be empty'))
@@ -92,6 +95,7 @@ describe('question', () => {
         body: null,
         pathParameters: null,
         queryStringParameters: null,
+        requestContext: {},
       };
       await expect(question(event, lambdaContext)).resolves.toStrictEqual(
         errorOutput(
@@ -108,6 +112,7 @@ describe('question', () => {
         body: JSON.stringify({ a: 1 }),
         pathParameters: null,
         queryStringParameters: null,
+        requestContext: {},
       };
       await expect(question(event, lambdaContext)).resolves.toStrictEqual(
         errorOutput(new InternalServerError('unknown http method'))
@@ -124,6 +129,7 @@ describe('question', () => {
         body: JSON.stringify({ a: 1 }),
         pathParameters: { id: 'id' },
         queryStringParameters: null,
+        requestContext: {},
       };
       await expect(question(event, lambdaContext)).resolves.toStrictEqual(
         successOutput(dummyResult)
@@ -139,6 +145,7 @@ describe('question', () => {
         body: null,
         pathParameters: { id: 'id' },
         queryStringParameters: null,
+        requestContext: {},
       };
       await expect(question(event, lambdaContext)).resolves.toStrictEqual(
         successOutput(dummyResult)
@@ -154,6 +161,7 @@ describe('question', () => {
         body: JSON.stringify({ a: 1 }),
         pathParameters: null,
         queryStringParameters: null,
+        requestContext: {},
       };
       await expect(question(event, lambdaContext)).resolves.toStrictEqual(
         errorOutput(new BadRequestError('missing pathParameters'))
@@ -168,6 +176,7 @@ describe('question', () => {
         body: null,
         pathParameters: { id: 'id' },
         queryStringParameters: null,
+        requestContext: {},
       };
       await expect(question(event, lambdaContext)).resolves.toStrictEqual(
         errorOutput(new BadRequestError('body should not be empty'))
@@ -182,6 +191,7 @@ describe('question', () => {
         body: JSON.stringify({ a: 1 }),
         pathParameters: { id: 'id' },
         queryStringParameters: null,
+        requestContext: {},
       };
       await expect(question(event, lambdaContext)).resolves.toStrictEqual(
         errorOutput(new InternalServerError('unknown http method'))
@@ -198,6 +208,7 @@ describe('question', () => {
         body: JSON.stringify({ a: 1 }),
         pathParameters: null,
         queryStringParameters: null,
+        requestContext: {},
       };
       await expect(question(event, lambdaContext)).resolves.toStrictEqual(
         successOutput(dummyResult)
@@ -213,6 +224,7 @@ describe('question', () => {
         body: null,
         pathParameters: null,
         queryStringParameters: null,
+        requestContext: {},
       };
       await expect(question(event, lambdaContext)).resolves.toStrictEqual(
         errorOutput(new BadRequestError('body should not be empty'))
@@ -227,6 +239,7 @@ describe('question', () => {
         body: null,
         pathParameters: null,
         queryStringParameters: null,
+        requestContext: {},
       };
       await expect(question(event, lambdaContext)).resolves.toStrictEqual(
         successOutput([dummyResult])
@@ -242,6 +255,7 @@ describe('question', () => {
         body: JSON.stringify({ a: 1 }),
         pathParameters: null,
         queryStringParameters: null,
+        requestContext: {},
       };
       await expect(question(event, lambdaContext)).resolves.toStrictEqual(
         errorOutput(new InternalServerError('unknown http method'))

@@ -28,6 +28,21 @@ const getUserPoolVariable = async (): Promise<VariableState> => {
   return state;
 };
 
+export const getCurrentUserSession = async (): Promise<CognitoUserSession> => {
+  const { userPoolClientId, userPoolId } = await getUserPoolVariable();
+  const userPool = new CognitoUserPool({
+    UserPoolId: userPoolId ?? '',
+    ClientId: userPoolClientId ?? '',
+  });
+
+  return await new Promise((resolve, reject) => {
+    userPool.getCurrentUser()?.getSession((err: null, result: CognitoUserSession) => {
+      if (err) reject(err);
+      else resolve(result);
+    });
+  });
+};
+
 export const login = async (username: string, password: string) => {
   try {
     dispatch(showLoading(true));
@@ -44,15 +59,12 @@ export const login = async (username: string, password: string) => {
       Username: username,
       Pool: userPool,
     });
-    const userSession: CognitoUserSession = await new Promise((resolve, reject) => {
+    await new Promise((resolve, reject) => {
       cognitoUser.authenticateUser(authenticationDetails, {
         onSuccess: (r) => resolve(r),
         onFailure: (e) => reject(e),
       });
     });
-
-    localStorage.setItem('accessToken', userSession.getAccessToken().getJwtToken());
-    localStorage.setItem('refreshToken', userSession.getRefreshToken().getToken());
 
     dispatch(setIsLogin(true));
   } catch (err) {
@@ -128,6 +140,8 @@ export const resend = async (email: string) => {
     switch (message) {
       case 'Username/client id combination not found.':
         throw '此 email 未註冊過';
+      case 'User is already confirmed.':
+        throw '此 email 已通過驗證';
       default:
         throw '請聯繫客服';
     }

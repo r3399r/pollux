@@ -43,6 +43,7 @@ describe('user', () => {
         body: null,
         pathParameters: null,
         queryStringParameters: null,
+        requestContext: {},
       };
       await expect(user(event, lambdaContext)).resolves.toStrictEqual(
         successOutput(dummyResult)
@@ -58,6 +59,7 @@ describe('user', () => {
         body: null,
         pathParameters: null,
         queryStringParameters: null,
+        requestContext: {},
       };
       await expect(user(event, lambdaContext)).resolves.toStrictEqual(
         errorOutput(new BadRequestError('headers required'))
@@ -72,6 +74,7 @@ describe('user', () => {
         body: null,
         pathParameters: null,
         queryStringParameters: null,
+        requestContext: {},
       };
       await expect(user(event, lambdaContext)).resolves.toStrictEqual(
         errorOutput(new BadRequestError('out of time window'))
@@ -86,6 +89,7 @@ describe('user', () => {
         body: null,
         pathParameters: null,
         queryStringParameters: null,
+        requestContext: {},
       };
       await expect(user(event, lambdaContext)).resolves.toStrictEqual(
         errorOutput(new BadRequestError('timstamp should be number'))
@@ -100,6 +104,7 @@ describe('user', () => {
         body: null,
         pathParameters: null,
         queryStringParameters: null,
+        requestContext: {},
       };
       await expect(user(event, lambdaContext)).resolves.toStrictEqual(
         successOutput(dummyResult)
@@ -115,6 +120,7 @@ describe('user', () => {
         body: JSON.stringify({ a: 1 }),
         pathParameters: null,
         queryStringParameters: null,
+        requestContext: {},
       };
       await expect(user(event, lambdaContext)).resolves.toStrictEqual(
         successOutput(dummyResult)
@@ -130,6 +136,7 @@ describe('user', () => {
         body: null,
         pathParameters: null,
         queryStringParameters: null,
+        requestContext: {},
       };
       await expect(user(event, lambdaContext)).resolves.toStrictEqual(
         errorOutput(new BadRequestError('body should not be empty'))
@@ -144,6 +151,7 @@ describe('user', () => {
         body: null,
         pathParameters: null,
         queryStringParameters: null,
+        requestContext: {},
       };
       await expect(user(event, lambdaContext)).resolves.toStrictEqual(
         errorOutput(new InternalServerError('unknown http method'))

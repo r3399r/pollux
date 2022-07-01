@@ -2,6 +2,7 @@ import { bindings as celestialBindings } from '@y-celestial/service';
 import { Container, interfaces } from 'inversify';
 import 'reflect-metadata';
 import { BankService } from './logic/BankService';
+import { CognitoService } from './logic/CognitoService';
 import { QuestionService } from './logic/QuestionService';
 import { UserService } from './logic/UserService';
 import { VariableService } from './logic/VariableService';
@@ -24,6 +25,7 @@ container.bind<UserModel>(UserModel).toSelf();
 
 // service
 container.bind<BankService>(BankService).toSelf();
+container.bind<CognitoService>(CognitoService).toSelf();
 container.bind<QuestionService>(QuestionService).toSelf();
 container.bind<UserService>(UserService).toSelf();
 container.bind<VariableService>(VariableService).toSelf();

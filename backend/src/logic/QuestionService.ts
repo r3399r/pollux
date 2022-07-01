@@ -15,7 +15,7 @@ import {
 import { Label, LabelModel } from 'src/model/entity/Label';
 import { Question, QuestionModel } from 'src/model/entity/Question';
 import { TokenModel } from 'src/model/entity/Token';
-import { tokenSymbol } from 'src/util/LambdaSetup';
+import { cognitoSymbol, tokenSymbol } from 'src/util/LambdaSetup';
 
 /**
  * Service class for Question
@@ -30,6 +30,8 @@ export class QuestionService {
   private readonly labelModel!: LabelModel;
   @inject(tokenSymbol)
   private readonly token!: string;
+  @inject(cognitoSymbol)
+  private readonly cognitoUserId!: string;
 
   public async createQuestion(
     data: PostQuestionRequest
@@ -100,16 +102,14 @@ export class QuestionService {
   public async createLabel(
     data: PostQuestionLabelRequest
   ): Promise<PostQuestionLabelResponse> {
-    const { userId } = await this.tokenModel.find(this.token);
-    const labels = await this.labelModel.findAllByOwner(userId);
-
+    const labels = await this.labelModel.findAllByOwner(this.cognitoUserId);
     if (labels.map((v) => v.label).includes(data.label))
       throw new ConflictError('label already exists');
 
     const newLabel: Label = {
       id: uuidv4(),
       label: data.label,
-      ownerId: userId,
+      ownerId: this.cognitoUserId,
     };
     await this.labelModel.create(newLabel);
 

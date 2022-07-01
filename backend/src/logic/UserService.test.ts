@@ -17,6 +17,7 @@ describe('UserService', () => {
   beforeEach(() => {
     LambdaSetup.setup({
       headers: { 'x-api-token': 'token' },
+      requestContext: {},
     } as unknown as LambdaEvent);
 
     mockUserModel = {};

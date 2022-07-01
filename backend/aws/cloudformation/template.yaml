@@ -488,14 +488,6 @@ Resources:
             },
             "/api/question/label": {
               "post": {
-                "parameters" : [ {
-                  "name" : "x-api-token",
-                  "in" : "header",
-                  "required" : true,
-                  "schema" : {
-                    "type" : "string"
-                  }
-                } ],
                 "requestBody": {
                   "content": {
                     "application/json": {
@@ -523,6 +515,7 @@ Resources:
                     }
                   }
                 },
+                "security": [{"cognito": []}],
                 "x-amazon-apigateway-request-validator" : "Validate body, query string parameters, and headers",
                 "x-amazon-apigateway-integration": {
                   "type": "aws_proxy",
@@ -865,6 +858,28 @@ Resources:
       Action: 'lambda:InvokeFunction'
       Principal: apigateway.amazonaws.com
       SourceArn: !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ServerlessApi}/*
+  LambdaCognito:
+    Type: AWS::Serverless::Function
+    Properties:
+      Architectures: [arm64]
+      Handler: index.cognito
+      Runtime: !Sub ${NodeJsVer}
+      FunctionName: !Sub ${Project}-${TargetEnvr}-cognito
+      Role: !Sub "arn:aws:iam::${AWS::AccountId}:role/${LambdaExecutionRole}"
+      CodeUri: ../../dist/webpack/lambda
+      MemorySize: 128
+      Environment:
+        Variables:
+          ENVR: !Sub ${TargetEnvr}
+          ALIAS: !Sub ${Alias}
+  InvokePermissionCognito:
+    Type: AWS::Lambda::Permission
+    DependsOn: [CognitoUserPool, LambdaCognito]
+    Properties:
+      FunctionName: !Sub ${Project}-${TargetEnvr}-cognito
+      Action: 'lambda:InvokeFunction'
+      Principal: cognito-idp.amazonaws.com
+      SourceArn: !GetAtt CognitoUserPool.Arn
   LambdaQuestion:
     Type: AWS::Serverless::Function
     Properties:
@@ -1047,6 +1062,7 @@ Resources:
   #############################
   CognitoUserPool:
     Type: AWS::Cognito::UserPool
+    DependsOn: [LambdaCognito]
     Properties:
       AccountRecoverySetting:
         RecoveryMechanisms:
@@ -1065,6 +1081,8 @@ Resources:
           TemporaryPasswordValidityDays: 7
       UsernameAttributes: [email]
       UserPoolName: !Sub ${Project}-${TargetEnvr}
+      LambdaConfig:
+        PostConfirmation: !GetAtt LambdaCognito.Arn
   CognitoUserPoolClient:
     Type: AWS::Cognito::UserPoolClient
     DependsOn: [CognitoUserPool]
