@@ -1,5 +1,5 @@
 import {
-  // ConflictError,
+  ConflictError,
   LambdaEvent,
   UnauthorizedError,
 } from '@y-celestial/service';
@@ -123,23 +123,21 @@ describe('QuestionService', () => {
     });
   });
 
-  // describe('createLabel', () => {
-  //   it('should work', async () => {
-  //     await service.createLabel({ label: 'label' });
-  //     expect(mockTokenModel.find).toBeCalledTimes(1);
-  //     expect(mockLabelModel.findAllByOwner).toBeCalledTimes(1);
-  //     expect(mockLabelModel.create).toBeCalledTimes(1);
-  //   });
+  describe('createLabel', () => {
+    it('should work', async () => {
+      await service.createLabel({ label: 'label' });
+      expect(mockLabelModel.findAllByOwner).toBeCalledTimes(1);
+      expect(mockLabelModel.create).toBeCalledTimes(1);
+    });
 
-  //   it('should fail with conlict', async () => {
-  //     await expect(() =>
-  //       service.createLabel({ label: 'label1' })
-  //     ).rejects.toThrow(ConflictError);
-  //     expect(mockTokenModel.find).toBeCalledTimes(1);
-  //     expect(mockLabelModel.findAllByOwner).toBeCalledTimes(1);
-  //     expect(mockLabelModel.create).toBeCalledTimes(0);
-  //   });
-  // });
+    it('should fail with conlict', async () => {
+      await expect(() =>
+        service.createLabel({ label: 'label1' })
+      ).rejects.toThrow(ConflictError);
+      expect(mockLabelModel.findAllByOwner).toBeCalledTimes(1);
+      expect(mockLabelModel.create).toBeCalledTimes(0);
+    });
+  });
 
   describe('getLabel', () => {
     it('should work', async () => {
