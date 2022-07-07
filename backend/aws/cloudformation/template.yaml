@@ -952,11 +952,6 @@ Resources:
   #########################################
   ##### Cloudfront and Route53 config #####
   #########################################
-  CloudFrontOriginAccessIdentity:
-    Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
-    Properties:
-      CloudFrontOriginAccessIdentityConfig:
-        Comment: !Sub ${Project}-${TargetEnvr}-OAI
   Route53RecordSet:
     Type: AWS::Route53::RecordSet
     Properties:
@@ -975,10 +970,10 @@ Resources:
       DistributionConfig:
         Aliases: [!If [IsProd, !Sub '${SubDomain}.${Domain}', !Sub '${SubDomain}-${TargetEnvr}.${Domain}']]
         Origins:
-        - DomainName: !Sub ${Project}-${TargetEnvr}-y.s3.ap-northeast-1.amazonaws.com
+        - DomainName: !Select [1, !Split ["//", !GetAtt S3Bucket.WebsiteURL]]
           Id: S3-hosted-website-ID
-          S3OriginConfig:
-            OriginAccessIdentity: !Sub origin-access-identity/cloudfront/${CloudFrontOriginAccessIdentity}
+          CustomOriginConfig:
+            OriginProtocolPolicy: http-only
         - DomainName: !Sub '${ServerlessApi}.execute-api.${AWS::Region}.amazonaws.com'
           Id: !Sub ${Project}-${TargetEnvr}-ApiEndpoint-ID
           OriginPath: !Sub /${TargetEnvr}
@@ -989,11 +984,6 @@ Resources:
             OriginProtocolPolicy: https-only
         Enabled: 'true'
         HttpVersion: http2
-        CustomErrorResponses:
-        - ErrorCachingMinTTL: 300
-          ErrorCode: 403
-          ResponseCode: 200
-          ResponsePagePath: /index.html
         DefaultRootObject: index.html
         DefaultCacheBehavior:
           AllowedMethods: [ "GET", "HEAD", "OPTIONS", "PUT", "PATCH", "POST", "DELETE"]
@@ -1030,13 +1020,13 @@ Resources:
     Properties:
       BucketName: !Sub ${Project}-${TargetEnvr}-y
       WebsiteConfiguration:
-        ErrorDocument: error.html
+        ErrorDocument: index.html
         IndexDocument: index.html
   S3BucketPolicy:
     Type: AWS::S3::BucketPolicy
-    DependsOn: [CloudFrontOriginAccessIdentity]
+    DependsOn: [S3Bucket]
     Properties:
-      Bucket: !Sub ${Project}-${TargetEnvr}-y
+      Bucket: !Ref S3Bucket
       PolicyDocument: !Join
       - ''
       - - '{
@@ -1046,13 +1036,10 @@ Resources:
                 {
                     "Sid": "Allow-OAI-Access-To-Bucket",
                     "Effect": "Allow",
-                    "Principal": {
-                        "AWS": "arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity '
-        - !Ref CloudFrontOriginAccessIdentity
-        - '" },
+                    "Principal": "*",
                     "Action": "s3:GetObject",
-                    "Resource": "arn:aws:s3:::'
-        - !Sub ${Project}-${TargetEnvr}-y
+                    "Resource": "'
+        - !GetAtt S3Bucket.Arn
         - '/*"
                 }
             ]
