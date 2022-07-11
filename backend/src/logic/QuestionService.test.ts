@@ -58,8 +58,6 @@ describe('QuestionService', () => {
     it('should work', async () => {
       await service.createQuestion('ownerid', {} as PostQuestionRequest);
       expect(mockQuestionModel.create).toBeCalledTimes(1);
-      expect(mockTokenModel.find).toBeCalledTimes(1);
-      expect(mockLabelModel.find).toBeCalledTimes(1);
     });
   });
 
