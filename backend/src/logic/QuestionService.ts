@@ -34,19 +34,17 @@ export class QuestionService {
   private readonly cognitoUserId!: string;
 
   public async createQuestion(
+    ownerId: string | undefined,
     data: PostQuestionRequest
   ): Promise<PostQuestionResponse> {
-    // check if input label id exists
-    const { id: labelId } = await this.labelModel.find(data.labelId);
+    if (ownerId === undefined) throw new UnauthorizedError();
 
-    const { userId } = await this.tokenModel.find(this.token);
     const question: Question = {
       id: uuidv4(),
-      labelId,
       type: data.type,
       question: data.question,
       answer: data.answer,
-      ownerId: userId,
+      ownerId,
     };
 
     await this.questionModel.create(question);

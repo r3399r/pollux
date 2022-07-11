@@ -66,6 +66,7 @@ async function apiQuestion(event: LambdaEvent, service: QuestionService) {
         throw new BadRequestError('body should not be empty');
 
       return service.createQuestion(
+        event.requestContext.authorizer?.claims.sub,
         JSON.parse(event.body) as PostQuestionRequest
       );
     case 'GET':
@@ -85,14 +86,14 @@ async function apiQuestionId(event: LambdaEvent, service: QuestionService) {
     throw new BadRequestError('missing pathParameters');
 
   switch (event.httpMethod) {
-    case 'PUT':
-      if (event.body === null)
-        throw new BadRequestError('body should not be empty');
+    // case 'PUT':
+    //   if (event.body === null)
+    //     throw new BadRequestError('body should not be empty');
 
-      return service.reviseQuestion(
-        event.pathParameters.id,
-        JSON.parse(event.body) as PostQuestionRequest
-      );
+    //   return service.reviseQuestion(
+    //     event.pathParameters.id,
+    //     JSON.parse(event.body) as PostQuestionRequest
+    //   );
     case 'DELETE':
       return service.deleteQuestion(event.pathParameters.id);
     default:

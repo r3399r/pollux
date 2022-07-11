@@ -3,7 +3,6 @@ import { Label } from 'src/model/entity/Label';
 import { Question } from 'src/model/entity/Question';
 
 export type PostQuestionRequest = {
-  labelId: string;
   type: Type;
   question: string;
   answer?: string;

@@ -15,7 +15,6 @@ export const ENTITY = 'question';
 
 export type Question = DbBase & {
   id: string;
-  labelId: string;
   type: Type;
   question: string;
   answer?: string;
@@ -29,8 +28,6 @@ export type Question = DbBase & {
 class QuestionEntity implements Question {
   @primaryAttribute()
   public id: string;
-  @relatedAttributeOne(LABEL_ENTITY)
-  public labelId: string;
   public type: Type;
   public question: string;
   public answer?: string;
@@ -43,7 +40,6 @@ class QuestionEntity implements Question {
 
   constructor(input: Question) {
     this.id = input.id;
-    this.labelId = input.labelId;
     this.type = input.type;
     this.question = input.question;
     this.answer = input.answer;

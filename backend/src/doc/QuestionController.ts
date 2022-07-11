@@ -1,32 +1,36 @@
-import { PostQuestionLabelRequest } from '../model/api/Question';
 import { Body, Controller, Example, Post, Route, Tags } from 'tsoa';
-import { Label } from '../model/entity/Label';
+import { Type } from '../constant/Question';
 
 @Route('question')
 @Tags('題目')
 export class QuestionController extends Controller {
   /**
-   * 新增標籤
+   * 新增題目
+   * @example _postQuestionRequest  {
+   *   "type": "S",
+   *   "question": "abc",
+   *   "answer": "1"
+   * }
    */
-  @Example<PostQuestionLabelResponse>({
+  @Example({
     id: 'abcdefg',
-    label: 'math-book2',
+    type: 'S' as Type,
+    question: 'abc',
+    answer: '1',
     ownerId: 'owner-id-abc',
     dateCreated: 1656581359000,
     dateUpdated: 1656581359000,
   })
-  @Post('label')
-  getVariable(
-    @Body() _body: PostQuestionLabelRequest
-  ): PostQuestionLabelResponse {
+  @Post()
+  getVariable(@Body() _postQuestionRequest: any) {
     return {
       id: 'abcdefg',
-      label: 'math-book2',
+      type: 'S' as Type,
+      question: 'abc',
+      answer: '1',
       ownerId: 'owner-id-abc',
       dateCreated: 1656581359000,
       dateUpdated: 1656581359000,
     };
   }
 }
-
-export type PostQuestionLabelResponse = Label;

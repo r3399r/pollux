@@ -285,14 +285,6 @@ Resources:
             },
             "/api/question": {
               "post": {
-                "parameters" : [ {
-                  "name" : "x-api-token",
-                  "in" : "header",
-                  "required" : true,
-                  "schema" : {
-                    "type" : "string"
-                  }
-                } ],
                 "requestBody": {
                   "content": {
                     "application/json": {
@@ -320,6 +312,7 @@ Resources:
                     }
                   }
                 },
+                "security": [{"cognito": []}],
                 "x-amazon-apigateway-request-validator" : "Validate body, query string parameters, and headers",
                 "x-amazon-apigateway-integration": {
                   "type": "aws_proxy",
@@ -800,12 +793,11 @@ Resources:
             "postQuestion": {
               "type" : "object",
               "properties": {
-                "labelId": {"type": "string"},
                 "type": {"type": "string", "enum": ["T","S","M","F","E"]},
                 "question": {"type": "string"},
                 "answer": {"type": "string"}
               },
-              "required": ["labelId","type","question"]
+              "required": ["type","question"]
             },
             "putQuestionId": {
               "type" : "object",

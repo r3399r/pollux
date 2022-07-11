@@ -121,21 +121,21 @@ describe('question', () => {
   });
 
   describe('/api/question/{id}', () => {
-    it('PUT should work', async () => {
-      event = {
-        resource: '/api/question/{id}',
-        httpMethod: 'PUT',
-        headers: { ['x-api-token']: 'abcde' },
-        body: JSON.stringify({ a: 1 }),
-        pathParameters: { id: 'id' },
-        queryStringParameters: null,
-        requestContext: {},
-      };
-      await expect(question(event, lambdaContext)).resolves.toStrictEqual(
-        successOutput(dummyResult)
-      );
-      expect(mockService.reviseQuestion).toBeCalledTimes(1);
-    });
+    // it('PUT should work', async () => {
+    //   event = {
+    //     resource: '/api/question/{id}',
+    //     httpMethod: 'PUT',
+    //     headers: { ['x-api-token']: 'abcde' },
+    //     body: JSON.stringify({ a: 1 }),
+    //     pathParameters: { id: 'id' },
+    //     queryStringParameters: null,
+    //     requestContext: {},
+    //   };
+    //   await expect(question(event, lambdaContext)).resolves.toStrictEqual(
+    //     successOutput(dummyResult)
+    //   );
+    //   expect(mockService.reviseQuestion).toBeCalledTimes(1);
+    // });
 
     it('DELETE should work', async () => {
       event = {
@@ -168,20 +168,20 @@ describe('question', () => {
       );
     });
 
-    it('should fail if missing body', async () => {
-      event = {
-        resource: '/api/question/{id}',
-        httpMethod: 'PUT',
-        headers: { ['x-api-token']: 'abcde' },
-        body: null,
-        pathParameters: { id: 'id' },
-        queryStringParameters: null,
-        requestContext: {},
-      };
-      await expect(question(event, lambdaContext)).resolves.toStrictEqual(
-        errorOutput(new BadRequestError('body should not be empty'))
-      );
-    });
+    // it('should fail if missing body', async () => {
+    //   event = {
+    //     resource: '/api/question/{id}',
+    //     httpMethod: 'PUT',
+    //     headers: { ['x-api-token']: 'abcde' },
+    //     body: null,
+    //     pathParameters: { id: 'id' },
+    //     queryStringParameters: null,
+    //     requestContext: {},
+    //   };
+    //   await expect(question(event, lambdaContext)).resolves.toStrictEqual(
+    //     errorOutput(new BadRequestError('body should not be empty'))
+    //   );
+    // });
 
     it('unknown http method should fail', async () => {
       event = {
