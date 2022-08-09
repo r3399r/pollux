@@ -1,5 +1,5 @@
+import { GetVariableResponse } from '@y-celestial/pollux-service';
 import { Controller, Example, Get, Query, Route, Tags } from 'tsoa';
-import { GetVariableResponse } from '../model/api/Variable';
 
 @Route('variable')
 @Tags('環境變數')

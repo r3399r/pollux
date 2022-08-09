@@ -1,5 +1,5 @@
+import { Type } from '@y-celestial/pollux-service';
 import { Body, Controller, Example, Post, Route, Tags } from 'tsoa';
-import { Type } from '../constant/Question';
 
 @Route('question')
 @Tags('題目')

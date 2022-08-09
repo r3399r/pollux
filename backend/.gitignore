@@ -11,6 +11,3 @@ coverage
 
 # aws
 packaged.yaml
-
-# api doc
-src/doc/soa.json

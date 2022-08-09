@@ -1,5 +1,5 @@
 import { ExtendedSpecConfig, generateSpec } from 'tsoa';
-import packageJson from '../../package.json';
+import packageJson from '../backend/package.json';
 
 (async () => {
   const env = process.argv[2];
@@ -7,13 +7,13 @@ import packageJson from '../../package.json';
   const specOptions: ExtendedSpecConfig = {
     entryFile: 'xxx',
     specVersion: 3,
-    outputDirectory: './src/doc',
+    outputDirectory: './',
     controllerPathGlobs: ['./src/**/*Controller.ts'],
     noImplicitAdditionalProperties: 'throw-on-extras',
     host: `gemini${env === 'prod' ? '' : `-${env}`}.celestialstudio.net`,
     basePath: 'api',
     name: 'Gemini API',
-    specFileBaseName: 'soa',
+    specFileBaseName: 'index',
     version: packageJson.version,
   };
 
