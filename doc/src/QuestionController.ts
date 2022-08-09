@@ -1,4 +1,4 @@
-import { Type } from '@y-celestial/pollux-service';
+import { PostQuestionResponse, Type } from '@y-celestial/pollux-service';
 import { Body, Controller, Example, Post, Route, Tags } from 'tsoa';
 
 @Route('question')
@@ -13,22 +13,22 @@ export class QuestionController extends Controller {
    * }
    */
   @Example({
-    id: 'abcdefg',
+    id: 'question-id',
     type: 'S' as Type,
-    question: 'abc',
-    answer: '1',
-    ownerId: 'owner-id-abc',
+    question: '1+1=? (1) 1 (2) 2',
+    answer: '2',
+    ownerId: 'owner-id',
     dateCreated: 1656581359000,
     dateUpdated: 1656581359000,
   })
   @Post()
-  getVariable(@Body() _postQuestionRequest: any) {
+  postQuestion(@Body() _postQuestionRequest: PostQuestionResponse) {
     return {
-      id: 'abcdefg',
+      id: 'question-id',
       type: 'S' as Type,
-      question: 'abc',
-      answer: '1',
-      ownerId: 'owner-id-abc',
+      question: '1+1=? (1) 1 (2) 2',
+      answer: '2',
+      ownerId: 'owner-id',
       dateCreated: 1656581359000,
       dateUpdated: 1656581359000,
     };
