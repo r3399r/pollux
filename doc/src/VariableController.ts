@@ -1,4 +1,4 @@
-import { GetVariableResponse } from '@y-celestial/pollux-service';
+import { GetVariableResponse } from '../../backend';
 import { Controller, Example, Get, Query, Route, Tags } from 'tsoa';
 
 @Route('variable')

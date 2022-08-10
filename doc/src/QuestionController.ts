@@ -1,4 +1,4 @@
-import { PostQuestionResponse, Type } from '@y-celestial/pollux-service';
+import { PostQuestionRequest, PostQuestionResponse, Type } from '../../backend';
 import { Body, Controller, Example, Post, Route, Tags } from 'tsoa';
 
 @Route('question')
@@ -22,7 +22,7 @@ export class QuestionController extends Controller {
     dateUpdated: '2022-08-10T11:04:37.212Z',
   })
   @Post()
-  postQuestion(@Body() _postQuestionRequest: PostQuestionResponse) {
+  postQuestion(@Body() _postQuestionRequest: PostQuestionRequest): PostQuestionResponse {
     return {
       id: 'question-id',
       type: 'S' as Type,
