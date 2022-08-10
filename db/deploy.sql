@@ -1,0 +1,1 @@
+\i ./table/question.sql

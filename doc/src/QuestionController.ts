@@ -8,8 +8,8 @@ export class QuestionController extends Controller {
    * 新增題目
    * @example _postQuestionRequest  {
    *   "type": "S",
-   *   "question": "abc",
-   *   "answer": "1"
+   *   "question": "1+1=? (1) 1 (2) 2",
+   *   "answer": "2"
    * }
    */
   @Example({
@@ -17,9 +17,9 @@ export class QuestionController extends Controller {
     type: 'S' as Type,
     question: '1+1=? (1) 1 (2) 2',
     answer: '2',
-    ownerId: 'owner-id',
-    dateCreated: 1656581359000,
-    dateUpdated: 1656581359000,
+    userId: 'user-id',
+    dateCreated: '2022-08-10T11:04:37.212Z',
+    dateUpdated: '2022-08-10T11:04:37.212Z',
   })
   @Post()
   postQuestion(@Body() _postQuestionRequest: PostQuestionResponse) {
@@ -28,9 +28,9 @@ export class QuestionController extends Controller {
       type: 'S' as Type,
       question: '1+1=? (1) 1 (2) 2',
       answer: '2',
-      ownerId: 'owner-id',
-      dateCreated: 1656581359000,
-      dateUpdated: 1656581359000,
+      userId: 'user-id',
+      dateCreated: '2022-08-10T11:04:37.212Z',
+      dateUpdated: '2022-08-10T11:04:37.212Z',
     };
   }
 }

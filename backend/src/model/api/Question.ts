@@ -1,32 +1,17 @@
 import { Type } from 'src/constant/Question';
-import { Label } from 'src/model/entity/Label';
-import { Question } from 'src/model/entity/Question';
 
 export type PostQuestionRequest = {
   type: Type;
-  question: string;
+  content: string;
   answer?: string;
 };
 
-export type PostQuestionResponse = Question;
-
-export type PutQuestionIdRequest = {
-  labelId: string;
+export type PostQuestionResponse = {
+  id: string;
   type: Type;
-  question: string;
-  answer?: string;
+  content: string;
+  answer: string | null;
+  userId: string;
+  dateCreated: Date;
+  dateUpdated: Date | null;
 };
-
-export type PutQuestionIdResponse = Question;
-
-export type GetQuestionParams = { labelId: string };
-
-export type GetQuestionResponse = Question[];
-
-export type PostQuestionLabelRequest = {
-  label: string;
-};
-
-export type PostQuestionLabelResponse = Label;
-
-export type GetQuestionLabelResponse = Label[];
