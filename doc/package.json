@@ -8,6 +8,7 @@
   "devDependencies": {
     "@types/node": "^18.6.5",
     "ts-node": "^10.9.1",
+    "tslib": "^2.4.0",
     "tsoa": "^4.1.1"
   }
 }
