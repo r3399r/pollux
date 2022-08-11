@@ -1,4 +1,5 @@
 import { Type } from 'src/constant/Question';
+import { Question } from 'src/model/entity/Question';
 
 export type PostQuestionRequest = {
   type: Type;
@@ -6,12 +7,4 @@ export type PostQuestionRequest = {
   answer?: string;
 };
 
-export type PostQuestionResponse = {
-  id: string;
-  type: Type;
-  content: string;
-  answer: string | null;
-  userId: string;
-  dateCreated: Date;
-  dateUpdated: Date | null;
-};
+export type PostQuestionResponse = Question;

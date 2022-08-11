@@ -25,8 +25,6 @@ export class QuestionService {
   public async createQuestion(
     data: PostQuestionRequest
   ): Promise<PostQuestionResponse> {
-    console.log(data, this.cognitoUserId);
-
     const question = new QuestionEntity();
     question.type = data.type;
     question.content = data.content;

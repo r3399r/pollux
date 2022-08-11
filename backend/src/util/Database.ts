@@ -15,7 +15,7 @@ export class Database {
   @multiInject(dbEntitiesBindingId)
   private readonly entities!: Function[];
 
-  private createDataSource() {
+  private async getDataSource() {
     if (this.dataSource === undefined)
       this.dataSource = new DataSource({
         type: 'cockroachdb',
@@ -32,30 +32,23 @@ export class Database {
         synchronize: false,
         logging: false,
       });
+    if (!this.dataSource.isInitialized) await this.dataSource.initialize();
 
     return this.dataSource;
   }
 
-  private async getConnection() {
-    const ds = this.createDataSource();
-    if (ds.isInitialized) return ds;
-
-    return await ds.initialize();
-  }
-
   public async getQueryRunner() {
     if (this.queryRunner === undefined || this.queryRunner.isReleased) {
-      const connection = await this.getConnection();
-      this.queryRunner = connection.createQueryRunner();
+      const ds = await this.getDataSource();
+      this.queryRunner = ds.createQueryRunner();
+      await this.queryRunner.connect();
     }
-    await this.queryRunner.connect();
 
     return this.queryRunner;
   }
 
   public async cleanUp() {
-    const qr = await this.getQueryRunner();
-    await qr.release();
+    await this.queryRunner?.release();
     await this.dataSource?.destroy();
   }
 }

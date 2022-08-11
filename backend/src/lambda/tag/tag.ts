@@ -1,0 +1,52 @@
+import {
+  BadRequestError,
+  errorOutput,
+  InternalServerError,
+  LambdaContext,
+  LambdaEvent,
+  LambdaOutput,
+  successOutput,
+} from '@y-celestial/service';
+import { bindings } from 'src/bindings';
+import { TagService } from 'src/logic/TagService';
+import { PostTagRequest, PostTagResponse } from 'src/model/api/Tag';
+import { LambdaSetup } from 'src/util/LambdaSetup';
+
+export async function tag(
+  event: LambdaEvent,
+  _context?: LambdaContext
+): Promise<LambdaOutput> {
+  let service: TagService | null = null;
+  try {
+    LambdaSetup.setup(event);
+    service = bindings.get(TagService);
+
+    let res: PostTagResponse;
+
+    switch (event.resource) {
+      case '/api/tag':
+        res = await apiTag(event, service);
+        break;
+      default:
+        throw new InternalServerError('unknown resource');
+    }
+
+    return successOutput(res);
+  } catch (e) {
+    return errorOutput(e);
+  } finally {
+    await service?.cleanup();
+  }
+}
+
+async function apiTag(event: LambdaEvent, service: TagService) {
+  switch (event.httpMethod) {
+    case 'POST':
+      if (event.body === null)
+        throw new BadRequestError('body should not be empty');
+
+      return service.createTag(JSON.parse(event.body) as PostTagRequest);
+    default:
+      throw new InternalServerError('unknown http method');
+  }
+}
