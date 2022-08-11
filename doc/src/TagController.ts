@@ -10,10 +10,12 @@ export class TagController extends Controller {
    *   "name": "tag-name"
    * }
    */
-  @Example({
+  @Example<PostTagResponse>({
     id: 'tag-id',
     name: 'tag-name',
+    userId: 'user-id',
     dateCreated: new Date('2022-08-10T11:04:37.212Z'),
+    dateUpdated: new Date('2022-08-10T11:04:37.212Z'),
   })
   @Post()
   postQuestion(@Body() _postTagRequest: PostTagRequest): PostTagResponse {

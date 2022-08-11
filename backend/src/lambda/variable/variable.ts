@@ -16,7 +16,6 @@ export async function variable(
   event: LambdaEvent,
   _context?: LambdaContext
 ): Promise<LambdaOutput> {
-  console.log(event);
   try {
     LambdaSetup.setup(event);
 

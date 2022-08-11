@@ -1,5 +1,5 @@
 import { Body, Controller, Example, Post, Route, Tags } from 'tsoa';
-import { PostQuestionRequest, PostQuestionResponse } from '@y-celestial/pollux-service'
+import { PostQuestionRequest, PostQuestionResponse, Type } from '@y-celestial/pollux-service'
 
 @Route('question')
 @Tags('題目')
@@ -12,9 +12,9 @@ export class QuestionController extends Controller {
    *   "answer": "2"
    * }
    */
-  @Example({
+  @Example<PostQuestionResponse>({
     id: 'question-id',
-    type: 'S',
+    type: Type.Single,
     content: '1+1=? (1) 1 (2) 2',
     answer: '2',
     userId: 'user-id',
