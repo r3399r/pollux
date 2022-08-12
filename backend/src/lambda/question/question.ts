@@ -12,6 +12,8 @@ import { QuestionService } from 'src/logic/QuestionService';
 import {
   PostQuestionRequest,
   PostQuestionResponse,
+  PostQuestionTagRequest,
+  PostQuestionTagResponse,
 } from 'src/model/api/Question';
 import { LambdaSetup } from 'src/util/LambdaSetup';
 
@@ -24,11 +26,14 @@ export async function question(
     LambdaSetup.setup(event);
     service = bindings.get(QuestionService);
 
-    let res: PostQuestionResponse;
+    let res: PostQuestionResponse | PostQuestionTagResponse;
 
     switch (event.resource) {
       case '/api/question':
         res = await apiQuestion(event, service);
+        break;
+      case '/api/question/tag':
+        res = await apiQuestionTag(event, service);
         break;
       default:
         throw new InternalServerError('unknown resource');
@@ -50,6 +55,20 @@ async function apiQuestion(event: LambdaEvent, service: QuestionService) {
 
       return service.createQuestion(
         JSON.parse(event.body) as PostQuestionRequest
+      );
+    default:
+      throw new InternalServerError('unknown http method');
+  }
+}
+
+async function apiQuestionTag(event: LambdaEvent, service: QuestionService) {
+  switch (event.httpMethod) {
+    case 'POST':
+      if (event.body === null)
+        throw new BadRequestError('body should not be empty');
+
+      return service.addQuestionTagPair(
+        JSON.parse(event.body) as PostQuestionTagRequest
       );
     default:
       throw new InternalServerError('unknown http method');

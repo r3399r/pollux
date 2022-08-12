@@ -30,10 +30,10 @@ export class TagAccess {
     return await qr.manager.find<Tag>(TagEntity.name, options);
   }
 
-  public async save(trip: Tag) {
+  public async save(tag: Tag) {
     const qr = await this.database.getQueryRunner();
     const entity = new TagEntity();
-    Object.assign(entity, trip);
+    Object.assign(entity, tag);
 
     return await qr.manager.save(entity);
   }

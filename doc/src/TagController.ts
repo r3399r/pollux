@@ -6,7 +6,7 @@ import { GetTagResponse, PostTagRequest, PostTagResponse, PutTagRequest, PutTagR
 export class TagController extends Controller {
   /**
    * 新增標籤
-   * @example _postTagRequest  {
+   * @example _postTagRequest {
    *   "name": "tag-name"
    * }
    */

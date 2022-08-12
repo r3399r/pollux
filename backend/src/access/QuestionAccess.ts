@@ -30,10 +30,10 @@ export class QuestionAccess {
     return await qr.manager.find<Question>(QuestionEntity.name, options);
   }
 
-  public async save(trip: Question) {
+  public async save(question: Question) {
     const qr = await this.database.getQueryRunner();
     const entity = new QuestionEntity();
-    Object.assign(entity, trip);
+    Object.assign(entity, question);
 
     return await qr.manager.save(entity);
   }
