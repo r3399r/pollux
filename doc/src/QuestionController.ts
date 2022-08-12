@@ -17,6 +17,7 @@ export class QuestionController extends Controller {
     type: Type.Single,
     content: '1+1=? (1) 1 (2) 2',
     answer: '2',
+    userId:'user-id',
     dateCreated: new Date(),
     dateUpdated: new Date(),
   })

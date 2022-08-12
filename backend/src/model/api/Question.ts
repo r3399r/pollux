@@ -7,4 +7,4 @@ export type PostQuestionRequest = {
   answer?: string;
 };
 
-export type PostQuestionResponse = Omit<Question, 'userId'>;
+export type PostQuestionResponse = Question;

@@ -8,4 +8,6 @@ export {
   PostTagRequest,
   PostTagResponse,
   GetTagResponse,
+  PutTagRequest,
+  PutTagResponse,
 } from 'src/model/api/Tag';

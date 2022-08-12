@@ -13,6 +13,8 @@ import {
   GetTagResponse,
   PostTagRequest,
   PostTagResponse,
+  PutTagRequest,
+  PutTagResponse,
 } from 'src/model/api/Tag';
 import { LambdaSetup } from 'src/util/LambdaSetup';
 
@@ -25,11 +27,14 @@ export async function tag(
     LambdaSetup.setup(event);
     service = bindings.get(TagService);
 
-    let res: PostTagResponse | GetTagResponse;
+    let res: PostTagResponse | GetTagResponse | PutTagResponse;
 
     switch (event.resource) {
       case '/api/tag':
         res = await apiTag(event, service);
+        break;
+      case '/api/tag/{id}':
+        res = await apiTagId(event, service);
         break;
       default:
         throw new InternalServerError('unknown resource');
@@ -52,6 +57,23 @@ async function apiTag(event: LambdaEvent, service: TagService) {
         throw new BadRequestError('body should not be empty');
 
       return service.createTag(JSON.parse(event.body) as PostTagRequest);
+    default:
+      throw new InternalServerError('unknown http method');
+  }
+}
+
+async function apiTagId(event: LambdaEvent, service: TagService) {
+  if (event.pathParameters === null)
+    throw new BadRequestError('pathParameters should not be empty');
+  switch (event.httpMethod) {
+    case 'PUT':
+      if (event.body === null)
+        throw new BadRequestError('body should not be empty');
+
+      return service.reviseTag(
+        event.pathParameters.id,
+        JSON.parse(event.body) as PutTagRequest
+      );
     default:
       throw new InternalServerError('unknown http method');
   }

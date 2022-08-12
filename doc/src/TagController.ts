@@ -13,6 +13,7 @@ export class TagController extends Controller {
   @Example<PostTagResponse>({
     id: 'tag-id',
     name: 'tag-name',
+    userId:'user-id',
     dateCreated: new Date(),
     dateUpdated: new Date(),
   })
@@ -26,6 +27,7 @@ export class TagController extends Controller {
   @Example<GetTagResponse>([{
     id: 'tag-id',
     name: 'tag-name',
+    userId:'user-id',
     dateCreated: new Date(),
     dateUpdated: new Date(),
   }])

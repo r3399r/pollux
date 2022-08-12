@@ -4,6 +4,12 @@ export type PostTagRequest = {
   name: string;
 };
 
-export type PostTagResponse = Omit<Tag, 'userId'>;
+export type PostTagResponse = Tag;
 
-export type GetTagResponse = Omit<Tag, 'userId'>[];
+export type GetTagResponse = Tag[];
+
+export type PutTagRequest = {
+  name: string;
+};
+
+export type PutTagResponse = Tag;
