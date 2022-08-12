@@ -1,7 +1,11 @@
 import { BadRequestError } from '@y-celestial/service';
 import { inject, injectable } from 'inversify';
 import { TagAccess } from 'src/access/TagAccess';
-import { PostTagRequest, PostTagResponse } from 'src/model/api/Tag';
+import {
+  GetTagResponse,
+  PostTagRequest,
+  PostTagResponse,
+} from 'src/model/api/Tag';
 import { TagEntity } from 'src/model/entity/TagEntity';
 import { cognitoSymbol } from 'src/util/LambdaSetup';
 
@@ -36,5 +40,18 @@ export class TagService {
         throw new BadRequestError('conflict');
       throw e;
     }
+  }
+
+  public async getTagOfUser(): Promise<GetTagResponse> {
+    const tag = await this.tagAccess.findMany({
+      where: { userId: this.cognitoUserId },
+    });
+
+    return tag.map((v) => ({
+      id: v.id,
+      name: v.name,
+      dateCreated: v.dateCreated,
+      dateUpdated: v.dateUpdated,
+    }));
   }
 }

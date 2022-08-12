@@ -17,9 +17,8 @@ export class QuestionController extends Controller {
     type: Type.Single,
     content: '1+1=? (1) 1 (2) 2',
     answer: '2',
-    userId: 'user-id',
-    dateCreated: new Date('2022-08-10T11:04:37.212Z'),
-    dateUpdated: new Date('2022-08-10T11:04:37.212Z'),
+    dateCreated: new Date(),
+    dateUpdated: new Date(),
   })
   @Post()
   postQuestion(@Body() _postQuestionRequest: PostQuestionRequest): PostQuestionResponse {

@@ -9,7 +9,11 @@ import {
 } from '@y-celestial/service';
 import { bindings } from 'src/bindings';
 import { TagService } from 'src/logic/TagService';
-import { PostTagRequest, PostTagResponse } from 'src/model/api/Tag';
+import {
+  GetTagResponse,
+  PostTagRequest,
+  PostTagResponse,
+} from 'src/model/api/Tag';
 import { LambdaSetup } from 'src/util/LambdaSetup';
 
 export async function tag(
@@ -21,7 +25,7 @@ export async function tag(
     LambdaSetup.setup(event);
     service = bindings.get(TagService);
 
-    let res: PostTagResponse;
+    let res: PostTagResponse | GetTagResponse;
 
     switch (event.resource) {
       case '/api/tag':
@@ -41,6 +45,8 @@ export async function tag(
 
 async function apiTag(event: LambdaEvent, service: TagService) {
   switch (event.httpMethod) {
+    case 'GET':
+      return service.getTagOfUser();
     case 'POST':
       if (event.body === null)
         throw new BadRequestError('body should not be empty');

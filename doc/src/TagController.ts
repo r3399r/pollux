@@ -1,5 +1,5 @@
-import { Body, Controller, Example, Post, Route, Tags } from 'tsoa';
-import { PostTagRequest, PostTagResponse } from '@y-celestial/pollux-service'
+import { Body, Controller, Example, Get, Post, Route, Tags } from 'tsoa';
+import { GetTagResponse, PostTagRequest, PostTagResponse } from '@y-celestial/pollux-service'
 
 @Route('tag')
 @Tags('標籤')
@@ -13,12 +13,24 @@ export class TagController extends Controller {
   @Example<PostTagResponse>({
     id: 'tag-id',
     name: 'tag-name',
-    userId: 'user-id',
-    dateCreated: new Date('2022-08-10T11:04:37.212Z'),
-    dateUpdated: new Date('2022-08-10T11:04:37.212Z'),
+    dateCreated: new Date(),
+    dateUpdated: new Date(),
   })
   @Post()
   postQuestion(@Body() _postTagRequest: PostTagRequest): PostTagResponse {
+    return {} as any;
+  }
+  /**
+   * 取得使用者的標籤
+   */
+  @Example<GetTagResponse>([{
+    id: 'tag-id',
+    name: 'tag-name',
+    dateCreated: new Date(),
+    dateUpdated: new Date(),
+  }])
+  @Get()
+  getVariable(): GetTagResponse {
     return {} as any;
   }
 }
