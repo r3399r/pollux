@@ -27,7 +27,7 @@ export async function tag(
     LambdaSetup.setup(event);
     service = bindings.get(TagService);
 
-    let res: PostTagResponse | GetTagResponse | PutTagResponse;
+    let res: PostTagResponse | GetTagResponse | PutTagResponse | void;
 
     switch (event.resource) {
       case '/api/tag':
@@ -74,6 +74,8 @@ async function apiTagId(event: LambdaEvent, service: TagService) {
         event.pathParameters.id,
         JSON.parse(event.body) as PutTagRequest
       );
+    case 'DELETE':
+      return service.deleteTag(event.pathParameters.id);
     default:
       throw new InternalServerError('unknown http method');
   }

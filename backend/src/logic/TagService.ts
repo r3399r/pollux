@@ -73,7 +73,17 @@ export class TagService {
         'duplicate key value violates unique constraint "tag_name_user_id_key"'
       )
         throw new BadRequestError('conflict');
-      if (err.name === 'QueryFailedError') throw new NotFoundError();
+      if (err.name === 'QueryFailedError') throw new BadRequestError();
+      throw e;
+    }
+  }
+
+  public async deleteTag(id: string) {
+    try {
+      await this.tagAccess.hardDeleteById(id);
+    } catch (e) {
+      const err = e as Error;
+      if (err.name === 'QueryFailedError') throw new BadRequestError();
       throw e;
     }
   }
