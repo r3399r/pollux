@@ -46,14 +46,12 @@ export class TagController extends Controller {
     dateUpdated: new Date(),
   })
   @Put('{id}')
-  putTag(@Path('id') _id: string,): PutTagRequest {
+  putTag(@Path('id') _id: string): PutTagRequest {
     return {} as any;
   }
   /**
    * 刪除標籤
    */
   @Delete('{id}')
-  deleteTag(@Path('id') _id: string,) {
-    return {} as any;
-  }
+  deleteTag(@Path('id') _id: string) { }
 }
