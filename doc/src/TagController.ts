@@ -1,5 +1,21 @@
-import { Body, Controller, Delete, Example, Get, Path, Post, Put, Route, Tags } from 'tsoa';
-import { GetTagResponse, PostTagRequest, PostTagResponse, PutTagRequest, PutTagResponse } from '@y-celestial/pollux-service'
+import {
+  Body,
+  Controller,
+  Delete,
+  Example,
+  Get,
+  Path,
+  Post,
+  Put,
+  Route,
+  Tags,
+} from 'tsoa';
+import {
+  GetTagResponse,
+  PostTagRequest,
+  PostTagResponse,
+  PutTagRequest,
+} from '@y-celestial/pollux-service';
 
 @Route('tag')
 @Tags('標籤')
@@ -24,34 +40,30 @@ export class TagController extends Controller {
   /**
    * 取得使用者的標籤
    */
-  @Example<GetTagResponse>([{
-    id: 'tag-id',
-    name: 'tag-name',
-    userId: 'user-id',
-    dateCreated: new Date(),
-    dateUpdated: new Date(),
-  }])
+  @Example<GetTagResponse>([
+    {
+      id: 'tag-id',
+      name: 'tag-name',
+      userId: 'user-id',
+      dateCreated: new Date(),
+      dateUpdated: new Date(),
+    },
+  ])
   @Get()
   getTag(): GetTagResponse {
     return {} as any;
   }
   /**
    * 修改標籤
+   * @example _putTagRequest {
+   *   "name": "tag-name"
+   * }
    */
-  @Example<PutTagResponse>({
-    id: 'tag-id',
-    name: 'tag-name',
-    userId: 'user-id',
-    dateCreated: new Date(),
-    dateUpdated: new Date(),
-  })
   @Put('{id}')
-  putTag(@Path('id') _id: string): PutTagRequest {
-    return {} as any;
-  }
+  putTag(@Path('id') _id: string, @Body() _putTagRequest: PutTagRequest) {}
   /**
    * 刪除標籤
    */
   @Delete('{id}')
-  deleteTag(@Path('id') _id: string) { }
+  deleteTag(@Path('id') _id: string) {}
 }

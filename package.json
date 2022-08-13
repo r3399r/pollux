@@ -6,8 +6,10 @@
   "scripts": {
     "check:backend": "npm --prefix ./backend/ run pre:commit",
     "check:frontend": "npm --prefix ./frontend/ run pre:commit",
+    "check:doc": "npm --prefix ./doc/ run prettier",
     "fix:backend": "npm --prefix ./backend/ run fix",
     "fix:frontend": "npm --prefix ./frontend/ run fix",
+    "fix:doc": "npm --prefix ./doc/ run fix",
     "pre:commit": "run-p check:*",
     "fix": "run-p fix:*",
     "prepare": "husky install"
