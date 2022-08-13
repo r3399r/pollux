@@ -14,6 +14,7 @@ import {
   PostQuestionResponse,
   PostQuestionTagRequest,
   PostQuestionTagResponse,
+  PutQuestionRequest,
 } from 'src/model/api/Question';
 import { LambdaSetup } from 'src/util/LambdaSetup';
 
@@ -26,11 +27,14 @@ export async function question(
     LambdaSetup.setup(event);
     service = bindings.get(QuestionService);
 
-    let res: PostQuestionResponse | PostQuestionTagResponse;
+    let res: PostQuestionResponse | PostQuestionTagResponse | void;
 
     switch (event.resource) {
       case '/api/question':
         res = await apiQuestion(event, service);
+        break;
+      case '/api/question/{id}':
+        res = await apiQuestionId(event, service);
         break;
       case '/api/question/tag':
         res = await apiQuestionTag(event, service);
@@ -56,6 +60,25 @@ async function apiQuestion(event: LambdaEvent, service: QuestionService) {
       return service.createQuestion(
         JSON.parse(event.body) as PostQuestionRequest
       );
+    default:
+      throw new InternalServerError('unknown http method');
+  }
+}
+
+async function apiQuestionId(event: LambdaEvent, service: QuestionService) {
+  if (event.pathParameters === null)
+    throw new BadRequestError('pathParameters should not be empty');
+  switch (event.httpMethod) {
+    case 'PUT':
+      if (event.body === null)
+        throw new BadRequestError('body should not be empty');
+
+      return service.updateQuestion(
+        event.pathParameters.id,
+        JSON.parse(event.body) as PutQuestionRequest
+      );
+    case 'DELETE':
+      return service.deleteQuestion(event.pathParameters.id);
     default:
       throw new InternalServerError('unknown http method');
   }

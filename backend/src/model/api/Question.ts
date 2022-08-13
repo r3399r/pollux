@@ -10,6 +10,12 @@ export type PostQuestionRequest = {
 
 export type PostQuestionResponse = Question;
 
+export type PutQuestionRequest = {
+  type: Type;
+  content: string;
+  answer?: string;
+};
+
 export type PostQuestionTagRequest = {
   questionId: string;
   tagId: string[];

@@ -11,5 +11,3 @@ export type GetTagResponse = Tag[];
 export type PutTagRequest = {
   name: string;
 };
-
-export type PutTagResponse = Tag;

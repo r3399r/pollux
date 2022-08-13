@@ -19,6 +19,20 @@ export class QuestionAccess {
     return await qr.manager.save(entity);
   }
 
+  public async update(question: Question) {
+    const qr = await this.database.getQueryRunner();
+    const entity = new QuestionEntity();
+    Object.assign(entity, question);
+
+    return await qr.manager.update(QuestionEntity, question.id, entity);
+  }
+
+  public async hardDeleteById(id: string) {
+    const qr = await this.database.getQueryRunner();
+
+    return await qr.manager.delete(QuestionEntity.name, id);
+  }
+
   public async cleanup() {
     await this.database.cleanUp();
   }

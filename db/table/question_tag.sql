@@ -5,5 +5,5 @@ CREATE TABLE question_tag (
 	PRIMARY KEY (id ASC),
 	FOREIGN KEY (question_id) REFERENCES question (id),
 	FOREIGN KEY (tag_id) REFERENCES tag (id),
-	UNIQUE (questionId, tag_id)
+	UNIQUE (question_id, tag_id)
 );

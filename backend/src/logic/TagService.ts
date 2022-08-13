@@ -1,4 +1,4 @@
-import { BadRequestError, NotFoundError } from '@y-celestial/service';
+import { BadRequestError } from '@y-celestial/service';
 import { inject, injectable } from 'inversify';
 import { TagAccess } from 'src/access/TagAccess';
 import {
@@ -6,9 +6,7 @@ import {
   PostTagRequest,
   PostTagResponse,
   PutTagRequest,
-  PutTagResponse,
 } from 'src/model/api/Tag';
-import { Tag } from 'src/model/entity/Tag';
 import { TagEntity } from 'src/model/entity/TagEntity';
 import { cognitoSymbol } from 'src/util/LambdaSetup';
 
@@ -28,21 +26,11 @@ export class TagService {
   }
 
   public async createTag(data: PostTagRequest): Promise<PostTagResponse> {
-    try {
-      const tag = new TagEntity();
-      tag.name = data.name;
-      tag.userId = this.cognitoUserId;
+    const tag = new TagEntity();
+    tag.name = data.name;
+    tag.userId = this.cognitoUserId;
 
-      return await this.tagAccess.save(tag);
-    } catch (e) {
-      const err = e as Error;
-      if (
-        err.message ===
-        'duplicate key value violates unique constraint "tag_name_user_id_key"'
-      )
-        throw new BadRequestError('conflict');
-      throw e;
-    }
+    return await this.tagAccess.save(tag);
   }
 
   public async getTagOfUser(): Promise<GetTagResponse> {
@@ -51,40 +39,20 @@ export class TagService {
     });
   }
 
-  public async reviseTag(
-    id: string,
-    data: PutTagRequest
-  ): Promise<PutTagResponse> {
-    try {
-      const oldTag = await this.tagAccess.findById(id);
+  public async updateTag(id: string, data: PutTagRequest) {
+    const tag = new TagEntity();
+    tag.id = id;
+    tag.name = data.name;
+    tag.userId = this.cognitoUserId;
 
-      if (oldTag === null) throw new NotFoundError();
+    const res = await this.tagAccess.update(tag);
 
-      const newTag: Tag = {
-        ...oldTag,
-        name: data.name,
-      };
-
-      return await this.tagAccess.save(newTag);
-    } catch (e) {
-      const err = e as Error;
-      if (
-        err.message ===
-        'duplicate key value violates unique constraint "tag_name_user_id_key"'
-      )
-        throw new BadRequestError('conflict');
-      if (err.name === 'QueryFailedError') throw new BadRequestError();
-      throw e;
-    }
+    if (res.affected === 0) throw new BadRequestError('nothing happened.');
   }
 
   public async deleteTag(id: string) {
-    try {
-      await this.tagAccess.hardDeleteById(id);
-    } catch (e) {
-      const err = e as Error;
-      if (err.name === 'QueryFailedError') throw new BadRequestError();
-      throw e;
-    }
+    const res = await this.tagAccess.hardDeleteById(id);
+
+    if (res.affected === 0) throw new BadRequestError('nothing happened.');
   }
 }

@@ -32,6 +32,14 @@ export class TagAccess {
     return await qr.manager.save(entity);
   }
 
+  public async update(tag: Tag) {
+    const qr = await this.database.getQueryRunner();
+    const entity = new TagEntity();
+    Object.assign(entity, tag);
+
+    return await qr.manager.update(TagEntity, tag.id, entity);
+  }
+
   public async hardDeleteById(id: string) {
     const qr = await this.database.getQueryRunner();
 

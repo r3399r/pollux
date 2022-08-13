@@ -14,7 +14,6 @@ import {
   PostTagRequest,
   PostTagResponse,
   PutTagRequest,
-  PutTagResponse,
 } from 'src/model/api/Tag';
 import { LambdaSetup } from 'src/util/LambdaSetup';
 
@@ -27,7 +26,7 @@ export async function tag(
     LambdaSetup.setup(event);
     service = bindings.get(TagService);
 
-    let res: PostTagResponse | GetTagResponse | PutTagResponse | void;
+    let res: PostTagResponse | GetTagResponse | void;
 
     switch (event.resource) {
       case '/api/tag':
@@ -70,7 +69,7 @@ async function apiTagId(event: LambdaEvent, service: TagService) {
       if (event.body === null)
         throw new BadRequestError('body should not be empty');
 
-      return service.reviseTag(
+      return service.updateTag(
         event.pathParameters.id,
         JSON.parse(event.body) as PutTagRequest
       );

@@ -7,6 +7,7 @@ import {
   PostQuestionResponse,
   PostQuestionTagRequest,
   PostQuestionTagResponse,
+  PutQuestionRequest,
 } from 'src/model/api/Question';
 import { QuestionEntity } from 'src/model/entity/QuestionEntity';
 import { QuestionTag } from 'src/model/entity/QuestionTag';
@@ -43,6 +44,25 @@ export class QuestionService {
     return await this.questionAccess.save(question);
   }
 
+  public async updateQuestion(id: string, data: PutQuestionRequest) {
+    const question = new QuestionEntity();
+    question.id = id;
+    question.type = data.type;
+    question.content = data.content;
+    question.answer = data.answer ?? null;
+    question.userId = this.cognitoUserId;
+
+    const res = await this.questionAccess.update(question);
+
+    if (res.affected === 0) throw new BadRequestError('nothing happened.');
+  }
+
+  public async deleteQuestion(id: string) {
+    const res = await this.questionAccess.hardDeleteById(id);
+
+    if (res.affected === 0) throw new BadRequestError('nothing happened.');
+  }
+
   public async replaceQuestionTagPair(
     data: PostQuestionTagRequest
   ): Promise<PostQuestionTagResponse> {
@@ -70,9 +90,6 @@ export class QuestionService {
       return res;
     } catch (e) {
       await this.questionTagAccess.rollbackTransaction();
-
-      const err = e as Error;
-      if (err.name === 'QueryFailedError') throw new BadRequestError();
       throw e;
     }
   }
