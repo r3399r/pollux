@@ -1,8 +1,12 @@
 import { BadRequestError } from '@y-celestial/service';
 import { inject, injectable } from 'inversify';
+import { IsNull } from 'typeorm';
 import { QuestionAccess } from 'src/access/QuestionAccess';
 import { QuestionTagAccess } from 'src/access/QuestionTagAccess';
+import { ViewQuestionAccess } from 'src/access/ViewQuestionAccess';
 import {
+  GetQuestionParam,
+  GetQuestionResponse,
   PostQuestionRequest,
   PostQuestionResponse,
   PostQuestionTagRequest,
@@ -28,6 +32,9 @@ export class QuestionService {
   @inject(QuestionTagAccess)
   private readonly questionTagAccess!: QuestionTagAccess;
 
+  @inject(ViewQuestionAccess)
+  private readonly vQuestionAccess!: ViewQuestionAccess;
+
   public async cleanup() {
     await this.questionAccess.cleanup();
   }
@@ -42,6 +49,32 @@ export class QuestionService {
     question.userId = this.cognitoUserId;
 
     return await this.questionAccess.save(question);
+  }
+
+  public async getQuestionOfUser(
+    param: GetQuestionParam | null
+  ): Promise<GetQuestionResponse> {
+    if (param === null)
+      return await this.vQuestionAccess.findMany({
+        where: { userId: this.cognitoUserId },
+      });
+    if (param.tagId === 'null')
+      return await this.vQuestionAccess.findMany({
+        where: { userId: this.cognitoUserId, tag: IsNull() },
+      });
+
+    const tagIds = param.tagId.split(',');
+    const questionTags = await this.questionTagAccess.findMany({
+      where: tagIds.map((v) => ({ tagId: v })),
+    });
+    const questionIds = [...new Set(questionTags)];
+
+    return await this.vQuestionAccess.findMany({
+      where: questionIds.map((v) => ({
+        userId: this.cognitoUserId,
+        id: v.questionId,
+      })),
+    });
   }
 
   public async updateQuestion(id: string, data: PutQuestionRequest) {

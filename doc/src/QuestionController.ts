@@ -3,13 +3,16 @@ import {
   Controller,
   Delete,
   Example,
+  Get,
   Path,
   Post,
   Put,
+  Query,
   Route,
   Tags,
 } from 'tsoa';
 import {
+  GetQuestionResponse,
   PostQuestionRequest,
   PostQuestionResponse,
   PostQuestionTagRequest,
@@ -25,7 +28,7 @@ export class QuestionController extends Controller {
    * 新增題目
    * @example _postQuestionRequest {
    *   "type": "S",
-   *   "question": "1+1=? (1) 1 (2) 2",
+   *   "content": "1+1=? (1) 1 (2) 2",
    *   "answer": "2"
    * }
    */
@@ -45,10 +48,29 @@ export class QuestionController extends Controller {
     return {} as any;
   }
   /**
+   * 取得使用者的題目
+   */
+  @Example<GetQuestionResponse>([
+    {
+      id: 'question-id',
+      type: Type.Single,
+      content: '1+1=? (1) 1 (2) 2',
+      answer: '2',
+      userId: 'user-id',
+      dateCreated: new Date(),
+      dateUpdated: new Date(),
+      tag: ['tag-id-1::name-1', 'tag-id-2::name-2'],
+    },
+  ])
+  @Get()
+  getQuestion(@Query('tagId') _tagId: string): GetQuestionResponse {
+    return {} as any;
+  }
+  /**
    * 修改題目
    * @example _putQuestionRequest {
    *   "type": "S",
-   *   "question": "1+1=? (1) 1 (2) 2",
+   *   "content": "1+1=? (1) 1 (2) 2",
    *   "answer": "2"
    * }
    */

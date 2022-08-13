@@ -1,4 +1,5 @@
 import { inject, injectable } from 'inversify';
+import { FindManyOptions } from 'typeorm';
 import { QuestionTag } from 'src/model/entity/QuestionTag';
 import { QuestionTagEntity } from 'src/model/entity/QuestionTagEntity';
 import { Database } from 'src/util/Database';
@@ -24,6 +25,12 @@ export class QuestionTagAccess {
   public async rollbackTransaction() {
     const qr = await this.database.getQueryRunner();
     await qr.rollbackTransaction();
+  }
+
+  public async findMany(options?: FindManyOptions<QuestionTag>) {
+    const qr = await this.database.getQueryRunner();
+
+    return await qr.manager.find<QuestionTag>(QuestionTagEntity.name, options);
   }
 
   public async saveMany(questionTag: QuestionTag[]) {

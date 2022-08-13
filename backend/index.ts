@@ -4,6 +4,8 @@ export {
   PostQuestionTagRequest,
   PostQuestionTagResponse,
   PutQuestionRequest,
+  GetQuestionParam,
+  GetQuestionResponse,
 } from 'src/model/api/Question';
 export { GetVariableParam, GetVariableResponse } from 'src/model/api/Variable';
 export { Type } from 'src/constant/Question';

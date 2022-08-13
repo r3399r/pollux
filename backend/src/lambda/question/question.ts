@@ -10,6 +10,8 @@ import {
 import { bindings } from 'src/bindings';
 import { QuestionService } from 'src/logic/QuestionService';
 import {
+  GetQuestionParam,
+  GetQuestionResponse,
   PostQuestionRequest,
   PostQuestionResponse,
   PostQuestionTagRequest,
@@ -27,7 +29,11 @@ export async function question(
     LambdaSetup.setup(event);
     service = bindings.get(QuestionService);
 
-    let res: PostQuestionResponse | PostQuestionTagResponse | void;
+    let res:
+      | PostQuestionResponse
+      | PostQuestionTagResponse
+      | void
+      | GetQuestionResponse;
 
     switch (event.resource) {
       case '/api/question':
@@ -53,6 +59,10 @@ export async function question(
 
 async function apiQuestion(event: LambdaEvent, service: QuestionService) {
   switch (event.httpMethod) {
+    case 'GET':
+      return service.getQuestionOfUser(
+        event.queryStringParameters as GetQuestionParam
+      );
     case 'POST':
       if (event.body === null)
         throw new BadRequestError('body should not be empty');
