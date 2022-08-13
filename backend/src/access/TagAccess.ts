@@ -1,5 +1,5 @@
 import { inject, injectable } from 'inversify';
-import { FindManyOptions, FindOneOptions } from 'typeorm';
+import { FindManyOptions } from 'typeorm';
 import { Tag } from 'src/model/entity/Tag';
 import { TagEntity } from 'src/model/entity/TagEntity';
 import { Database } from 'src/util/Database';
@@ -16,12 +16,6 @@ export class TagAccess {
     const qr = await this.database.getQueryRunner();
 
     return await qr.manager.findOneBy<Tag>(TagEntity.name, { id });
-  }
-
-  public async findOne(options: FindOneOptions<Tag>) {
-    const qr = await this.database.getQueryRunner();
-
-    return await qr.manager.findOne<Tag>(TagEntity.name, options);
   }
 
   public async findMany(options?: FindManyOptions<Tag>) {

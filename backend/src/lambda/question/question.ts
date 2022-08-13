@@ -67,7 +67,7 @@ async function apiQuestionTag(event: LambdaEvent, service: QuestionService) {
       if (event.body === null)
         throw new BadRequestError('body should not be empty');
 
-      return service.addQuestionTagPair(
+      return service.replaceQuestionTagPair(
         JSON.parse(event.body) as PostQuestionTagRequest
       );
     default:

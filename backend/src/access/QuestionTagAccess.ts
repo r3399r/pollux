@@ -1,5 +1,4 @@
 import { inject, injectable } from 'inversify';
-import { FindManyOptions, FindOneOptions } from 'typeorm';
 import { QuestionTag } from 'src/model/entity/QuestionTag';
 import { QuestionTagEntity } from 'src/model/entity/QuestionTagEntity';
 import { Database } from 'src/util/Database';
@@ -12,35 +11,19 @@ export class QuestionTagAccess {
   @inject(Database)
   private readonly database!: Database;
 
-  public async findById(id: string) {
+  public async startTransaction() {
     const qr = await this.database.getQueryRunner();
-
-    return await qr.manager.findOneBy<QuestionTag>(QuestionTagEntity.name, {
-      id,
-    });
+    await qr.startTransaction();
   }
 
-  public async findOne(options: FindOneOptions<QuestionTag>) {
+  public async commitTransaction() {
     const qr = await this.database.getQueryRunner();
-
-    return await qr.manager.findOne<QuestionTag>(
-      QuestionTagEntity.name,
-      options
-    );
+    await qr.commitTransaction();
   }
 
-  public async findMany(options?: FindManyOptions<QuestionTag>) {
+  public async rollbackTransaction() {
     const qr = await this.database.getQueryRunner();
-
-    return await qr.manager.find<QuestionTag>(QuestionTagEntity.name, options);
-  }
-
-  public async save(questionTag: QuestionTag) {
-    const qr = await this.database.getQueryRunner();
-    const entity = new QuestionTagEntity();
-    Object.assign(entity, questionTag);
-
-    return await qr.manager.save(entity);
+    await qr.rollbackTransaction();
   }
 
   public async saveMany(questionTag: QuestionTag[]) {
@@ -56,10 +39,10 @@ export class QuestionTagAccess {
     return await qr.manager.save(entities);
   }
 
-  public async hardDeleteById(id: string) {
+  public async hardDeleteByQuestionId(id: string) {
     const qr = await this.database.getQueryRunner();
 
-    return await qr.manager.delete(QuestionTagEntity.name, id);
+    return await qr.manager.delete(QuestionTagEntity.name, { questionId: id });
   }
 
   public async cleanup() {

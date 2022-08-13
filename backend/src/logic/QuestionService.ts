@@ -1,3 +1,4 @@
+import { BadRequestError } from '@y-celestial/service';
 import { inject, injectable } from 'inversify';
 import { QuestionAccess } from 'src/access/QuestionAccess';
 import { QuestionTagAccess } from 'src/access/QuestionTagAccess';
@@ -42,21 +43,37 @@ export class QuestionService {
     return await this.questionAccess.save(question);
   }
 
-  public async addQuestionTagPair(
+  public async replaceQuestionTagPair(
     data: PostQuestionTagRequest
   ): Promise<PostQuestionTagResponse> {
-    const pairs: QuestionTag[] = [];
+    await this.questionTagAccess.startTransaction();
+    try {
+      const pairs: QuestionTag[] = [];
 
-    data.forEach((v) => {
-      for (const tagId of v.tagId) {
-        const pair = new QuestionTagEntity();
-        pair.questionId = v.questionId;
-        pair.tagId = tagId;
+      await Promise.all(
+        data.map(async (v) => {
+          await this.questionTagAccess.hardDeleteByQuestionId(v.questionId);
+          for (const tagId of v.tagId) {
+            const pair = new QuestionTagEntity();
+            pair.questionId = v.questionId;
+            pair.tagId = tagId;
 
-        pairs.push(pair);
-      }
-    });
+            pairs.push(pair);
+          }
+        })
+      );
 
-    return await this.questionTagAccess.saveMany(pairs);
+      const res = await this.questionTagAccess.saveMany(pairs);
+
+      await this.questionTagAccess.commitTransaction();
+
+      return res;
+    } catch (e) {
+      await this.questionTagAccess.rollbackTransaction();
+
+      const err = e as Error;
+      if (err.name === 'QueryFailedError') throw new BadRequestError();
+      throw e;
+    }
   }
 }
