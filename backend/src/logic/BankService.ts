@@ -1,13 +1,17 @@
 import { BadRequestError, NotFoundError } from '@y-celestial/service';
 import { inject, injectable } from 'inversify';
 import { BankAccess } from 'src/access/BankAccess';
+import { BankQuestionAccess } from 'src/access/BankQuestionAccess';
 import {
   GetBankResponse,
+  PostBankQuestionRequest,
+  PostBankQuestionResponse,
   PostBankRequest,
   PostBankResponse,
   PutBankRequest,
 } from 'src/model/api/Bank';
 import { BankEntity } from 'src/model/entity/BankEntity';
+import { BankQuestionEntity } from 'src/model/entity/BankQuestionEntity';
 import { cognitoSymbol } from 'src/util/LambdaSetup';
 
 /**
@@ -20,6 +24,9 @@ export class BankService {
 
   @inject(BankAccess)
   private readonly bankAccess!: BankAccess;
+
+  @inject(BankQuestionAccess)
+  private readonly bankQuestionAccess!: BankQuestionAccess;
 
   public async cleanup() {
     await this.bankAccess.cleanup();
@@ -62,5 +69,24 @@ export class BankService {
     const res = await this.bankAccess.hardDeleteById(id);
 
     if (res.affected === 0) throw new BadRequestError('nothing happened.');
+  }
+
+  public async addBankQuestionPair(
+    id: string,
+    data: PostBankQuestionRequest
+  ): Promise<PostBankQuestionResponse> {
+    const bank = await this.bankAccess.findById(id);
+    if (bank.userId !== this.cognitoUserId)
+      throw new NotFoundError('not found');
+
+    const entities = data.map((v) => {
+      const bankQuestion = new BankQuestionEntity();
+      bankQuestion.bankId = id;
+      bankQuestion.questionId = v;
+
+      return bankQuestion;
+    });
+
+    return await this.bankQuestionAccess.saveMany(entities);
   }
 }

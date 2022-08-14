@@ -11,6 +11,8 @@ import { bindings } from 'src/bindings';
 import { BankService } from 'src/logic/BankService';
 import {
   GetBankResponse,
+  PostBankQuestionRequest,
+  PostBankQuestionResponse,
   PostBankRequest,
   PostBankResponse,
   PutBankRequest,
@@ -26,7 +28,11 @@ export async function bank(
     LambdaSetup.setup(event);
     service = bindings.get(BankService);
 
-    let res: PostBankResponse | GetBankResponse | void;
+    let res:
+      | void
+      | PostBankResponse
+      | GetBankResponse
+      | PostBankQuestionResponse;
 
     switch (event.resource) {
       case '/api/bank':
@@ -34,6 +40,9 @@ export async function bank(
         break;
       case '/api/bank/{id}':
         res = await apiBankId(event, service);
+        break;
+      case '/api/bank/{id}/question':
+        res = await apiBankIdQuestion(event, service);
         break;
       default:
         throw new InternalServerError('unknown resource');
@@ -75,6 +84,23 @@ async function apiBankId(event: LambdaEvent, service: BankService) {
       );
     case 'DELETE':
       return service.deleteBank(event.pathParameters.id);
+    default:
+      throw new InternalServerError('unknown http method');
+  }
+}
+
+async function apiBankIdQuestion(event: LambdaEvent, service: BankService) {
+  if (event.pathParameters === null)
+    throw new BadRequestError('pathParameters should not be empty');
+  switch (event.httpMethod) {
+    case 'POST':
+      if (event.body === null)
+        throw new BadRequestError('body should not be empty');
+
+      return service.addBankQuestionPair(
+        event.pathParameters.id,
+        JSON.parse(event.body) as PostBankQuestionRequest
+      );
     default:
       throw new InternalServerError('unknown http method');
   }

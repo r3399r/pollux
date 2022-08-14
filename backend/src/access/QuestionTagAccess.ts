@@ -51,8 +51,4 @@ export class QuestionTagAccess {
 
     return await qr.manager.delete(QuestionTagEntity.name, id);
   }
-
-  public async cleanup() {
-    await this.database.cleanUp();
-  }
 }

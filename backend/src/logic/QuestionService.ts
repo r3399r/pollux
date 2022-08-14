@@ -14,7 +14,6 @@ import {
   PutQuestionTagResponse,
 } from 'src/model/api/Question';
 import { QuestionEntity } from 'src/model/entity/QuestionEntity';
-import { QuestionTag } from 'src/model/entity/QuestionTag';
 import { QuestionTagEntity } from 'src/model/entity/QuestionTagEntity';
 import { cognitoSymbol } from 'src/util/LambdaSetup';
 import { difference, intersection } from 'src/util/setTheory';
@@ -137,14 +136,13 @@ export class QuestionService {
         if (pid) await this.questionTagAccess.hardDeleteById(pid);
       }
 
-      const entities: QuestionTag[] = [];
-      for (const tagId of newTagId) {
+      const entities = newTagId.map((v) => {
         const questionTag = new QuestionTagEntity();
         questionTag.questionId = id;
-        questionTag.tagId = tagId;
+        questionTag.tagId = v;
 
-        entities.push(questionTag);
-      }
+        return questionTag;
+      });
 
       const res = await this.questionTagAccess.saveMany(entities);
       await this.questionTagAccess.commitTransaction();
