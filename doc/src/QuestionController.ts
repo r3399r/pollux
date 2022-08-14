@@ -100,8 +100,9 @@ export class QuestionController extends Controller {
       tagId: 'tag-id-2',
     },
   ])
-  @Put('tag')
+  @Put('{id}/tag')
   putQuestionTag(
+    @Path('id') _id: string,
     @Body() _putQuestionTagRequest: PostQuestionTagRequest
   ): PostQuestionTagResponse {
     return {} as any;
