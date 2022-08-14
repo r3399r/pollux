@@ -1,5 +1,4 @@
 import { inject, injectable } from 'inversify';
-import { FindManyOptions } from 'typeorm';
 import { Bank } from 'src/model/entity/Bank';
 import { BankEntity } from 'src/model/entity/BankEntity';
 import { Database } from 'src/util/Database';
@@ -16,12 +15,6 @@ export class BankAccess {
     const qr = await this.database.getQueryRunner();
 
     return await qr.manager.findOneByOrFail<Bank>(BankEntity.name, { id });
-  }
-
-  public async findMany(options?: FindManyOptions<Bank>) {
-    const qr = await this.database.getQueryRunner();
-
-    return await qr.manager.find<Bank>(BankEntity.name, options);
   }
 
   public async save(bank: Bank) {

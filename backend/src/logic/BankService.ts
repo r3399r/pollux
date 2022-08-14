@@ -2,6 +2,7 @@ import { BadRequestError, NotFoundError } from '@y-celestial/service';
 import { inject, injectable } from 'inversify';
 import { BankAccess } from 'src/access/BankAccess';
 import { BankQuestionAccess } from 'src/access/BankQuestionAccess';
+import { ViewBankAccess } from 'src/access/ViewBankAccess';
 import {
   GetBankResponse,
   PostBankQuestionRequest,
@@ -25,6 +26,9 @@ export class BankService {
   @inject(BankAccess)
   private readonly bankAccess!: BankAccess;
 
+  @inject(ViewBankAccess)
+  private readonly vBankAccess!: ViewBankAccess;
+
   @inject(BankQuestionAccess)
   private readonly bankQuestionAccess!: BankQuestionAccess;
 
@@ -41,7 +45,7 @@ export class BankService {
   }
 
   public async getBankOfUser(): Promise<GetBankResponse> {
-    return await this.bankAccess.findMany({
+    return await this.vBankAccess.findMany({
       where: { userId: this.cognitoUserId },
     });
   }
