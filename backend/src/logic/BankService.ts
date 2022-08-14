@@ -1,4 +1,4 @@
-import { BadRequestError } from '@y-celestial/service';
+import { BadRequestError, NotFoundError } from '@y-celestial/service';
 import { inject, injectable } from 'inversify';
 import { BankAccess } from 'src/access/BankAccess';
 import {
@@ -40,6 +40,10 @@ export class BankService {
   }
 
   public async updateBank(id: string, data: PutBankRequest) {
+    const oldBank = await this.bankAccess.findById(id);
+    if (oldBank.userId !== this.cognitoUserId)
+      throw new NotFoundError('not found');
+
     const bank = new BankEntity();
     bank.id = id;
     bank.name = data.name;
@@ -51,6 +55,10 @@ export class BankService {
   }
 
   public async deleteBank(id: string) {
+    const bank = await this.bankAccess.findById(id);
+    if (bank.userId !== this.cognitoUserId)
+      throw new NotFoundError('not found');
+
     const res = await this.bankAccess.hardDeleteById(id);
 
     if (res.affected === 0) throw new BadRequestError('nothing happened.');

@@ -1,4 +1,4 @@
-import { BadRequestError } from '@y-celestial/service';
+import { BadRequestError, NotFoundError } from '@y-celestial/service';
 import { inject, injectable } from 'inversify';
 import { IsNull } from 'typeorm';
 import { QuestionAccess } from 'src/access/QuestionAccess';
@@ -79,6 +79,10 @@ export class QuestionService {
   }
 
   public async updateQuestion(id: string, data: PutQuestionRequest) {
+    const oldQuestion = await this.questionAccess.findById(id);
+    if (oldQuestion.userId !== this.cognitoUserId)
+      throw new NotFoundError('not found');
+
     const question = new QuestionEntity();
     question.id = id;
     question.type = data.type;
@@ -92,6 +96,10 @@ export class QuestionService {
   }
 
   public async deleteQuestion(id: string) {
+    const question = await this.questionAccess.findById(id);
+    if (question.userId !== this.cognitoUserId)
+      throw new NotFoundError('not found');
+
     const res = await this.questionAccess.hardDeleteById(id);
 
     if (res.affected === 0) throw new BadRequestError('nothing happened.');
@@ -103,6 +111,10 @@ export class QuestionService {
   ): Promise<PutQuestionTagResponse> {
     await this.questionTagAccess.startTransaction();
     try {
+      const question = await this.questionAccess.findById(id);
+      if (question.userId !== this.cognitoUserId)
+        throw new NotFoundError('not found');
+
       const oldPairs = await this.questionTagAccess.findMany({
         where: { questionId: id },
       });

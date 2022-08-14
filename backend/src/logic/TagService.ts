@@ -1,4 +1,4 @@
-import { BadRequestError } from '@y-celestial/service';
+import { BadRequestError, NotFoundError } from '@y-celestial/service';
 import { inject, injectable } from 'inversify';
 import { TagAccess } from 'src/access/TagAccess';
 import {
@@ -40,6 +40,10 @@ export class TagService {
   }
 
   public async updateTag(id: string, data: PutTagRequest) {
+    const oldTag = await this.tagAccess.findById(id);
+    if (oldTag.userId !== this.cognitoUserId)
+      throw new NotFoundError('not found');
+
     const tag = new TagEntity();
     tag.id = id;
     tag.name = data.name;
@@ -51,6 +55,9 @@ export class TagService {
   }
 
   public async deleteTag(id: string) {
+    const tag = await this.tagAccess.findById(id);
+    if (tag.userId !== this.cognitoUserId) throw new NotFoundError('not found');
+
     const res = await this.tagAccess.hardDeleteById(id);
 
     if (res.affected === 0) throw new BadRequestError('nothing happened.');

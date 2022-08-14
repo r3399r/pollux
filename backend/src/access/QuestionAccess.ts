@@ -11,6 +11,14 @@ export class QuestionAccess {
   @inject(Database)
   private readonly database!: Database;
 
+  public async findById(id: string) {
+    const qr = await this.database.getQueryRunner();
+
+    return await qr.manager.findOneByOrFail<Question>(QuestionEntity.name, {
+      id,
+    });
+  }
+
   public async save(question: Question) {
     const qr = await this.database.getQueryRunner();
     const entity = new QuestionEntity();

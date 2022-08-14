@@ -12,6 +12,12 @@ export class BankAccess {
   @inject(Database)
   private readonly database!: Database;
 
+  public async findById(id: string) {
+    const qr = await this.database.getQueryRunner();
+
+    return await qr.manager.findOneByOrFail<Bank>(BankEntity.name, { id });
+  }
+
   public async findMany(options?: FindManyOptions<Bank>) {
     const qr = await this.database.getQueryRunner();
 
