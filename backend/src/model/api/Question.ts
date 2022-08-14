@@ -17,12 +17,9 @@ export type PutQuestionRequest = {
   answer?: string;
 };
 
-export type PostQuestionTagRequest = {
-  questionId: string;
-  tagId: string[];
-}[];
+export type PutQuestionTagRequest = string[];
 
-export type PostQuestionTagResponse = QuestionTag[];
+export type PutQuestionTagResponse = QuestionTag[];
 
 export type GetQuestionParam = { tagId: string };
 

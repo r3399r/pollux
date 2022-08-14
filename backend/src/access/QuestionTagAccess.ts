@@ -46,10 +46,10 @@ export class QuestionTagAccess {
     return await qr.manager.save(entities);
   }
 
-  public async hardDeleteByQuestionId(id: string) {
+  public async hardDeleteById(id: string) {
     const qr = await this.database.getQueryRunner();
 
-    return await qr.manager.delete(QuestionTagEntity.name, { questionId: id });
+    return await qr.manager.delete(QuestionTagEntity.name, id);
   }
 
   public async cleanup() {

@@ -230,13 +230,19 @@ Resources:
                 }
               }
             },
-            "/api/question/tag": {
-              "post": {
+            "/api/question/{id}/tag": {
+              "put": {
+                "parameters": [{
+                  "name": "id",
+                  "in": "path",
+                  "required": true,
+                  "schema": {"type": "string"}
+                }],
                 "requestBody": {
                   "content": {
                     "application/json": {
                       "schema": {
-                        "$ref": "#/components/schemas/postQuestionTag"
+                        "$ref": "#/components/schemas/putQuestionTag"
                       }
                     }
                   },
@@ -539,16 +545,9 @@ Resources:
               },
               "required": ["type","content"]
             },
-            "postQuestionTag": {
+            "putQuestionTag": {
               "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "questionId": {"type": "string"},
-                  "tagId": {"type": "array", "items": {"type": "string"}},
-                },
-                "required": ["questionId","tagId"]
-              }
+              "items": {"type": "string"}
             },
             "postTag": {
               "type": "object",

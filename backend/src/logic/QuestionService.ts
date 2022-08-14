@@ -9,14 +9,15 @@ import {
   GetQuestionResponse,
   PostQuestionRequest,
   PostQuestionResponse,
-  PostQuestionTagRequest,
-  PostQuestionTagResponse,
   PutQuestionRequest,
+  PutQuestionTagRequest,
+  PutQuestionTagResponse,
 } from 'src/model/api/Question';
 import { QuestionEntity } from 'src/model/entity/QuestionEntity';
 import { QuestionTag } from 'src/model/entity/QuestionTag';
 import { QuestionTagEntity } from 'src/model/entity/QuestionTagEntity';
 import { cognitoSymbol } from 'src/util/LambdaSetup';
+import { difference, intersection } from 'src/util/setTheory';
 
 /**
  * Service class for Question
@@ -97,30 +98,46 @@ export class QuestionService {
   }
 
   public async replaceQuestionTagPair(
-    data: PostQuestionTagRequest
-  ): Promise<PostQuestionTagResponse> {
+    id: string,
+    data: PutQuestionTagRequest
+  ): Promise<PutQuestionTagResponse> {
     await this.questionTagAccess.startTransaction();
     try {
-      const pairs: QuestionTag[] = [];
+      const oldPairs = await this.questionTagAccess.findMany({
+        where: { questionId: id },
+      });
 
-      await Promise.all(
-        data.map(async (v) => {
-          await this.questionTagAccess.hardDeleteByQuestionId(v.questionId);
-          for (const tagId of v.tagId) {
-            const pair = new QuestionTagEntity();
-            pair.questionId = v.questionId;
-            pair.tagId = tagId;
-
-            pairs.push(pair);
-          }
-        })
+      const deletedTagId = difference(
+        oldPairs.map((v) => v.tagId),
+        data
+      );
+      const newTagId = difference(
+        data,
+        oldPairs.map((v) => v.tagId)
+      );
+      const commonTagId = intersection(
+        data,
+        oldPairs.map((v) => v.tagId)
       );
 
-      const res = await this.questionTagAccess.saveMany(pairs);
+      for (const tagId of deletedTagId) {
+        const pid = oldPairs.find((v) => v.tagId === tagId)?.id;
+        if (pid) await this.questionTagAccess.hardDeleteById(pid);
+      }
 
+      const entities: QuestionTag[] = [];
+      for (const tagId of newTagId) {
+        const questionTag = new QuestionTagEntity();
+        questionTag.questionId = id;
+        questionTag.tagId = tagId;
+
+        entities.push(questionTag);
+      }
+
+      const res = await this.questionTagAccess.saveMany(entities);
       await this.questionTagAccess.commitTransaction();
 
-      return res;
+      return [...res, ...oldPairs.filter((v) => commonTagId.includes(v.tagId))];
     } catch (e) {
       await this.questionTagAccess.rollbackTransaction();
       throw e;

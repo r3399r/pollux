@@ -1,8 +1,8 @@
 export {
   PostQuestionRequest,
   PostQuestionResponse,
-  PostQuestionTagRequest,
-  PostQuestionTagResponse,
+  PutQuestionTagRequest,
+  PutQuestionTagResponse,
   PutQuestionRequest,
   GetQuestionParam,
   GetQuestionResponse,

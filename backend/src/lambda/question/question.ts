@@ -14,9 +14,9 @@ import {
   GetQuestionResponse,
   PostQuestionRequest,
   PostQuestionResponse,
-  PostQuestionTagRequest,
-  PostQuestionTagResponse,
   PutQuestionRequest,
+  PutQuestionTagRequest,
+  PutQuestionTagResponse,
 } from 'src/model/api/Question';
 import { LambdaSetup } from 'src/util/LambdaSetup';
 
@@ -31,7 +31,7 @@ export async function question(
 
     let res:
       | PostQuestionResponse
-      | PostQuestionTagResponse
+      | PutQuestionTagResponse
       | void
       | GetQuestionResponse;
 
@@ -42,8 +42,8 @@ export async function question(
       case '/api/question/{id}':
         res = await apiQuestionId(event, service);
         break;
-      case '/api/question/tag':
-        res = await apiQuestionTag(event, service);
+      case '/api/question/{id}/tag':
+        res = await apiQuestionIdTag(event, service);
         break;
       default:
         throw new InternalServerError('unknown resource');
@@ -94,14 +94,17 @@ async function apiQuestionId(event: LambdaEvent, service: QuestionService) {
   }
 }
 
-async function apiQuestionTag(event: LambdaEvent, service: QuestionService) {
+async function apiQuestionIdTag(event: LambdaEvent, service: QuestionService) {
+  if (event.pathParameters === null)
+    throw new BadRequestError('pathParameters should not be empty');
   switch (event.httpMethod) {
-    case 'POST':
+    case 'PUT':
       if (event.body === null)
         throw new BadRequestError('body should not be empty');
 
       return service.replaceQuestionTagPair(
-        JSON.parse(event.body) as PostQuestionTagRequest
+        event.pathParameters.id,
+        JSON.parse(event.body) as PutQuestionTagRequest
       );
     default:
       throw new InternalServerError('unknown http method');

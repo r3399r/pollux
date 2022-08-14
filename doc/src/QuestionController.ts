@@ -86,10 +86,7 @@ export class QuestionController extends Controller {
   deleteTag(@Path('id') _id: string) {}
   /**
    * 設定題目之標籤
-   * @example _postQuestionTagRequest [{
-   *   "questionId": "question-id-1",
-   *   "tag_id": ["tag-id-1", "tag-id-2"]
-   * }]
+   * @example _putQuestionTagRequest ["tag-id-1", "tag-id-2"]
    */
   @Example<PostQuestionTagResponse>([
     {
@@ -103,9 +100,9 @@ export class QuestionController extends Controller {
       tagId: 'tag-id-2',
     },
   ])
-  @Post('tag')
-  postQuestionTag(
-    @Body() _postQuestionTagRequest: PostQuestionTagRequest
+  @Put('tag')
+  putQuestionTag(
+    @Body() _putQuestionTagRequest: PostQuestionTagRequest
   ): PostQuestionTagResponse {
     return {} as any;
   }
