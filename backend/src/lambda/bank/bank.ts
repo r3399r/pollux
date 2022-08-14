@@ -44,6 +44,9 @@ export async function bank(
       case '/api/bank/{id}/question':
         res = await apiBankIdQuestion(event, service);
         break;
+      case '/api/bank/{id}/question/{qid}':
+        res = await apiBankIdQuestionId(event, service);
+        break;
       default:
         throw new InternalServerError('unknown resource');
     }
@@ -97,9 +100,23 @@ async function apiBankIdQuestion(event: LambdaEvent, service: BankService) {
       if (event.body === null)
         throw new BadRequestError('body should not be empty');
 
-      return service.addBankQuestionPair(
+      return service.addBankQuestionPairs(
         event.pathParameters.id,
         JSON.parse(event.body) as PostBankQuestionRequest
+      );
+    default:
+      throw new InternalServerError('unknown http method');
+  }
+}
+
+async function apiBankIdQuestionId(event: LambdaEvent, service: BankService) {
+  if (event.pathParameters === null)
+    throw new BadRequestError('pathParameters should not be empty');
+  switch (event.httpMethod) {
+    case 'DELETE':
+      return service.deleteBankQuestionPair(
+        event.pathParameters.id,
+        event.pathParameters.qid
       );
     default:
       throw new InternalServerError('unknown http method');

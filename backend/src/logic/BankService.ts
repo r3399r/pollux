@@ -71,7 +71,7 @@ export class BankService {
     if (res.affected === 0) throw new BadRequestError('nothing happened.');
   }
 
-  public async addBankQuestionPair(
+  public async addBankQuestionPairs(
     id: string,
     data: PostBankQuestionRequest
   ): Promise<PostBankQuestionResponse> {
@@ -88,5 +88,15 @@ export class BankService {
     });
 
     return await this.bankQuestionAccess.saveMany(entities);
+  }
+
+  public async deleteBankQuestionPair(id: string, qid: string) {
+    const bank = await this.bankAccess.findById(id);
+    if (bank.userId !== this.cognitoUserId)
+      throw new NotFoundError('not found');
+
+    const res = await this.bankQuestionAccess.hardDeleteBy(id, qid);
+
+    if (res.affected === 0) throw new BadRequestError('nothing happened.');
   }
 }

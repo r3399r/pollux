@@ -23,4 +23,13 @@ export class BankQuestionAccess {
 
     return await qr.manager.save(entities);
   }
+
+  public async hardDeleteBy(bankId: string, questionId: string) {
+    const qr = await this.database.getQueryRunner();
+
+    return await qr.manager.delete(BankQuestionEntity.name, {
+      bankId,
+      questionId,
+    });
+  }
 }
