@@ -15,9 +15,9 @@ import {
   GetQuestionResponse,
   PostQuestionRequest,
   PostQuestionResponse,
-  PostQuestionTagRequest,
-  PostQuestionTagResponse,
   PutQuestionRequest,
+  PutQuestionTagRequest,
+  PutQuestionTagResponse,
   Type,
 } from '@y-celestial/pollux-service';
 
@@ -88,7 +88,7 @@ export class QuestionController extends Controller {
    * 設定題目之標籤
    * @example _putQuestionTagRequest ["tag-id-1", "tag-id-2"]
    */
-  @Example<PostQuestionTagResponse>([
+  @Example<PutQuestionTagResponse>([
     {
       id: 'question-tag-id-1',
       questionId: 'question-id-1',
@@ -103,8 +103,8 @@ export class QuestionController extends Controller {
   @Put('{id}/tag')
   putQuestionTag(
     @Path('id') _id: string,
-    @Body() _putQuestionTagRequest: PostQuestionTagRequest
-  ): PostQuestionTagResponse {
+    @Body() _putQuestionTagRequest: PutQuestionTagRequest
+  ): PutQuestionTagResponse {
     return {} as any;
   }
 }

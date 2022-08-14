@@ -12,12 +12,6 @@ export class TagAccess {
   @inject(Database)
   private readonly database!: Database;
 
-  public async findById(id: string) {
-    const qr = await this.database.getQueryRunner();
-
-    return await qr.manager.findOneBy<Tag>(TagEntity.name, { id });
-  }
-
   public async findMany(options?: FindManyOptions<Tag>) {
     const qr = await this.database.getQueryRunner();
 

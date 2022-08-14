@@ -15,3 +15,9 @@ export {
   GetTagResponse,
   PutTagRequest,
 } from 'src/model/api/Tag';
+export {
+  PostBankRequest,
+  PostBankResponse,
+  PutBankRequest,
+  GetBankResponse,
+} from 'src/model/api/Bank';
