@@ -1,7 +1,9 @@
+import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import { Container } from 'inversify';
 import 'reflect-metadata';
 import { BankAccess } from './access/BankAccess';
 import { BankQuestionAccess } from './access/BankQuestionAccess';
+import { BankUserAccess } from './access/BankUserAccess';
 import { QuestionAccess } from './access/QuestionAccess';
 import { QuestionTagAccess } from './access/QuestionTagAccess';
 import { TagAccess } from './access/TagAccess';
@@ -13,6 +15,7 @@ import { TagService } from './logic/TagService';
 import { VariableService } from './logic/VariableService';
 import { BankEntity } from './model/entity/BankEntity';
 import { BankQuestionEntity } from './model/entity/BankQuestionEntity';
+import { BankUserEntity } from './model/entity/BankUserEntity';
 import { QuestionEntity } from './model/entity/QuestionEntity';
 import { QuestionTagEntity } from './model/entity/QuestionTagEntity';
 import { TagEntity } from './model/entity/TagEntity';
@@ -27,6 +30,7 @@ container.bind<Database>(Database).toSelf().inSingletonScope();
 // bind repeatedly for db entities
 container.bind<Function>(dbEntitiesBindingId).toFunction(BankEntity);
 container.bind<Function>(dbEntitiesBindingId).toFunction(BankQuestionEntity);
+container.bind<Function>(dbEntitiesBindingId).toFunction(BankUserEntity);
 container.bind<Function>(dbEntitiesBindingId).toFunction(QuestionEntity);
 container.bind<Function>(dbEntitiesBindingId).toFunction(QuestionTagEntity);
 container.bind<Function>(dbEntitiesBindingId).toFunction(TagEntity);
@@ -36,6 +40,7 @@ container.bind<Function>(dbEntitiesBindingId).toFunction(ViewQuestionEntity);
 // db access for tables
 container.bind<BankAccess>(BankAccess).toSelf();
 container.bind<BankQuestionAccess>(BankQuestionAccess).toSelf();
+container.bind<BankUserAccess>(BankUserAccess).toSelf();
 container.bind<QuestionAccess>(QuestionAccess).toSelf();
 container.bind<QuestionTagAccess>(QuestionTagAccess).toSelf();
 container.bind<TagAccess>(TagAccess).toSelf();
@@ -47,5 +52,10 @@ container.bind<BankService>(BankService).toSelf();
 container.bind<QuestionService>(QuestionService).toSelf();
 container.bind<TagService>(TagService).toSelf();
 container.bind<VariableService>(VariableService).toSelf();
+
+// AWS
+container
+  .bind<CognitoIdentityServiceProvider>(CognitoIdentityServiceProvider)
+  .toDynamicValue(() => new CognitoIdentityServiceProvider());
 
 export { container as bindings };
