@@ -747,7 +747,7 @@ Resources:
                 }
               }
             },
-            "/api/system": {
+            "/api/variable": {
               "get": {
                 "parameters" : [ {
                   "name" : "name",

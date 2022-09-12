@@ -12,6 +12,8 @@ import {
 } from 'tsoa';
 import {
   GetBankResponse,
+  PostBankQuestionRequest,
+  PostBankQuestionResponse,
   PostBankRequest,
   PostBankResponse,
   PutBankRequest,
@@ -20,6 +22,23 @@ import {
 @Route('bank')
 @Tags('題庫')
 export class BankController extends Controller {
+  /**
+   * 取得使用者的題庫
+   */
+  @Example<GetBankResponse>([
+    {
+      id: 'bank-id',
+      name: 'bank-name',
+      userId: 'user-id',
+      questionCount: 10,
+      dateCreated: new Date(),
+      dateUpdated: new Date(),
+    },
+  ])
+  @Get()
+  getBank(): GetBankResponse {
+    return {} as any;
+  }
   /**
    * 新增題庫
    * @example _postBankRequest {
@@ -38,21 +57,10 @@ export class BankController extends Controller {
     return {} as any;
   }
   /**
-   * 取得使用者的題庫
+   * 刪除題庫
    */
-  @Example<GetBankResponse>([
-    {
-      id: 'bank-id',
-      name: 'bank-name',
-      userId: 'user-id',
-      dateCreated: new Date(),
-      dateUpdated: new Date(),
-    },
-  ])
-  @Get()
-  getBank(): GetBankResponse {
-    return {} as any;
-  }
+  @Delete('{id}')
+  deleteBank(@Path('id') _id: string) {}
   /**
    * 修改題庫名
    * @example _putBankRequest {
@@ -60,10 +68,32 @@ export class BankController extends Controller {
    * }
    */
   @Put('{id}')
-  putTag(@Path('id') _id: string, @Body() _putBankRequest: PutBankRequest) {}
+  putBank(@Path('id') _id: string, @Body() _putBankRequest: PutBankRequest) {}
   /**
-   * 刪除題庫
+   * 新增題目至題庫
+   * @example _postBankQuestionRequest ["question-id-1", "question-id-2"]
    */
-  @Delete('{id}')
-  deleteTag(@Path('id') _id: string) {}
+  @Example<PostBankQuestionResponse>([
+    {
+      id: 'bank-question-pair-1',
+      bankId: 'bank-id',
+      questionId: 'question-id-1',
+    },
+    {
+      id: 'bank-question-pair-2',
+      bankId: 'bank-id',
+      questionId: 'question-id-2',
+    },
+  ])
+  @Post('{id}/question')
+  postBankQuestion(
+    @Body() _postBankQuestionRequest: PostBankQuestionRequest
+  ): PostBankQuestionResponse {
+    return {} as any;
+  }
+  /**
+   * 刪除題庫之題目
+   */
+  @Delete('{id}/question/{qid}')
+  deleteBankQuestion(@Path('id') _id: string, @Path('qid') _qid: string) {}
 }

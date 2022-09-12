@@ -40,7 +40,7 @@
       }
     ],
     "rootDir": ".",
-    "sourceMap": true,
+    "sourceMap": false,
     "strict": true,
     "target": "es6"
   },

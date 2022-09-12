@@ -1,23 +1,5 @@
-export {
-  PostQuestionRequest,
-  PostQuestionResponse,
-  PutQuestionTagRequest,
-  PutQuestionTagResponse,
-  PutQuestionRequest,
-  GetQuestionParam,
-  GetQuestionResponse,
-} from 'src/model/api/Question';
-export { GetVariableParam, GetVariableResponse } from 'src/model/api/Variable';
-export { Type } from 'src/constant/Question';
-export {
-  PostTagRequest,
-  PostTagResponse,
-  GetTagResponse,
-  PutTagRequest,
-} from 'src/model/api/Tag';
-export {
-  PostBankRequest,
-  PostBankResponse,
-  PutBankRequest,
-  GetBankResponse,
-} from 'src/model/api/Bank';
+export * from 'src/constant/Question';
+export * from 'src/model/api/Bank';
+export * from 'src/model/api/Question';
+export * from 'src/model/api/Tag';
+export * from 'src/model/api/Variable';

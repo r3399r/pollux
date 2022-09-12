@@ -25,6 +25,25 @@ import {
 @Tags('題目')
 export class QuestionController extends Controller {
   /**
+   * 取得使用者的題目
+   */
+  @Example<GetQuestionResponse>([
+    {
+      id: 'question-id',
+      type: Type.Single,
+      content: '1+1=? (1) 1 (2) 2',
+      answer: '2',
+      userId: 'user-id',
+      dateCreated: new Date(),
+      dateUpdated: new Date(),
+      tag: ['tag-id-1::name-1', 'tag-id-2::name-2'],
+    },
+  ])
+  @Get()
+  getQuestion(@Query('tagId') _tagId: string): GetQuestionResponse {
+    return {} as any;
+  }
+  /**
    * 新增題目
    * @example _postQuestionRequest {
    *   "type": "S",
@@ -48,24 +67,10 @@ export class QuestionController extends Controller {
     return {} as any;
   }
   /**
-   * 取得使用者的題目
+   * 刪除題目
    */
-  @Example<GetQuestionResponse>([
-    {
-      id: 'question-id',
-      type: Type.Single,
-      content: '1+1=? (1) 1 (2) 2',
-      answer: '2',
-      userId: 'user-id',
-      dateCreated: new Date(),
-      dateUpdated: new Date(),
-      tag: ['tag-id-1::name-1', 'tag-id-2::name-2'],
-    },
-  ])
-  @Get()
-  getQuestion(@Query('tagId') _tagId: string): GetQuestionResponse {
-    return {} as any;
-  }
+  @Delete('{id}')
+  deleteQuestion(@Path('id') _id: string) {}
   /**
    * 修改題目
    * @example _putQuestionRequest {
@@ -75,15 +80,10 @@ export class QuestionController extends Controller {
    * }
    */
   @Put('{id}')
-  putTag(
+  putQuestion(
     @Path('id') _id: string,
     @Body() _putQuestionRequest: PutQuestionRequest
   ) {}
-  /**
-   * 刪除題目
-   */
-  @Delete('{id}')
-  deleteTag(@Path('id') _id: string) {}
   /**
    * 設定題目之標籤
    * @example _putQuestionTagRequest ["tag-id-1", "tag-id-2"]
