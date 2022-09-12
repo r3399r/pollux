@@ -5,5 +5,3 @@
 \i ./table/bank.sql
 \i ./table/bank_question.sql
 \i ./view/v_bank.sql
-\i ./table/bank_user.sql
-\i ./table/user_user.sql

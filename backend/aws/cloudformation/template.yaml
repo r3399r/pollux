@@ -222,109 +222,6 @@ Resources:
                 }
               }
             },
-            "/api/bank/{id}/assign": {
-              "post": {
-                "parameters": [{
-                  "name": "id",
-                  "in": "path",
-                  "required": true,
-                  "schema": {"type": "string"}
-                }],
-                "requestBody": {
-                  "content": {
-                    "application/json": {
-                      "schema": {
-                        "$ref": "#/components/schemas/postBankAssign"
-                      }
-                    }
-                  },
-                  "required": true
-                },
-                "responses": {
-                  "200": {
-                    "description": "200 response",
-                    "headers": {
-                      "Access-Control-Allow-Origin": {
-                        "schema": {"type": "string"}
-                      }
-                    },
-                    "content": {
-                      "application/json": {
-                        "schema": {
-                          "$ref": "#/components/schemas/Empty"
-                        }
-                      }
-                    }
-                  }
-                },
-                "security": [{"cognito": []}],
-                "x-amazon-apigateway-request-validator" : "Validate body, query string parameters, and headers",
-                "x-amazon-apigateway-integration": {
-                  "type": "aws_proxy",
-                  "httpMethod": "POST",
-                  "uri": !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:278497686406:function:${Project}-${TargetEnvr}-bank/invocations",
-                  "responses": {
-                    "default": {
-                      "statusCode": "200",
-                      "responseParameters": {
-                        "method.response.header.Access-Control-Allow-Origin": "'*'"
-                      }
-                    }
-                  },
-                  "passthroughBehavior": "when_no_match",
-                  "contentHandling": "CONVERT_TO_TEXT"
-                }
-              }
-            },
-            "/api/bank/{id}/assign/{uid}": {
-              "delete": {
-                "parameters": [{
-                  "name": "id",
-                  "in": "path",
-                  "required": true,
-                  "schema": {"type": "string"}
-                },{
-                  "name": "uid",
-                  "in": "path",
-                  "required": true,
-                  "schema": {"type": "string"}
-                }],
-                "responses": {
-                  "200": {
-                    "description": "200 response",
-                    "headers": {
-                      "Access-Control-Allow-Origin": {
-                        "schema": {"type": "string"}
-                      }
-                    },
-                    "content": {
-                      "application/json": {
-                        "schema": {
-                          "$ref": "#/components/schemas/Empty"
-                        }
-                      }
-                    }
-                  }
-                },
-                "security": [{"cognito": []}],
-                "x-amazon-apigateway-request-validator" : "Validate body, query string parameters, and headers",
-                "x-amazon-apigateway-integration": {
-                  "type": "aws_proxy",
-                  "httpMethod": "POST",
-                  "uri": !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:278497686406:function:${Project}-${TargetEnvr}-bank/invocations",
-                  "responses": {
-                    "default": {
-                      "statusCode": "200",
-                      "responseParameters": {
-                        "method.response.header.Access-Control-Allow-Origin": "'*'"
-                      }
-                    }
-                  },
-                  "passthroughBehavior": "when_no_match",
-                  "contentHandling": "CONVERT_TO_TEXT"
-                }
-              }
-            },
             "/api/bank/{id}/question": {
               "post": {
                 "parameters": [{
@@ -415,186 +312,6 @@ Resources:
                   "type": "aws_proxy",
                   "httpMethod": "POST",
                   "uri": !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:278497686406:function:${Project}-${TargetEnvr}-bank/invocations",
-                  "responses": {
-                    "default": {
-                      "statusCode": "200",
-                      "responseParameters": {
-                        "method.response.header.Access-Control-Allow-Origin": "'*'"
-                      }
-                    }
-                  },
-                  "passthroughBehavior": "when_no_match",
-                  "contentHandling": "CONVERT_TO_TEXT"
-                }
-              }
-            },
-            "/api/connect": {
-              "get": {
-                "responses": {
-                  "200": {
-                    "description": "200 response",
-                    "headers": {
-                      "Access-Control-Allow-Origin": {
-                        "schema": {"type": "string"}
-                      }
-                    },
-                    "content": {
-                      "application/json": {
-                        "schema": {
-                          "$ref": "#/components/schemas/Empty"
-                        }
-                      }
-                    }
-                  }
-                },
-                "security": [{"cognito": []}],
-                "x-amazon-apigateway-request-validator" : "Validate query string parameters and headers",
-                "x-amazon-apigateway-integration": {
-                  "type": "aws_proxy",
-                  "httpMethod": "POST",
-                  "uri": !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:278497686406:function:${Project}-${TargetEnvr}-connect/invocations",
-                  "responses": {
-                    "default": {
-                      "statusCode": "200",
-                      "responseParameters": {
-                        "method.response.header.Access-Control-Allow-Origin": "'*'"
-                      }
-                    }
-                  },
-                  "passthroughBehavior": "when_no_match",
-                  "contentHandling": "CONVERT_TO_TEXT"
-                }
-              },
-              "post": {
-                "requestBody": {
-                  "content": {
-                    "application/json": {
-                      "schema": {
-                        "$ref": "#/components/schemas/postConnect"
-                      }
-                    }
-                  },
-                  "required": true
-                },
-                "responses": {
-                  "200": {
-                    "description": "200 response",
-                    "headers": {
-                      "Access-Control-Allow-Origin": {
-                        "schema": {"type": "string"}
-                      }
-                    },
-                    "content": {
-                      "application/json": {
-                        "schema": {
-                          "$ref": "#/components/schemas/Empty"
-                        }
-                      }
-                    }
-                  }
-                },
-                "security": [{"cognito": []}],
-                "x-amazon-apigateway-request-validator" : "Validate body, query string parameters, and headers",
-                "x-amazon-apigateway-integration": {
-                  "type": "aws_proxy",
-                  "httpMethod": "POST",
-                  "uri": !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:278497686406:function:${Project}-${TargetEnvr}-connect/invocations",
-                  "responses": {
-                    "default": {
-                      "statusCode": "200",
-                      "responseParameters": {
-                        "method.response.header.Access-Control-Allow-Origin": "'*'"
-                      }
-                    }
-                  },
-                  "passthroughBehavior": "when_no_match",
-                  "contentHandling": "CONVERT_TO_TEXT"
-                }
-              }
-            },
-            "/api/connect/{id}": {
-              "put": {
-                "parameters": [{
-                  "name": "id",
-                  "in": "path",
-                  "required": true,
-                  "schema": {"type": "string"}
-                }],
-                "requestBody": {
-                  "content": {
-                    "application/json": {
-                      "schema": {
-                        "$ref": "#/components/schemas/putConnect"
-                      }
-                    }
-                  },
-                  "required": true
-                },
-                "responses": {
-                  "200": {
-                    "description": "200 response",
-                    "headers": {
-                      "Access-Control-Allow-Origin": {
-                        "schema": {"type": "string"}
-                      }
-                    },
-                    "content": {
-                      "application/json": {
-                        "schema": {
-                          "$ref": "#/components/schemas/Empty"
-                        }
-                      }
-                    }
-                  }
-                },
-                "security": [{"cognito": []}],
-                "x-amazon-apigateway-request-validator" : "Validate body, query string parameters, and headers",
-                "x-amazon-apigateway-integration": {
-                  "type": "aws_proxy",
-                  "httpMethod": "POST",
-                  "uri": !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:278497686406:function:${Project}-${TargetEnvr}-connect/invocations",
-                  "responses": {
-                    "default": {
-                      "statusCode": "200",
-                      "responseParameters": {
-                        "method.response.header.Access-Control-Allow-Origin": "'*'"
-                      }
-                    }
-                  },
-                  "passthroughBehavior": "when_no_match",
-                  "contentHandling": "CONVERT_TO_TEXT"
-                }
-              },
-              "delete": {
-                "parameters": [{
-                  "name": "id",
-                  "in": "path",
-                  "required": true,
-                  "schema": {"type": "string"}
-                }],
-                "responses": {
-                  "200": {
-                    "description": "200 response",
-                    "headers": {
-                      "Access-Control-Allow-Origin": {
-                        "schema": {"type": "string"}
-                      }
-                    },
-                    "content": {
-                      "application/json": {
-                        "schema": {
-                          "$ref": "#/components/schemas/Empty"
-                        }
-                      }
-                    }
-                  }
-                },
-                "security": [{"cognito": []}],
-                "x-amazon-apigateway-request-validator" : "Validate query string parameters and headers",
-                "x-amazon-apigateway-integration": {
-                  "type": "aws_proxy",
-                  "httpMethod": "POST",
-                  "uri": !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${Project}-${TargetEnvr}-connect/invocations",
                   "responses": {
                     "default": {
                       "statusCode": "200",
@@ -1030,7 +747,7 @@ Resources:
                 }
               }
             },
-            "/api/variable": {
+            "/api/system": {
               "get": {
                 "parameters" : [ {
                   "name" : "name",
@@ -1093,21 +810,6 @@ Resources:
               "type": "object",
               "title": "Empty Schema"
             },
-            "postConnect": {
-              "type": "object",
-              "properties": {
-                "dstUserId": {"type": "string"},
-                "nickname": {"type": "string"}
-              },
-              "required": ["dstUserId","nickname"]
-            },
-            "putConnect":{
-              "type": "object",
-              "properties": {
-                "nickname": {"type": "string"}
-              },
-              "required": ["nickname"]
-            },
             "postQuestion": {
               "type": "object",
               "properties": {
@@ -1161,11 +863,7 @@ Resources:
             "postBankQuestion": {
               "type": "array",
               "items": {"type": "string"}
-            },
-            "postBankAssign": {
-              "type": "array",
-              "items": {"type": "string"}
-            },
+            }
           },
           "x-amazon-apigateway-request-validators" : {
             "Validate body, query string parameters, and headers" : {
@@ -1201,32 +899,6 @@ Resources:
     DependsOn: [ServerlessApi, LambdaBank]
     Properties:
       FunctionName: !Sub ${Project}-${TargetEnvr}-bank
-      Action: 'lambda:InvokeFunction'
-      Principal: apigateway.amazonaws.com
-      SourceArn: !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ServerlessApi}/*
-  LambdaConnect:
-    Type: AWS::Serverless::Function
-    Properties:
-      Architectures: [arm64]
-      Handler: index.connect
-      Runtime: !Sub ${NodeJsVer}
-      FunctionName: !Sub ${Project}-${TargetEnvr}-connect
-      Role: !Sub "arn:aws:iam::${AWS::AccountId}:role/${LambdaExecutionRole}"
-      CodeUri: ../../dist/webpack/lambda
-      MemorySize: 128
-      Environment:
-        Variables:
-          PROJECT: !Sub ${Project}
-          DB_CLUSTER: !Sub '{{resolve:ssm:${TargetEnvr}-db-cluster:1}}'
-          DB_HOST: !Sub '{{resolve:ssm:${TargetEnvr}-db-host:1}}'
-          DB_PWD: !Sub '{{resolve:ssm:${TargetEnvr}-db-pwd:1}}'
-          DB_USER: !Sub '{{resolve:ssm:${TargetEnvr}-db-user:1}}'
-          USER_POOL_ID: !Sub ${CognitoUserPool}
-  InvokePermissionConnect:
-    Type: AWS::Lambda::Permission
-    DependsOn: [ServerlessApi, LambdaConnect]
-    Properties:
-      FunctionName: !Sub ${Project}-${TargetEnvr}-connect
       Action: 'lambda:InvokeFunction'
       Principal: apigateway.amazonaws.com
       SourceArn: !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ServerlessApi}/*
