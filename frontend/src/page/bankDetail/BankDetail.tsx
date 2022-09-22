@@ -1,9 +1,3 @@
-import { useParams } from 'react-router-dom';
-
-const BankDetail = () => {
-  const params = useParams();
-
-  return <div>{params.id}</div>;
-};
+const BankDetail = () => <div>題庫詳情</div>;
 
 export default BankDetail;
