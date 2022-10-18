@@ -20,10 +20,14 @@
   },
   "dependencies": {
     "@mui/base": "^5.0.0-alpha.101",
+    "@reduxjs/toolkit": "^1.8.6",
+    "amazon-cognito-identity-js": "^5.2.11",
+    "axios": "^0.27.2",
     "classnames": "^2.3.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.37.0",
+    "react-redux": "^8.0.4",
     "react-router-dom": "^6.4.1",
     "web-vitals": "^2.1.4"
   },
@@ -37,6 +41,7 @@
     "@types/react-dom": "^18.0.6",
     "@typescript-eslint/eslint-plugin": "^5.38.0",
     "@typescript-eslint/parser": "^5.38.0",
+    "@y-celestial/pollux-service": "^1.1.8",
     "autoprefixer": "^10.4.12",
     "cross-env": "^7.0.3",
     "del-cli": "^5.0.0",
