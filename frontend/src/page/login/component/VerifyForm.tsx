@@ -1,0 +1,30 @@
+import { useForm } from 'react-hook-form';
+import Button from 'src/component/celestial-ui/Button';
+import Form from 'src/component/celestial-ui/Form';
+import FormInput from 'src/component/celestial-ui/FormInput';
+import H1 from 'src/component/celestial-ui/typography/H1';
+import { VerifyForm as FormType } from 'src/model/Form';
+import { verify } from 'src/service/authService';
+
+const VerifyForm = () => {
+  const methods = useForm<FormType>();
+
+  const onSubmit = (data: FormType) => {
+    verify(data.email, data.code);
+  };
+
+  return (
+    <>
+      <H1>驗證</H1>
+      <Form methods={methods} onSubmit={onSubmit}>
+        <FormInput name="email" label="Email" type="email" required />
+        <FormInput name="code" label="驗證碼" type="password" required />
+        <Button type="submit" className="mt-5">
+          驗證
+        </Button>
+      </Form>
+    </>
+  );
+};
+
+export default VerifyForm;
