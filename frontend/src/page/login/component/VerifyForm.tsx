@@ -26,7 +26,7 @@ const VerifyForm = () => {
 
   return (
     <>
-      <H1>驗證</H1>
+      <H1>註冊驗證</H1>
       <Form methods={methods} onSubmit={onSubmit}>
         <FormInput name="email" label="Email" type="email" required />
         <FormInput name="code" label="驗證碼" type="password" required />

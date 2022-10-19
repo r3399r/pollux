@@ -1,16 +1,18 @@
-import { GetVariableParam, GetVariableResponse } from '@y-celestial/pollux-service';
-import { AuthenticationDetails, CognitoUser, CognitoUserPool } from 'amazon-cognito-identity-js';
+import {
+  AuthenticationDetails,
+  CognitoUser,
+  CognitoUserPool,
+  CognitoUserSession,
+} from 'amazon-cognito-identity-js';
+import variableEndpoint from 'src/api/variableEndpoint';
 import { dispatch, getState } from 'src/redux/store';
 import { finishWaiting, setIsLogin, startWaiting } from 'src/redux/uiSlice';
 import { setVariable, VariableState } from 'src/redux/variableSlice';
-import http from 'src/util/http';
 
 const getUserPoolVariable = async (): Promise<VariableState> => {
   const state = getState().variable;
   if (state.userPoolClientId === undefined || state.userPoolId === undefined) {
-    const res = await http.get<GetVariableResponse, GetVariableParam>('variable', {
-      params: { name: 'USER_POOL_ID,USER_POOL_CLIENT_ID' },
-    });
+    const res = await variableEndpoint.getVariable({ name: 'USER_POOL_ID,USER_POOL_CLIENT_ID' });
     const variable = {
       userPoolClientId: res.data.USER_POOL_CLIENT_ID,
       userPoolId: res.data.USER_POOL_ID,
@@ -40,12 +42,13 @@ export const login = async (username: string, password: string) => {
       Username: username,
       Pool: userPool,
     });
-    await new Promise((resolve, reject) => {
+    const result: CognitoUserSession = await new Promise((resolve, reject) => {
       cognitoUser.authenticateUser(authenticationDetails, {
         onSuccess: (r) => resolve(r),
         onFailure: (e) => reject(e),
       });
     });
+    localStorage.setItem('token', result.getIdToken().getJwtToken());
 
     dispatch(setIsLogin(true));
   } catch (err) {
