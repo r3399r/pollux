@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Button from 'src/component/celestial-ui/Button';
 import Form from 'src/component/celestial-ui/Form';
@@ -8,9 +9,19 @@ import { login } from 'src/service/authService';
 
 const LoginForm = () => {
   const methods = useForm<FormType>();
+  const [message, setMessage] = useState<string>();
+  const [error, setError] = useState<string>();
 
   const onSubmit = (data: FormType) => {
-    login(data.email, data.password);
+    login(data.email, data.password)
+      .then(() => {
+        setMessage('成功');
+        setError(undefined);
+      })
+      .catch((e) => {
+        setMessage(undefined);
+        setError(e);
+      });
   };
 
   return (
@@ -23,6 +34,8 @@ const LoginForm = () => {
           登入
         </Button>
       </Form>
+      {message && <div className="text-navy-900">{message}</div>}
+      {error && <div className="text-tomato-500">{error}</div>}
     </>
   );
 };

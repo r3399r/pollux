@@ -4,21 +4,21 @@ import Button from 'src/component/celestial-ui/Button';
 import Form from 'src/component/celestial-ui/Form';
 import FormInput from 'src/component/celestial-ui/FormInput';
 import H1 from 'src/component/celestial-ui/typography/H1';
-import { RegisterForm as FormType } from 'src/model/Form';
-import { register } from 'src/service/authService';
+import { ForgotForm as FormType } from 'src/model/Form';
+import { confirmForgot, sendForgot } from 'src/service/authService';
 
-const RegisterForm = () => {
+const ForgotForm = () => {
   const methods = useForm<FormType>();
   const [message, setMessage] = useState<string>();
   const [error, setError] = useState<string>();
 
   const onSubmit = (data: FormType) => {
-    if (data.password !== data.confirmPassword)
+    if (data.newPassword !== data.confirmPassword)
       methods.setError('confirmPassword', { message: '與密碼不同' }, { shouldFocus: true });
     else
-      register(data.email, data.password)
+      confirmForgot(data.email, data.newPassword, data.code)
         .then(() => {
-          setMessage('註冊成功，待驗證');
+          setMessage('修改成功，請使用新密碼登入');
           setError(undefined);
         })
         .catch((e) => {
@@ -27,19 +27,27 @@ const RegisterForm = () => {
         });
   };
 
+  const onSend = () => {
+    sendForgot(methods.getValues('email')).catch((e) => {
+      methods.setError('email', { message: e });
+    });
+  };
+
   return (
     <>
-      <H1>註冊</H1>
+      <H1>忘記密碼</H1>
       <Form methods={methods} onSubmit={onSubmit}>
-        <FormInput name="email" label="Email" type="email" required />
-        <FormInput
-          name="password"
-          label="密碼"
-          type="password"
-          required
-          helper="密碼需至少 8 碼且含有大小寫英文字母及數字"
-          minLength={8}
-        />
+        <div className="flex gap-3 w-full">
+          <div className="flex-1">
+            <FormInput name="email" label="Email" type="email" required />
+          </div>
+          <div>
+            <Button className="mt-[42px]" type="button" appearance="secondary" onClick={onSend}>
+              寄送驗證碼
+            </Button>
+          </div>
+        </div>
+        <FormInput name="newPassword" label="新密碼" type="password" required />
         <FormInput
           name="confirmPassword"
           label="確認密碼"
@@ -47,8 +55,9 @@ const RegisterForm = () => {
           required
           placeholder="請再次輸入密碼"
         />
+        <FormInput name="code" label="驗證碼" type="password" required />
         <Button type="submit" className="mt-5">
-          註冊
+          送出
         </Button>
       </Form>
       {message && <div className="text-navy-900">{message}</div>}
@@ -57,4 +66,4 @@ const RegisterForm = () => {
   );
 };
 
-export default RegisterForm;
+export default ForgotForm;
