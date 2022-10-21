@@ -1,3 +1,4 @@
 [submodule "frontend/src/component/celestial-ui"]
 	path = frontend/src/component/celestial-ui
 	url = https://github.com/r3399r/celestial-ui.git
+	branch = dev
