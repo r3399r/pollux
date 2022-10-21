@@ -20,3 +20,11 @@ export type ForgotForm = {
   confirmPassword: string;
   code: string;
 };
+
+export type NewTagForm = {
+  name: string;
+};
+
+export type EditTagForm = {
+  name: string;
+};

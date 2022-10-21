@@ -16,9 +16,12 @@ export const uiSlice = createSlice({
     setTagList: (state: TagState, action: PayloadAction<Tag[]>) => {
       state.tagList = action.payload;
     },
+    appendTagList: (state: TagState, action: PayloadAction<Tag>) => {
+      state.tagList = [...(state.tagList ?? []), action.payload];
+    },
   },
 });
 
-export const { setTagList } = uiSlice.actions;
+export const { setTagList, appendTagList } = uiSlice.actions;
 
 export default uiSlice.reducer;

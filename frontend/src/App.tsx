@@ -1,3 +1,4 @@
+import Loader from './component/Loader';
 import Navbar from './component/Navbar';
 import Routes from './Routes';
 
@@ -7,6 +8,7 @@ const App = () => (
     <div className="p-5">
       <Routes />
     </div>
+    <Loader />
   </>
 );
 
