@@ -30,6 +30,7 @@
     "react-hook-form": "^7.37.0",
     "react-redux": "^8.0.4",
     "react-router-dom": "^6.4.1",
+    "react-transition-group": "^4.4.5",
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
@@ -41,6 +42,7 @@
     "@types/randomcolor": "^0.5.6",
     "@types/react": "^18.0.20",
     "@types/react-dom": "^18.0.6",
+    "@types/react-transition-group": "^4.4.5",
     "@typescript-eslint/eslint-plugin": "^5.38.0",
     "@typescript-eslint/parser": "^5.38.0",
     "@y-celestial/pollux-service": "^1.1.8",

@@ -1,22 +1,24 @@
 import randomColor from 'randomcolor';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Button from 'src/component/celestial-ui/Button';
 import H1 from 'src/component/celestial-ui/typography/H1';
 import { RootState } from 'src/redux/store';
+import { openSnackbar } from 'src/redux/uiSlice';
 import { loadTagList } from 'src/service/tagService';
 import ModalDelete from './ModalDelete';
 import ModalEditTag from './ModalEditTag';
 import ModalNewTag from './ModalNewTag';
 
 const Tag = () => {
+  const dispatch = useDispatch();
   const { tagList } = useSelector((rootState: RootState) => rootState.tag);
   const [openNew, setOpenNew] = useState<boolean>(false);
   const [editId, setEditId] = useState<string>();
   const [deleteId, setDeleteId] = useState<string>();
 
   useEffect(() => {
-    loadTagList();
+    loadTagList().catch((err) => dispatch(openSnackbar(err.response.data.message)));
   }, []);
 
   return (

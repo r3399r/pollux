@@ -1,5 +1,6 @@
 import Loader from './component/Loader';
 import Navbar from './component/Navbar';
+import Snackbar from './component/Snackbar';
 import Routes from './Routes';
 
 const App = () => (
@@ -9,6 +10,7 @@ const App = () => (
       <Routes />
     </div>
     <Loader />
+    <Snackbar />
   </>
 );
 

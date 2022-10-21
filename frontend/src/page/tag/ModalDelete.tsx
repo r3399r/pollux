@@ -1,4 +1,6 @@
+import { useDispatch } from 'react-redux';
 import ModalVanilla from 'src/component/celestial-ui/ModalVanilla';
+import { openSnackbar } from 'src/redux/uiSlice';
 import { deleteTag } from 'src/service/tagService';
 
 type Props = {
@@ -8,9 +10,13 @@ type Props = {
 };
 
 const ModalDelete = ({ open, handleClose, tagId }: Props) => {
+  const dispatch = useDispatch();
+
   const onConfirm = () => {
     if (tagId === undefined) return;
-    deleteTag(tagId).then(handleClose);
+    deleteTag(tagId)
+      .then(handleClose)
+      .catch((err) => dispatch(openSnackbar(err.response.data.message)));
   };
 
   return (
