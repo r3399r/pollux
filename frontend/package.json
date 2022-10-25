@@ -19,6 +19,8 @@
     "pre:deploy": "run-s clean build"
   },
   "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "^35.2.1",
+    "@ckeditor/ckeditor5-react": "^5.0.2",
     "@mui/base": "^5.0.0-alpha.101",
     "@reduxjs/toolkit": "^1.8.6",
     "amazon-cognito-identity-js": "^5.2.11",
@@ -37,6 +39,7 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "@types/ckeditor__ckeditor5-build-classic": "^29.0.1",
     "@types/jest": "^27.5.2",
     "@types/node": "^16.11.59",
     "@types/randomcolor": "^0.5.6",
