@@ -1,9 +1,10 @@
-import { BadRequestError, NotFoundError } from '@y-celestial/service';
 import { inject, injectable } from 'inversify';
 import { IsNull } from 'typeorm';
+import { DbAccess } from 'src/access/DbAccess';
 import { QuestionAccess } from 'src/access/QuestionAccess';
 import { QuestionTagAccess } from 'src/access/QuestionTagAccess';
 import { ViewQuestionAccess } from 'src/access/ViewQuestionAccess';
+import { BadRequestError, NotFoundError } from 'src/celestial-service/error';
 import {
   GetQuestionParam,
   GetQuestionResponse,
@@ -26,6 +27,9 @@ export class QuestionService {
   @inject(cognitoSymbol)
   private readonly cognitoUserId!: string;
 
+  @inject(DbAccess)
+  private readonly dbAccess!: DbAccess;
+
   @inject(QuestionAccess)
   private readonly questionAccess!: QuestionAccess;
 
@@ -36,32 +40,57 @@ export class QuestionService {
   private readonly vQuestionAccess!: ViewQuestionAccess;
 
   public async cleanup() {
-    await this.questionAccess.cleanup();
+    await this.dbAccess.cleanup();
   }
 
   public async createQuestion(
     data: PostQuestionRequest
   ): Promise<PostQuestionResponse> {
-    const question = new QuestionEntity();
-    question.type = data.type;
-    question.content = data.content;
-    question.answer = data.answer ?? null;
-    question.userId = this.cognitoUserId;
+    await this.dbAccess.startTransaction();
+    try {
+      const question = new QuestionEntity();
+      question.content = data.content;
+      question.answer = data.answer ?? null;
+      question.solution = data.solution ?? null;
+      question.userId = this.cognitoUserId;
 
-    return await this.questionAccess.save(question);
+      const res = await this.questionAccess.save(question);
+
+      const questionTags = data.tagId.map((id) => {
+        const questionTag = new QuestionTagEntity();
+        questionTag.questionId = res.id;
+        questionTag.tagId = id;
+
+        return questionTag;
+      });
+
+      await this.questionTagAccess.saveMany(questionTags);
+      await this.dbAccess.commitTransaction();
+
+      return { ...res, tagId: data.tagId };
+    } catch (e) {
+      await this.dbAccess.rollbackTransaction();
+      throw e;
+    }
   }
 
   public async getQuestionOfUser(
     param: GetQuestionParam | null
   ): Promise<GetQuestionResponse> {
-    if (param === null)
-      return await this.vQuestionAccess.findMany({
+    if (param === null) {
+      const res = await this.vQuestionAccess.findMany({
         where: { userId: this.cognitoUserId },
       });
-    if (param.tagId === 'null')
-      return await this.vQuestionAccess.findMany({
-        where: { userId: this.cognitoUserId, tag: IsNull() },
+
+      return res.map((v) => ({ ...v, tagId: v.tagId?.split(',') ?? [] }));
+    }
+    if (param.tagId === 'null') {
+      const res = await this.vQuestionAccess.findMany({
+        where: { userId: this.cognitoUserId, tagId: IsNull() },
       });
+
+      return res.map((v) => ({ ...v, tagId: v.tagId?.split(',') ?? [] }));
+    }
 
     const tagIds = param.tagId.split(',');
     const questionTags = await this.questionTagAccess.findMany({
@@ -69,12 +98,14 @@ export class QuestionService {
     });
     const questionIds = [...new Set(questionTags)];
 
-    return await this.vQuestionAccess.findMany({
+    const res = await this.vQuestionAccess.findMany({
       where: questionIds.map((v) => ({
         userId: this.cognitoUserId,
         id: v.questionId,
       })),
     });
+
+    return res.map((v) => ({ ...v, tagId: v.tagId?.split(',') ?? [] }));
   }
 
   public async updateQuestion(id: string, data: PutQuestionRequest) {
@@ -84,9 +115,9 @@ export class QuestionService {
 
     const question = new QuestionEntity();
     question.id = id;
-    question.type = data.type;
     question.content = data.content;
     question.answer = data.answer ?? null;
+    question.solution = data.solution ?? null;
     question.userId = this.cognitoUserId;
 
     const res = await this.questionAccess.update(question);
@@ -108,7 +139,7 @@ export class QuestionService {
     id: string,
     data: PutQuestionTagRequest
   ): Promise<PutQuestionTagResponse> {
-    await this.questionTagAccess.startTransaction();
+    await this.dbAccess.startTransaction();
     try {
       const question = await this.questionAccess.findById(id);
       if (question.userId !== this.cognitoUserId)
@@ -145,11 +176,11 @@ export class QuestionService {
       });
 
       const res = await this.questionTagAccess.saveMany(entities);
-      await this.questionTagAccess.commitTransaction();
+      await this.dbAccess.commitTransaction();
 
       return [...res, ...oldPairs.filter((v) => commonTagId.includes(v.tagId))];
     } catch (e) {
-      await this.questionTagAccess.rollbackTransaction();
+      await this.dbAccess.rollbackTransaction();
       throw e;
     }
   }

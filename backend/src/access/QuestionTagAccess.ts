@@ -12,21 +12,6 @@ export class QuestionTagAccess {
   @inject(Database)
   private readonly database!: Database;
 
-  public async startTransaction() {
-    const qr = await this.database.getQueryRunner();
-    await qr.startTransaction();
-  }
-
-  public async commitTransaction() {
-    const qr = await this.database.getQueryRunner();
-    await qr.commitTransaction();
-  }
-
-  public async rollbackTransaction() {
-    const qr = await this.database.getQueryRunner();
-    await qr.rollbackTransaction();
-  }
-
   public async findMany(options?: FindManyOptions<QuestionTag>) {
     const qr = await this.database.getQueryRunner();
 

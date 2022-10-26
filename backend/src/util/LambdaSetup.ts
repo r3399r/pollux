@@ -1,5 +1,5 @@
-import { LambdaEvent } from '@y-celestial/service';
 import { bindings } from 'src/bindings';
+import { LambdaEvent } from 'src/celestial-service/model/Lambda';
 
 export const cognitoSymbol = Symbol('cognito');
 

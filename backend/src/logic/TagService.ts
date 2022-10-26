@@ -1,6 +1,6 @@
-import { BadRequestError, NotFoundError } from '@y-celestial/service';
 import { inject, injectable } from 'inversify';
 import { TagAccess } from 'src/access/TagAccess';
+import { BadRequestError, NotFoundError } from 'src/celestial-service/error';
 import {
   GetTagResponse,
   PostTagRequest,

@@ -2,6 +2,7 @@ import { Container } from 'inversify';
 import 'reflect-metadata';
 import { BankAccess } from './access/BankAccess';
 import { BankQuestionAccess } from './access/BankQuestionAccess';
+import { DbAccess } from './access/DbAccess';
 import { QuestionAccess } from './access/QuestionAccess';
 import { QuestionTagAccess } from './access/QuestionTagAccess';
 import { TagAccess } from './access/TagAccess';
@@ -34,6 +35,7 @@ container.bind<Function>(dbEntitiesBindingId).toFunction(ViewBankEntity);
 container.bind<Function>(dbEntitiesBindingId).toFunction(ViewQuestionEntity);
 
 // db access for tables
+container.bind<DbAccess>(DbAccess).toSelf();
 container.bind<BankAccess>(BankAccess).toSelf();
 container.bind<BankQuestionAccess>(BankQuestionAccess).toSelf();
 container.bind<QuestionAccess>(QuestionAccess).toSelf();

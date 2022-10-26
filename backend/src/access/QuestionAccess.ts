@@ -40,8 +40,4 @@ export class QuestionAccess {
 
     return await qr.manager.delete(QuestionEntity.name, id);
   }
-
-  public async cleanup() {
-    await this.database.cleanUp();
-  }
 }

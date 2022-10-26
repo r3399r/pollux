@@ -9,7 +9,7 @@
   "plugins": [
     "@typescript-eslint"
   ],
-  "ignorePatterns": ["src/doc/*"],
+  "ignorePatterns": ["src/celestial-service/*"],
   "rules": {
     "@typescript-eslint/ban-types": "off",
     "@typescript-eslint/no-explicit-any": "off",

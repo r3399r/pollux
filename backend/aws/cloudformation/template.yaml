@@ -813,20 +813,28 @@ Resources:
             "postQuestion": {
               "type": "object",
               "properties": {
-                "type": {"type": "string", "enum": ["T","S","M","F","E"]},
                 "content": {"type": "string"},
-                "answer": {"type": "string"}
+                "answer": {"type": "string"},
+                "solution": {"type": "string"},
+                "tagId": {
+                  "type": "array",
+                  "items": {"type": "string"}
+                }
               },
-              "required": ["type","content"]
+              "required": ["content","tagId"]
             },
             "putQuestion":{
               "type": "object",
               "properties": {
-                "type": {"type": "string", "enum": ["T","S","M","F","E"]},
                 "content": {"type": "string"},
-                "answer": {"type": "string"}
+                "answer": {"type": "string"},
+                "solution": {"type": "string"},
+                "tagId": {
+                  "type": "array",
+                  "items": {"type": "string"}
+                }
               },
-              "required": ["type","content"]
+              "required": ["content","tagId"]
             },
             "putQuestionTag": {
               "type": "array",

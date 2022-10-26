@@ -1,5 +1,4 @@
 import { BeforeInsert, BeforeUpdate, Column, Entity, Generated } from 'typeorm';
-import { Type } from 'src/constant/Question';
 import { Question } from 'src/model/entity/Question';
 
 @Entity({ name: 'question' })
@@ -9,13 +8,13 @@ export class QuestionEntity implements Question {
   id!: string;
 
   @Column({ type: 'text' })
-  type!: Type;
-
-  @Column({ type: 'text' })
   content!: string;
 
   @Column({ type: 'text', default: null })
   answer: string | null = null;
+
+  @Column({ type: 'text', default: null })
+  solution: string | null = null;
 
   @Column({ type: 'text', name: 'user_id' })
   userId!: string;

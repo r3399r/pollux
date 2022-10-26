@@ -1,13 +1,14 @@
+import { bindings } from 'src/bindings';
 import {
   BadRequestError,
-  errorOutput,
   InternalServerError,
+} from 'src/celestial-service/error';
+import { errorOutput, successOutput } from 'src/celestial-service/LambdaOutput';
+import {
   LambdaContext,
   LambdaEvent,
   LambdaOutput,
-  successOutput,
-} from '@y-celestial/service';
-import { bindings } from 'src/bindings';
+} from 'src/celestial-service/model/Lambda';
 import { VariableService } from 'src/logic/VariableService';
 import { GetVariableParam, GetVariableResponse } from 'src/model/api/Variable';
 import { LambdaSetup } from 'src/util/LambdaSetup';

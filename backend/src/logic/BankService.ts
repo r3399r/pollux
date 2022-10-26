@@ -1,8 +1,8 @@
-import { BadRequestError, NotFoundError } from '@y-celestial/service';
 import { inject, injectable } from 'inversify';
 import { BankAccess } from 'src/access/BankAccess';
 import { BankQuestionAccess } from 'src/access/BankQuestionAccess';
 import { ViewBankAccess } from 'src/access/ViewBankAccess';
+import { BadRequestError, NotFoundError } from 'src/celestial-service/error';
 import {
   GetBankResponse,
   PostBankQuestionRequest,

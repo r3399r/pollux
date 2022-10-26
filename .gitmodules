@@ -2,3 +2,6 @@
 	path = frontend/src/component/celestial-ui
 	url = https://github.com/r3399r/celestial-ui.git
 	branch = dev
+[submodule "backend/src/celestial-service"]
+	path = backend/src/celestial-service
+	url = https://github.com/r3399r/celestial-service.git
