@@ -9,9 +9,8 @@ const QuestionEdit = () => {
   return (
     <>
       <H1 className="mb-4">增修題目</H1>
-      <H3 className='mb-4'>標籤</H3>
-      <H3 className='mb-4'>題目內容</H3>
-      <div>Hello</div>
+      <H3 className="mb-4">標籤</H3>
+      <H3 className="mb-4">題目內容</H3>
       <CKEditor
         editor={ClassicEditor}
         data="<p>Hello from CKEditor 5!</p>"
@@ -30,8 +29,8 @@ const QuestionEdit = () => {
           console.log('Focus.', editor);
         }}
       />
-      <H3 className='my-4'>簡答</H3>
-      <H3 className='mb-4'>詳解</H3>
+      <H3 className="my-4">簡答</H3>
+      <H3 className="mb-4">詳解</H3>
       <CKEditor
         editor={ClassicEditor}
         data="<p>Hello from CKEditor 5!</p>"

@@ -9,10 +9,10 @@ type Props = {
   tagId?: string;
 };
 
-const ModalDelete = ({ open, handleClose, tagId }: Props) => {
+const ModalDeleteTag = ({ open, handleClose, tagId }: Props) => {
   const dispatch = useDispatch();
 
-  const onConfirm = () => {
+  const onDelete = () => {
     if (tagId === undefined) return;
     deleteTag(tagId)
       .then(handleClose)
@@ -25,12 +25,12 @@ const ModalDelete = ({ open, handleClose, tagId }: Props) => {
       handleClose={handleClose}
       title="刪除標籤"
       cancelBtn="先不要"
-      confirmBtn="確定刪除"
-      onConfirm={onConfirm}
+      deleteBtn="確定刪除"
+      onDelete={onDelete}
     >
       <div>確定要刪除標籤？刪除後無法復原</div>
     </ModalVanilla>
   );
 };
 
-export default ModalDelete;
+export default ModalDeleteTag;

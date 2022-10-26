@@ -6,7 +6,7 @@ import H1 from 'src/component/celestial-ui/typography/H1';
 import { RootState } from 'src/redux/store';
 import { openSnackbar } from 'src/redux/uiSlice';
 import { loadTagList } from 'src/service/tagService';
-import ModalDelete from './ModalDelete';
+import ModalDeleteTag from './ModalDeleteTag';
 import ModalEditTag from './ModalEditTag';
 import ModalNewTag from './ModalNewTag';
 
@@ -38,10 +38,10 @@ const Tag = () => {
           >
             <div className="flex-1 font-bold text-white">{v.name}</div>
             <div className="flex gap-3">
-              <Button appearance="secondary" onClick={() => setEditId(v.id)}>
+              <Button appearance="default" onClick={() => setEditId(v.id)}>
                 修改
               </Button>
-              <Button appearance="default" onClick={() => setDeleteId(v.id)}>
+              <Button appearance="error" onClick={() => setDeleteId(v.id)}>
                 刪除
               </Button>
             </div>
@@ -54,7 +54,7 @@ const Tag = () => {
         open={editId !== undefined}
         handleClose={() => setEditId(undefined)}
       />
-      <ModalDelete
+      <ModalDeleteTag
         tagId={deleteId}
         open={deleteId !== undefined}
         handleClose={() => setDeleteId(undefined)}
