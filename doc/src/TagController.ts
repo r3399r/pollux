@@ -21,7 +21,7 @@ import {
 @Tags('標籤')
 export class TagController extends Controller {
   /**
-   * 取得使用者的標籤
+   * @summary 取得使用者的標籤
    */
   @Example<GetTagResponse>([
     {
@@ -37,7 +37,7 @@ export class TagController extends Controller {
     return {} as any;
   }
   /**
-   * 新增標籤
+   * @summary 新增標籤
    * @example _postTagRequest {
    *   "name": "tag-name"
    * }
@@ -54,12 +54,12 @@ export class TagController extends Controller {
     return {} as any;
   }
   /**
-   * 刪除標籤
+   * @summary 刪除標籤
    */
   @Delete('{id}')
   deleteTag(@Path('id') _id: string) {}
   /**
-   * 修改標籤
+   * @summary 修改標籤
    * @example _putTagRequest {
    *   "name": "tag-name"
    * }

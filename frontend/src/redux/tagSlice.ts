@@ -9,7 +9,7 @@ const initialState: TagState = {
   tagList: null,
 };
 
-export const uiSlice = createSlice({
+export const tagSlice = createSlice({
   name: 'tag',
   initialState,
   reducers: {
@@ -22,6 +22,6 @@ export const uiSlice = createSlice({
   },
 });
 
-export const { setTagList, appendTagList } = uiSlice.actions;
+export const { setTagList, appendTagList } = tagSlice.actions;
 
-export default uiSlice.reducer;
+export default tagSlice.reducer;

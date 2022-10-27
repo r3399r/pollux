@@ -12,7 +12,7 @@
   font-family: 'Lato', 'Noto Sans TC', 'Noto Sans SC', sans-serif;
 }
 
-// revert default style for ckeditor
+/* revert default style for ckeditor */
 .ck-content > ul,
 .ck-content > ol {
   list-style: revert;

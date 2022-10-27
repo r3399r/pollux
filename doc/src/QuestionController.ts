@@ -18,25 +18,24 @@ import {
   PutQuestionRequest,
   PutQuestionTagRequest,
   PutQuestionTagResponse,
-  Type,
 } from '@y-celestial/pollux-service';
 
 @Route('question')
 @Tags('題目')
 export class QuestionController extends Controller {
   /**
-   * 取得使用者的題目
+   * @summary 取得使用者的題目
    */
   @Example<GetQuestionResponse>([
     {
       id: 'question-id',
-      type: Type.Single,
       content: '1+1=? (1) 1 (2) 2',
       answer: '2',
+      solution: '3',
       userId: 'user-id',
+      tagId: ['tag-id-1', 'tag-id-2'],
       dateCreated: new Date(),
       dateUpdated: new Date(),
-      tag: ['tag-id-1::name-1', 'tag-id-2::name-2'],
     },
   ])
   @Get()
@@ -48,14 +47,17 @@ export class QuestionController extends Controller {
    * @example _postQuestionRequest {
    *   "type": "S",
    *   "content": "1+1=? (1) 1 (2) 2",
-   *   "answer": "2"
+   *   "answer": "2",
+   *   "solution": "3",
+   *   "tagId": ['tag-id-1', 'tag-id-2']
    * }
    */
   @Example<PostQuestionResponse>({
     id: 'question-id',
-    type: Type.Single,
     content: '1+1=? (1) 1 (2) 2',
     answer: '2',
+    solution: '3',
+    tagId: ['tag-id-1', 'tag-id-2'],
     userId: 'user-id',
     dateCreated: new Date(),
     dateUpdated: new Date(),
@@ -67,16 +69,18 @@ export class QuestionController extends Controller {
     return {} as any;
   }
   /**
-   * 刪除題目
+   * @summary 刪除題目
    */
   @Delete('{id}')
   deleteQuestion(@Path('id') _id: string) {}
   /**
-   * 修改題目
+   * @summary 修改題目
    * @example _putQuestionRequest {
    *   "type": "S",
    *   "content": "1+1=? (1) 1 (2) 2",
-   *   "answer": "2"
+   *   "answer": "2",
+   *   "solution": "3",
+   *   "tagId": ['tag-id-1', 'tag-id-2']
    * }
    */
   @Put('{id}')
@@ -85,7 +89,7 @@ export class QuestionController extends Controller {
     @Body() _putQuestionRequest: PutQuestionRequest
   ) {}
   /**
-   * 設定題目之標籤
+   * @summary 設定題目之標籤
    * @example _putQuestionTagRequest ["tag-id-1", "tag-id-2"]
    */
   @Example<PutQuestionTagResponse>([

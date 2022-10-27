@@ -5,7 +5,7 @@ import { Controller, Example, Get, Query, Route, Tags } from 'tsoa';
 @Tags('環境變數')
 export class VariableController extends Controller {
   /**
-   * 取得指定環境變數
+   * @summary 取得指定環境變數
    */
   @Example<GetVariableResponse>({
     a: '1',

@@ -48,7 +48,7 @@
     "@types/react-transition-group": "^4.4.5",
     "@typescript-eslint/eslint-plugin": "^5.38.0",
     "@typescript-eslint/parser": "^5.38.0",
-    "@y-celestial/pollux-service": "^1.1.8",
+    "@y-celestial/pollux-service": "^1.1.9",
     "autoprefixer": "^10.4.12",
     "cross-env": "^7.0.3",
     "del-cli": "^5.0.0",

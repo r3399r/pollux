@@ -23,7 +23,7 @@ import {
 @Tags('題庫')
 export class BankController extends Controller {
   /**
-   * 取得使用者的題庫
+   * @summary 取得使用者的題庫
    */
   @Example<GetBankResponse>([
     {
@@ -40,7 +40,7 @@ export class BankController extends Controller {
     return {} as any;
   }
   /**
-   * 新增題庫
+   * @summary 新增題庫
    * @example _postBankRequest {
    *   "name": "bank-name"
    * }
@@ -57,12 +57,12 @@ export class BankController extends Controller {
     return {} as any;
   }
   /**
-   * 刪除題庫
+   * @summary 刪除題庫
    */
   @Delete('{id}')
   deleteBank(@Path('id') _id: string) {}
   /**
-   * 修改題庫名
+   * @summary 修改題庫名
    * @example _putBankRequest {
    *   "name": "bank-name"
    * }
@@ -70,7 +70,7 @@ export class BankController extends Controller {
   @Put('{id}')
   putBank(@Path('id') _id: string, @Body() _putBankRequest: PutBankRequest) {}
   /**
-   * 新增題目至題庫
+   * @summary 新增題目至題庫
    * @example _postBankQuestionRequest ["question-id-1", "question-id-2"]
    */
   @Example<PostBankQuestionResponse>([
@@ -92,7 +92,7 @@ export class BankController extends Controller {
     return {} as any;
   }
   /**
-   * 刪除題庫之題目
+   * @summary 刪除題庫之題目
    */
   @Delete('{id}/question/{qid}')
   deleteBankQuestion(@Path('id') _id: string, @Path('qid') _qid: string) {}

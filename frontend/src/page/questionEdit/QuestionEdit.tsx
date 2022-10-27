@@ -4,18 +4,22 @@ import { SelectOption } from '@mui/base';
 import randomColor from 'randomcolor';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import Button from 'src/component/celestial-ui/Button';
 import Input from 'src/component/celestial-ui/Input';
 import MultiSelect from 'src/component/celestial-ui/MultiSelect';
 import Option from 'src/component/celestial-ui/Option';
 import Switch from 'src/component/celestial-ui/Switch';
 import H1 from 'src/component/celestial-ui/typography/H1';
 import H3 from 'src/component/celestial-ui/typography/H3';
+import { Page } from 'src/constant/Page';
 import { RootState } from 'src/redux/store';
 import { openSnackbar } from 'src/redux/uiSlice';
-import { loadTagList } from 'src/service/questionService';
+import { createQuestion, loadTagList } from 'src/service/questionService';
 
 const QuestionEdit = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { tagList } = useSelector((rootState: RootState) => rootState.tag);
   const [content, setContent] = useState<string>();
   const [hasAnswer, setHasAnswer] = useState<boolean>(true);
@@ -23,7 +27,11 @@ const QuestionEdit = () => {
   const [hasSolution, setHasSolution] = useState<boolean>(false);
   const [solution, setSolution] = useState<string>();
   const [tagId, setTagId] = useState<string[]>([]);
-  console.log(tagId, content, answer, solution);
+
+  const clickable =
+    !!content &&
+    (!hasAnswer || (hasAnswer && !!answer)) &&
+    (!hasSolution || (hasSolution && !!solution));
 
   useEffect(() => {
     loadTagList().catch((err) => dispatch(openSnackbar(err.response.data.message)));
@@ -32,6 +40,18 @@ const QuestionEdit = () => {
   const renderValue = (options: SelectOption<string>[]) => (
     <div className="flex gap-2 flex-wrap">{options.map((v) => v.label)}</div>
   );
+
+  const onSubmit = () => {
+    if (!clickable) return;
+    createQuestion({
+      content,
+      answer: hasAnswer ? answer : undefined,
+      solution: hasSolution ? solution : undefined,
+      tagId,
+    })
+      .then(() => navigate(Page.Question))
+      .catch((err) => dispatch(openSnackbar(err.response.data.message)));
+  };
 
   if (tagList === null) return <></>;
 
@@ -82,6 +102,11 @@ const QuestionEdit = () => {
           }}
         />
       )}
+      <div className="text-right mt-4">
+        <Button onClick={onSubmit} disabled={!clickable}>
+          送出
+        </Button>
+      </div>
     </>
   );
 };
