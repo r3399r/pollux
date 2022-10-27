@@ -10,7 +10,7 @@
     "eject": "react-scripts eject",
     "lint:es": "eslint -c ./eslint.json src",
     "fix:es": "npm run lint:es -- --fix",
-    "lint:format": "prettier --list-different \"{src,public}/**/*.{tsx,ts,js,html,scss,json}\"",
+    "lint:format": "prettier --list-different \"{src,public}/**/*.{tsx,ts,js,html,scss,css,json}\"",
     "fix:format": "npm run lint:format -- --write",
     "lint": "run-s lint:*",
     "fix": "run-s fix:*",
@@ -21,7 +21,7 @@
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^35.2.1",
     "@ckeditor/ckeditor5-react": "^5.0.2",
-    "@mui/base": "^5.0.0-alpha.101",
+    "@mui/base": "^5.0.0-alpha.103",
     "@reduxjs/toolkit": "^1.8.6",
     "amazon-cognito-identity-js": "^5.2.11",
     "axios": "^1.1.3",

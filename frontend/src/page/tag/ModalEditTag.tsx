@@ -1,10 +1,11 @@
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import FormInput from 'src/component/celestial-ui/FormInput';
 import ModalForm from 'src/component/celestial-ui/ModalForm';
 import { EditTagForm } from 'src/model/Form';
 import { RootState } from 'src/redux/store';
+import { openSnackbar } from 'src/redux/uiSlice';
 import { editTag } from 'src/service/tagService';
 
 type Props = {
@@ -14,6 +15,7 @@ type Props = {
 };
 
 const ModalEditTag = ({ open, handleClose, tagId }: Props) => {
+  const dispatch = useDispatch();
   const methods = useForm<EditTagForm>();
   const { tagList } = useSelector((rootState: RootState) => rootState.tag);
 
@@ -29,7 +31,9 @@ const ModalEditTag = ({ open, handleClose, tagId }: Props) => {
 
   const onSubmit = (data: EditTagForm) => {
     if (tagId === undefined) return;
-    editTag(tagId, data.name).then(onClose);
+    editTag(tagId, data.name)
+      .then(onClose)
+      .catch((err) => dispatch(openSnackbar(err.response.data.message)));
   };
 
   return (

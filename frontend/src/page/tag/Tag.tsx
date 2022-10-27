@@ -33,7 +33,7 @@ const Tag = () => {
         return (
           <div
             key={v.id}
-            className={'my-2 p-3 rounded-xl text-navy-900 flex items-center'}
+            className={'my-2 p-3 rounded-xl flex items-center'}
             style={{ background: bgColor }}
           >
             <div className="flex-1 font-bold text-white">{v.name}</div>

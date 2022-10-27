@@ -11,3 +11,19 @@
   line-height: 1.5;
   font-family: 'Lato', 'Noto Sans TC', 'Noto Sans SC', sans-serif;
 }
+
+// revert default style for ckeditor
+.ck-content > ul,
+.ck-content > ol {
+  list-style: revert;
+  margin: revert;
+  padding: revert;
+}
+.ck-content > h2,
+.ck-content > h3,
+.ck-content > h4,
+.ck-content > p {
+  margin: revert;
+  font-size: revert;
+  font-weight: revert;
+}

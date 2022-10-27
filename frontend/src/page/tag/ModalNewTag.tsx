@@ -1,7 +1,9 @@
 import { useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
 import FormInput from 'src/component/celestial-ui/FormInput';
 import ModalForm from 'src/component/celestial-ui/ModalForm';
 import { NewTagForm } from 'src/model/Form';
+import { openSnackbar } from 'src/redux/uiSlice';
 import { createTag } from 'src/service/tagService';
 
 type Props = {
@@ -10,6 +12,7 @@ type Props = {
 };
 
 const ModalNewTag = ({ open, handleClose }: Props) => {
+  const dispatch = useDispatch();
   const methods = useForm<NewTagForm>();
 
   const onClose = () => {
@@ -18,7 +21,9 @@ const ModalNewTag = ({ open, handleClose }: Props) => {
   };
 
   const onSubmit = (data: NewTagForm) => {
-    createTag(data.name).then(onClose);
+    createTag(data.name)
+      .then(onClose)
+      .catch((err) => dispatch(openSnackbar(err.response.data.message)));
   };
 
   return (
