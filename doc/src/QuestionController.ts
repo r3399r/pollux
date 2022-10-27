@@ -43,13 +43,12 @@ export class QuestionController extends Controller {
     return {} as any;
   }
   /**
-   * 新增題目
+   * @summary 新增題目
    * @example _postQuestionRequest {
-   *   "type": "S",
    *   "content": "1+1=? (1) 1 (2) 2",
    *   "answer": "2",
    *   "solution": "3",
-   *   "tagId": ['tag-id-1', 'tag-id-2']
+   *   "tagId": ["tag-id-1", "tag-id-2"]
    * }
    */
   @Example<PostQuestionResponse>({
@@ -76,11 +75,10 @@ export class QuestionController extends Controller {
   /**
    * @summary 修改題目
    * @example _putQuestionRequest {
-   *   "type": "S",
    *   "content": "1+1=? (1) 1 (2) 2",
    *   "answer": "2",
    *   "solution": "3",
-   *   "tagId": ['tag-id-1', 'tag-id-2']
+   *   "tagId": ["tag-id-1", "tag-id-2"]
    * }
    */
   @Put('{id}')

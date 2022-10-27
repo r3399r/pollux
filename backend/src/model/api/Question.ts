@@ -1,5 +1,5 @@
 import { QuestionTag } from 'src/model/entity/QuestionTag';
-import { Question } from 'src/model/type/Question';
+import { QuestionType } from 'src/model/type/Question';
 
 export type PostQuestionRequest = {
   content: string;
@@ -8,7 +8,7 @@ export type PostQuestionRequest = {
   tagId: string[];
 };
 
-export type PostQuestionResponse = Question;
+export type PostQuestionResponse = QuestionType;
 
 export type PutQuestionRequest = {
   content: string;
@@ -23,4 +23,4 @@ export type PutQuestionTagResponse = QuestionTag[];
 
 export type GetQuestionParam = { tagId: string };
 
-export type GetQuestionResponse = Question[];
+export type GetQuestionResponse = QuestionType[];

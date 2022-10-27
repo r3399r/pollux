@@ -1,3 +1,3 @@
-import { Question as QuestionEntity } from 'src/model/entity/Question';
+import { Question } from 'src/model/entity/Question';
 
-export type Question = QuestionEntity & { tagId: string[] };
+export type QuestionType = Question & { tagId: string[] };

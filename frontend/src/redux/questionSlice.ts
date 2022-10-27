@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Question } from '@y-celestial/pollux-service';
+import { QuestionType } from '@y-celestial/pollux-service';
 
 export type QuestionState = {
-  questionList: Question[] | null;
+  questionList: QuestionType[] | null;
 };
 
 const initialState: QuestionState = {
@@ -13,10 +13,10 @@ export const questionSlice = createSlice({
   name: 'question',
   initialState,
   reducers: {
-    setQuestionList: (state: QuestionState, action: PayloadAction<Question[]>) => {
+    setQuestionList: (state: QuestionState, action: PayloadAction<QuestionType[]>) => {
       state.questionList = action.payload;
     },
-    appendQuestionList: (state: QuestionState, action: PayloadAction<Question>) => {
+    appendQuestionList: (state: QuestionState, action: PayloadAction<QuestionType>) => {
       state.questionList = [...(state.questionList ?? []), action.payload];
     },
   },
