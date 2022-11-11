@@ -6,24 +6,32 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;700;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@100;300;400;700;900&display=swap');
 
-* {
+body {
   font-size: 16px;
   line-height: 1.5;
   font-family: 'Lato', 'Noto Sans TC', 'Noto Sans SC', sans-serif;
 }
 
 /* revert default style for ckeditor */
-.ck-content > ul,
-.ck-content > ol {
+ul,
+ol {
   list-style: revert;
   margin: revert;
   padding: revert;
 }
-.ck-content > h2,
-.ck-content > h3,
-.ck-content > h4,
-.ck-content > p {
+h2,
+h3,
+h4,
+p {
   margin: revert;
   font-size: revert;
   font-weight: revert;
+}
+
+// fix known mathjax issue when printed
+mjx-stretchy-h > mjx-ext {
+  font-weight: 600;
+}
+mjx-stretchy-v > mjx-ext {
+  font-weight: 600;
 }

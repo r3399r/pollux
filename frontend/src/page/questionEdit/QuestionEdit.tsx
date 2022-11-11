@@ -1,6 +1,7 @@
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import { SelectOption } from '@mui/base';
+import { MathJax } from 'better-react-mathjax';
 import randomColor from 'randomcolor';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -80,6 +81,9 @@ const QuestionEdit = () => {
           setContent(data);
         }}
       />
+      <MathJax>
+        <div dangerouslySetInnerHTML={{ __html: content ?? '' }} />
+      </MathJax>
       <div className="flex items-center mt-4 gap-4">
         <H3>答案</H3>
         <Switch onChange={(e) => setHasAnswer(e.target.checked)} defaultChecked />
