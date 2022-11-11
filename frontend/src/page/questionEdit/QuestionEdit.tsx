@@ -81,7 +81,7 @@ const QuestionEdit = () => {
           setContent(data);
         }}
       />
-      <MathJax>
+      <MathJax dynamic>
         <div dangerouslySetInnerHTML={{ __html: content ?? '' }} />
       </MathJax>
       <div className="flex items-center mt-4 gap-4">
