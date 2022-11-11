@@ -28,7 +28,7 @@ p {
   font-weight: revert;
 }
 
-// fix known mathjax issue when printed
+/* fix known mathjax issue when printed */
 mjx-stretchy-h > mjx-ext {
   font-weight: 600;
 }
