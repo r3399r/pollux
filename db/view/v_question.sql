@@ -1,5 +1,3 @@
-DROP VIEW IF EXISTS v_question;
-
 CREATE VIEW v_question AS with tmp as (
     select
     	question_id,
@@ -12,6 +10,7 @@ select q.id,
     q.content,
     q.answer,
     q.solution,
+    q.is_mathjax,
     q.user_id,
     q.date_created,
     q.date_updated,

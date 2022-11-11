@@ -816,12 +816,13 @@ Resources:
                 "content": {"type": "string"},
                 "answer": {"type": "string"},
                 "solution": {"type": "string"},
+                "isMathjax": {"type": "boolean"},
                 "tagId": {
                   "type": "array",
                   "items": {"type": "string"}
                 }
               },
-              "required": ["content","tagId"]
+              "required": ["content","isMathjax","tagId"]
             },
             "putQuestion":{
               "type": "object",
@@ -829,12 +830,13 @@ Resources:
                 "content": {"type": "string"},
                 "answer": {"type": "string"},
                 "solution": {"type": "string"},
+                "isMathjax": {"type": "boolean"},
                 "tagId": {
                   "type": "array",
                   "items": {"type": "string"}
                 }
               },
-              "required": ["content","tagId"]
+              "required": ["content","isMathjax","tagId"]
             },
             "putQuestionTag": {
               "type": "array",

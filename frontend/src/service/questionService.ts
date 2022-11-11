@@ -1,3 +1,4 @@
+import { PostQuestionRequest } from '@y-celestial/pollux-service';
 import questionEndpoint from 'src/api/questionEndpoint';
 import tagEndpoint from 'src/api/tagEndpoint';
 import { appendQuestionList, setQuestionList } from 'src/redux/questionSlice';
@@ -31,12 +32,7 @@ export const loadQuestionList = async () => {
   }
 };
 
-export const createQuestion = async (data: {
-  content: string;
-  answer?: string;
-  solution?: string;
-  tagId: string[];
-}) => {
+export const createQuestion = async (data: PostQuestionRequest) => {
   try {
     dispatch(startWaiting());
 

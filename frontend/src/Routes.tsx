@@ -5,7 +5,7 @@ import BankDetail from './page/bankDetail/BankDetail';
 import Landing from './page/landing/Landing';
 import Login from './page/login/Login';
 import Question from './page/question/Question';
-import QuestionEdit from './page/questionEdit/QuestionEdit';
+import QuestionEdit from './page/questionEdit';
 import Tag from './page/tag/Tag';
 
 const AppRoutes = () => (

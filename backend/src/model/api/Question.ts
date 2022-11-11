@@ -5,6 +5,7 @@ export type PostQuestionRequest = {
   content: string;
   answer?: string;
   solution?: string;
+  isMathjax: boolean;
   tagId: string[];
 };
 
@@ -14,6 +15,7 @@ export type PutQuestionRequest = {
   content: string;
   answer?: string;
   solution?: string;
+  isMathjax: boolean;
   tagId: string[];
 };
 

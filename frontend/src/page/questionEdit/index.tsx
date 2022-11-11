@@ -1,11 +1,11 @@
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import { SelectOption } from '@mui/base';
-import { MathJax } from 'better-react-mathjax';
 import randomColor from 'randomcolor';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import Body from 'src/component/Body';
 import Button from 'src/component/celestial-ui/Button';
 import Input from 'src/component/celestial-ui/Input';
 import MultiSelect from 'src/component/celestial-ui/MultiSelect';
@@ -17,10 +17,12 @@ import { Page } from 'src/constant/Page';
 import { RootState } from 'src/redux/store';
 import { openSnackbar } from 'src/redux/uiSlice';
 import { createQuestion, loadTagList } from 'src/service/questionService';
+import ModalPreview from './ModalPreview';
 
 const QuestionEdit = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [applyMathJax, setApplyMathJax] = useState<boolean>(false);
   const { tagList } = useSelector((rootState: RootState) => rootState.tag);
   const [content, setContent] = useState<string>();
   const [hasAnswer, setHasAnswer] = useState<boolean>(true);
@@ -28,6 +30,7 @@ const QuestionEdit = () => {
   const [hasSolution, setHasSolution] = useState<boolean>(false);
   const [solution, setSolution] = useState<string>();
   const [tagId, setTagId] = useState<string[]>([]);
+  const [isPreview, setIsPreview] = useState<boolean>(false);
 
   const clickable =
     !!content &&
@@ -48,6 +51,7 @@ const QuestionEdit = () => {
       content,
       answer: hasAnswer ? answer : undefined,
       solution: hasSolution ? solution : undefined,
+      isMathjax: applyMathJax,
       tagId,
     })
       .then(() => navigate(Page.Question))
@@ -59,6 +63,12 @@ const QuestionEdit = () => {
   return (
     <>
       <H1 className="mb-4">增修題目</H1>
+      <div className="flex items-center mt-4 gap-4">
+        <Body size="l" bold>
+          套用 MathJax
+        </Body>
+        <Switch onChange={(e) => setApplyMathJax(e.target.checked)} />
+      </div>
       <H3 className="mb-4">標籤</H3>
       <MultiSelect renderValue={renderValue} onChange={(event, value) => setTagId(value)}>
         {tagList.map((v) => (
@@ -81,9 +91,6 @@ const QuestionEdit = () => {
           setContent(data);
         }}
       />
-      <MathJax dynamic>
-        <div dangerouslySetInnerHTML={{ __html: content ?? '' }} />
-      </MathJax>
       <div className="flex items-center mt-4 gap-4">
         <H3>答案</H3>
         <Switch onChange={(e) => setHasAnswer(e.target.checked)} defaultChecked />
@@ -106,11 +113,27 @@ const QuestionEdit = () => {
           }}
         />
       )}
-      <div className="text-right mt-4">
-        <Button onClick={onSubmit} disabled={!clickable}>
+      <div className="flex mt-4 justify-end gap-4">
+        <Button
+          type="button"
+          appearance="default"
+          disabled={!clickable}
+          onClick={() => setIsPreview(true)}
+        >
+          預覽
+        </Button>
+        <Button type="button" onClick={onSubmit} disabled={!clickable}>
           送出
         </Button>
       </div>
+      <ModalPreview
+        open={isPreview}
+        handleClose={() => setIsPreview(false)}
+        applyMathJax={applyMathJax}
+        content={content ?? ''}
+        answer={hasAnswer ? answer : undefined}
+        solution={hasSolution ? solution : undefined}
+      />
     </>
   );
 };
