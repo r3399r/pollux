@@ -22,6 +22,7 @@
     "@ckeditor/ckeditor5-build-classic": "^35.2.1",
     "@ckeditor/ckeditor5-react": "^5.0.2",
     "@mui/base": "^5.0.0-alpha.103",
+    "@mui/x-date-pickers": "^5.0.8",
     "@reduxjs/toolkit": "^1.8.6",
     "amazon-cognito-identity-js": "^5.2.11",
     "axios": "^1.1.3",
