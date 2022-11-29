@@ -1,4 +1,4 @@
-import Divider from 'src/component/celestial-ui/Divider';
+import Divider from 'src/celestial-ui/component/Divider';
 import ForgotForm from './component/ForgotForm';
 import LoginForm from './component/LoginForm';
 import RegisterForm from './component/RegisterForm';

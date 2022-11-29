@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import Button from 'src/component/celestial-ui/Button';
-import Form from 'src/component/celestial-ui/Form';
-import FormInput from 'src/component/celestial-ui/FormInput';
-import H1 from 'src/component/celestial-ui/typography/H1';
+import Button from 'src/celestial-ui/component/Button';
+import Form from 'src/celestial-ui/component/Form';
+import FormInput from 'src/celestial-ui/component/FormInput';
+import H1 from 'src/celestial-ui/component/typography/H1';
 import { ForgotForm as FormType } from 'src/model/Form';
 import { confirmForgot, sendForgot } from 'src/service/authService';
 

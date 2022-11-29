@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import FormInput from 'src/component/celestial-ui/FormInput';
-import ModalForm from 'src/component/celestial-ui/ModalForm';
+import FormInput from 'src/celestial-ui/component/FormInput';
+import ModalForm from 'src/celestial-ui/component/ModalForm';
 import { EditTagForm } from 'src/model/Form';
 import { RootState } from 'src/redux/store';
 import { openSnackbar } from 'src/redux/uiSlice';

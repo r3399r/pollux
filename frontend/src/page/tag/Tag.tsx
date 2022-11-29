@@ -1,8 +1,8 @@
 import randomColor from 'randomcolor';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Button from 'src/component/celestial-ui/Button';
-import H1 from 'src/component/celestial-ui/typography/H1';
+import Button from 'src/celestial-ui/component/Button';
+import H1 from 'src/celestial-ui/component/typography/H1';
 import { RootState } from 'src/redux/store';
 import { openSnackbar } from 'src/redux/uiSlice';
 import { loadTagList } from 'src/service/tagService';

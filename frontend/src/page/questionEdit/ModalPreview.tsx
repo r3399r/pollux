@@ -1,6 +1,6 @@
+import Modal from 'src/celestial-ui/component/Modal';
+import H2 from 'src/celestial-ui/component/typography/H2';
 import Body from 'src/component/Body';
-import Modal from 'src/component/celestial-ui/Modal';
-import H2 from 'src/component/celestial-ui/typography/H2';
 
 type Props = {
   open: boolean;

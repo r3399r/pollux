@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import Button from 'src/component/celestial-ui/Button';
-import H1 from 'src/component/celestial-ui/typography/H1';
+import Button from 'src/celestial-ui/component/Button';
+import H1 from 'src/celestial-ui/component/typography/H1';
 import { Page } from 'src/constant/Page';
 import { RootState } from 'src/redux/store';
 import { openSnackbar } from 'src/redux/uiSlice';

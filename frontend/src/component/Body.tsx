@@ -1,5 +1,5 @@
 import { MathJax } from 'better-react-mathjax';
-import CelestialBody, { Props as BodyProps } from './celestial-ui/typography/Body';
+import CelestialBody, { Props as BodyProps } from 'src/celestial-ui/component/typography/Body';
 
 type Props = BodyProps & {
   mathJax?: boolean;

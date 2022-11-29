@@ -1,9 +1,9 @@
 import { SnackbarCloseReason } from '@mui/base';
 import { SyntheticEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import CelestialSnackbar from 'src/celestial-ui/component/Snackbar';
 import { RootState } from 'src/redux/store';
 import { closeSnackbar } from 'src/redux/uiSlice';
-import CelestialSnackbar from './celestial-ui/Snackbar';
 
 const Snackbar = () => {
   const dispatch = useDispatch();

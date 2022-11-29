@@ -1,5 +1,5 @@
 [submodule "frontend/src/component/celestial-ui"]
-	path = frontend/src/component/celestial-ui
+	path = frontend/src/celestial-ui
 	url = https://github.com/r3399r/celestial-ui.git
 	branch = dev
 [submodule "backend/src/celestial-service"]

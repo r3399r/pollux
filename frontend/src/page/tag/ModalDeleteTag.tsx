@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux';
-import ModalVanilla from 'src/component/celestial-ui/ModalVanilla';
+import ModalVanilla from 'src/celestial-ui/component/ModalVanilla';
 import { openSnackbar } from 'src/redux/uiSlice';
 import { deleteTag } from 'src/service/tagService';
 

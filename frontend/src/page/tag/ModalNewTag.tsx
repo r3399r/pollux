@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import FormInput from 'src/component/celestial-ui/FormInput';
-import ModalForm from 'src/component/celestial-ui/ModalForm';
+import FormInput from 'src/celestial-ui/component/FormInput';
+import ModalForm from 'src/celestial-ui/component/ModalForm';
 import { NewTagForm } from 'src/model/Form';
 import { openSnackbar } from 'src/redux/uiSlice';
 import { createTag } from 'src/service/tagService';
