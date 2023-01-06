@@ -1,4 +1,4 @@
-[submodule "frontend/src/component/celestial-ui"]
+[submodule "frontend/src/celestial-ui"]
 	path = frontend/src/celestial-ui
 	url = https://github.com/r3399r/celestial-ui.git
 	branch = dev
