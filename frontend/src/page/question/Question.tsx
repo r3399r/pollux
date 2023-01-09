@@ -7,6 +7,7 @@ import { Page } from 'src/constant/Page';
 import { RootState } from 'src/redux/store';
 import { openSnackbar } from 'src/redux/uiSlice';
 import { loadQuestionList } from 'src/service/questionService';
+import QuestionBlock from './QuestionBlock';
 
 const Question = () => {
   const dispatch = useDispatch();
@@ -24,7 +25,7 @@ const Question = () => {
         新增題目
       </Button>
       {questionList?.map((v) => (
-        <div key={v.id}>{v.id}</div>
+        <QuestionBlock key={v.id} question={v} />
       ))}
     </>
   );
