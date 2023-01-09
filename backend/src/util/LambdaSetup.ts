@@ -8,9 +8,9 @@ export const cognitoSymbol = Symbol('cognito');
  */
 export class LambdaSetup {
   public static setup(event: LambdaEvent): void {
-    this.bind<string | null>(
+    this.bind<string>(
       cognitoSymbol,
-      event.requestContext.authorizer?.claims.sub ?? null
+      event.requestContext.authorizer?.claims.sub ?? ''
     );
   }
 

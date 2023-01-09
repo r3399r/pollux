@@ -1,3 +1,4 @@
+import { S3 } from 'aws-sdk';
 import { Container } from 'inversify';
 import 'reflect-metadata';
 import { BankAccess } from './access/BankAccess';
@@ -9,6 +10,7 @@ import { TagAccess } from './access/TagAccess';
 import { ViewBankAccess } from './access/ViewBankAccess';
 import { ViewQuestionAccess } from './access/ViewQuestionAccess';
 import { BankService } from './logic/BankService';
+import { ImageService } from './logic/ImageService';
 import { QuestionService } from './logic/QuestionService';
 import { TagService } from './logic/TagService';
 import { VariableService } from './logic/VariableService';
@@ -46,8 +48,12 @@ container.bind<ViewQuestionAccess>(ViewQuestionAccess).toSelf();
 
 // service
 container.bind<BankService>(BankService).toSelf();
+container.bind<ImageService>(ImageService).toSelf();
 container.bind<QuestionService>(QuestionService).toSelf();
 container.bind<TagService>(TagService).toSelf();
 container.bind<VariableService>(VariableService).toSelf();
+
+// AWS
+container.bind<S3>(S3).toDynamicValue(() => new S3());
 
 export { container as bindings };

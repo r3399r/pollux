@@ -17,6 +17,7 @@ import { Page } from 'src/constant/Page';
 import { RootState } from 'src/redux/store';
 import { openSnackbar } from 'src/redux/uiSlice';
 import { createQuestion, loadTagList } from 'src/service/questionService';
+import { MyUploadAdapter } from 'src/util/MyUploadAdapter';
 import ModalPreview from './ModalPreview';
 
 const QuestionEdit = () => {
@@ -90,6 +91,10 @@ const QuestionEdit = () => {
           const data = editor.getData();
           setContent(data);
         }}
+        onReady={(editor) =>
+          (editor.plugins.get('FileRepository').createUploadAdapter = (loader) =>
+            new MyUploadAdapter(loader))
+        }
       />
       <div className="flex items-center mt-4 gap-4">
         <H3>答案</H3>
@@ -111,6 +116,10 @@ const QuestionEdit = () => {
             const data = editor.getData();
             setSolution(data);
           }}
+          onReady={(editor) =>
+            (editor.plugins.get('FileRepository').createUploadAdapter = (loader) =>
+              new MyUploadAdapter(loader))
+          }
         />
       )}
       <div className="flex mt-4 justify-end gap-4">
