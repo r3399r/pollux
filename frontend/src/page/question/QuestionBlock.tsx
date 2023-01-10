@@ -16,7 +16,7 @@ const QuestionBlock = ({ question }: Props) => {
   const { tagList } = useSelector((rootState: RootState) => rootState.tag);
 
   return (
-    <div className="my-3 p-4 rounded-lg bg-green-300">
+    <div className="my-3 p-4 rounded-lg bg-green-300 ck-content">
       <div>標籤：{question.tagId.map((v) => tagList?.find((o) => o.id === v)?.name).join()}</div>
       <H3 className="my-3">題目</H3>
       {question.isMathjax ? (

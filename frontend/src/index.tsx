@@ -5,6 +5,7 @@ import App from './App';
 import MathJaxProvider from './context/MathJaxContext';
 import { configStore } from './redux/store';
 import './index.css';
+import './ckeditor.css';
 
 const store = configStore();
 
