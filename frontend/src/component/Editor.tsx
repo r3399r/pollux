@@ -31,6 +31,7 @@ const Editor = ({ onChange, disable = false, hideToolbar = false, initContent }:
     onChange={onChange}
     setContents={initContent}
     setOptions={{
+      defaultStyle: 'font-size:16px',
       katex: katex,
       font: [
         'Arial',
