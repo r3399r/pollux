@@ -11,27 +11,3 @@ body {
   line-height: 1.5;
   font-family: 'Lato', 'Noto Sans TC', 'Noto Sans SC', sans-serif;
 }
-
-/* revert default style for ckeditor */
-ul,
-ol {
-  list-style: revert;
-  margin: revert;
-  padding: revert;
-}
-h2,
-h3,
-h4,
-p {
-  margin: revert;
-  font-size: revert;
-  font-weight: revert;
-}
-
-/* fix known mathjax issue when printed */
-mjx-stretchy-h > mjx-ext {
-  font-weight: 600;
-}
-mjx-stretchy-v > mjx-ext {
-  font-weight: 600;
-}

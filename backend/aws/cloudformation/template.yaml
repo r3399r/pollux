@@ -864,13 +864,12 @@ Resources:
                 "content": {"type": "string"},
                 "answer": {"type": "string"},
                 "solution": {"type": "string"},
-                "isMathjax": {"type": "boolean"},
                 "tagId": {
                   "type": "array",
                   "items": {"type": "string"}
                 }
               },
-              "required": ["content","isMathjax","tagId"]
+              "required": ["content","tagId"]
             },
             "putQuestion":{
               "type": "object",
@@ -878,13 +877,12 @@ Resources:
                 "content": {"type": "string"},
                 "answer": {"type": "string"},
                 "solution": {"type": "string"},
-                "isMathjax": {"type": "boolean"},
                 "tagId": {
                   "type": "array",
                   "items": {"type": "string"}
                 }
               },
-              "required": ["content","isMathjax","tagId"]
+              "required": ["content","tagId"]
             },
             "putQuestionTag": {
               "type": "array",

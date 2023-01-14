@@ -16,9 +16,6 @@ export class QuestionEntity implements Question {
   @Column({ type: 'text', default: null })
   solution: string | null = null;
 
-  @Column({ type: 'bool', name: 'is_mathjax' })
-  isMathjax!: boolean;
-
   @Column({ type: 'text', name: 'user_id' })
   userId!: string;
 

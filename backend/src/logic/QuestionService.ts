@@ -52,7 +52,6 @@ export class QuestionService {
       question.content = data.content;
       question.answer = data.answer ?? null;
       question.solution = data.solution ?? null;
-      question.isMathjax = data.isMathjax;
       question.userId = this.cognitoUserId;
 
       const res = await this.questionAccess.save(question);
@@ -119,7 +118,6 @@ export class QuestionService {
     question.content = data.content;
     question.answer = data.answer ?? null;
     question.solution = data.solution ?? null;
-    question.isMathjax = data.isMathjax;
     question.userId = this.cognitoUserId;
 
     const res = await this.questionAccess.update(question);

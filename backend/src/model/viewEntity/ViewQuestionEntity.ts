@@ -15,9 +15,6 @@ export class ViewQuestionEntity implements ViewQuestion {
   @ViewColumn()
   solution: string | null = null;
 
-  @ViewColumn({ name: 'is_mathjax' })
-  isMathjax!: boolean;
-
   @ViewColumn({ name: 'user_id' })
   userId!: string;
 
