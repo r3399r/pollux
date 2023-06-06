@@ -12,7 +12,7 @@ const Add = () => {
   const {
     register,
     handleSubmit,
-    reset,
+    setValue,
     setError,
     formState: { errors },
   } = useForm<QaForm>();
@@ -29,7 +29,7 @@ const Add = () => {
     if (data.answer === answer && question && answer) {
       setHistory([...history, { question, answer }]);
       generate();
-      reset();
+      setValue('answer', '');
     } else setError('answer', {}, { shouldFocus: true });
   };
 
@@ -38,7 +38,7 @@ const Add = () => {
   }, []);
 
   return (
-    <MathJax renderMode="pre">
+    <MathJax dynamic>
       {history?.map((v, i) => (
         <div key={i} className="text-center">
           {v.question}
