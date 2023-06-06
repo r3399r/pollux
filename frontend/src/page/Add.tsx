@@ -14,11 +14,12 @@ const Add = () => {
     handleSubmit,
     reset,
     setError,
+    clearErrors,
     formState: { errors },
   } = useForm<QaForm>();
 
   const generate = useCallback(() => {
-    const answer = randomIntBetween(1, 9);
+    const answer = randomIntBetween(2, 9);
     const a = randomIntBetween(1, answer - 1);
     const b = answer - a;
     setQuestion(`\\(${a}+${b}=\\square\\)`);
@@ -30,6 +31,7 @@ const Add = () => {
       setHistory([...history, { question, answer }]);
       generate();
       reset();
+      clearErrors();
     } else setError('answer', {}, { shouldFocus: true });
   };
 
@@ -38,7 +40,7 @@ const Add = () => {
   }, []);
 
   return (
-    <MathJax>
+    <MathJax hideUntilTypeset="every">
       {history?.map((v, i) => (
         <div key={i} className="text-center">
           {v.question}
