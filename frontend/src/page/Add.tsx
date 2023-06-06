@@ -14,7 +14,6 @@ const Add = () => {
     handleSubmit,
     reset,
     setError,
-    clearErrors,
     formState: { errors },
   } = useForm<QaForm>();
 
@@ -31,7 +30,6 @@ const Add = () => {
       setHistory([...history, { question, answer }]);
       generate();
       reset();
-      clearErrors();
     } else setError('answer', {}, { shouldFocus: true });
   };
 
@@ -40,7 +38,7 @@ const Add = () => {
   }, []);
 
   return (
-    <MathJax hideUntilTypeset="every">
+    <MathJax renderMode="pre">
       {history?.map((v, i) => (
         <div key={i} className="text-center">
           {v.question}
