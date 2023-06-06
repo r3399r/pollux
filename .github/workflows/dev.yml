@@ -26,10 +26,6 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-      - name: Prepare submodule
-        run: |
-          git submodule update --init --recursive
-
       # Runs a single command using the runners shell
       - name: Deploy to dev environment
         run: |
