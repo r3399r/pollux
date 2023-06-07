@@ -6,6 +6,7 @@ const zhTW: LanguageMapping = {
   minus10: '10以內的減法',
   add20: '20以內的加法',
   minus20: '20以內的減法',
+  gcf: '最大公因數',
 };
 
 const Menu = () => {

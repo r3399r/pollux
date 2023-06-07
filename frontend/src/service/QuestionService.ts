@@ -1,8 +1,8 @@
-import { CurrentQuestion, Generator, HistoryQuestion, Question, Type } from 'src/model/Common';
-import { add10, add20, minus10, minus20 } from 'src/util/factory';
+import { CurrentQuestion, HistoryQuestion, Question, Type } from 'src/model/Common';
+import { factory } from 'src/util/factory';
 
 const generate = (type: Type): Question => {
-  const map: Generator = { add10, minus10, add20, minus20 };
+  const map = factory;
 
   if (Object.values(Type).includes(type) === false) throw new Error(`type ${type} is invalid`);
 

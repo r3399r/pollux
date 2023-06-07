@@ -13,9 +13,10 @@ export enum Type {
   Minus10 = 'minus10',
   Add20 = 'add20',
   Minus20 = 'minus20',
+  Gcf = 'gcf',
 }
 
-export type Generator = {
+export type Factory = {
   [key in Type]: () => Question;
 };
 
