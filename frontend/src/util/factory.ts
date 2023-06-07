@@ -1,5 +1,5 @@
 import { Question } from 'src/model/Common';
-import { randomIntBetween } from './mathHelper';
+import { randomIntBetween } from './math';
 
 export const add10 = (): Question => {
   const c = randomIntBetween(2, 9);
