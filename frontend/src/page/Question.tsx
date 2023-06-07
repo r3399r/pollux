@@ -39,19 +39,21 @@ const Add = () => {
     } else setError('ans', {}, { shouldFocus: true });
   };
 
+  const onClear = () => {
+    initQuestion(false);
+    setHistory([]);
+    localStorage.clear();
+  };
+
   useEffect(() => {
     initQuestion(false);
   }, [type]);
 
   return (
     <MathJax dynamic>
-      {history?.map((v) => (
-        <div key={v.id} className="text-center">
-          {v.q}
-          <br />
-          Ans: {v.a}
-        </div>
-      ))}
+      <button className="border-2 border-black rounded-md" onClick={onClear}>
+        Clear All
+      </button>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="text-center">{question}</div>
         <div className="text-center">
@@ -72,6 +74,13 @@ const Add = () => {
           </button>
         </div>
       </form>
+      {history?.map((v) => (
+        <div key={v.id} className="text-center">
+          {v.q}
+          <br />
+          Ans: {v.a}
+        </div>
+      ))}
     </MathJax>
   );
 };

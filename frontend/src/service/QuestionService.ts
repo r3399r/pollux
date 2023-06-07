@@ -1,8 +1,8 @@
 import { CurrentQuestion, Generator, HistoryQuestion, Question, Type } from 'src/model/Common';
-import { add10, minus10 } from 'src/util/factory';
+import { add10, add20, minus10, minus20 } from 'src/util/factory';
 
 const generate = (type: Type): Question => {
-  const map: Generator = { add10, minus10 };
+  const map: Generator = { add10, minus10, add20, minus20 };
 
   if (Object.values(Type).includes(type) === false) throw new Error(`type ${type} is invalid`);
 
@@ -28,7 +28,7 @@ export const handleQuestion = (type: Type, next: boolean): Question & { history:
   if (currentType === undefined && historyType === undefined) history[type] = [];
   else if (currentType === undefined && historyType !== undefined) history[type] = [...historyType];
   else if (currentType !== undefined && historyType !== undefined)
-    history[type] = [...historyType, currentType];
+    history[type] = [currentType, ...historyType];
   else if (currentType !== undefined && historyType === undefined) history[type] = [currentType];
   localStorage.setItem('history', JSON.stringify({ ...history }));
 

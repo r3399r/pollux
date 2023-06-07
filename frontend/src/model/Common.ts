@@ -11,6 +11,8 @@ export type Question = {
 export enum Type {
   Add10 = 'add10',
   Minus10 = 'minus10',
+  Add20 = 'add20',
+  Minus20 = 'minus20',
 }
 
 export type Generator = {
