@@ -3,12 +3,12 @@ import classNames from 'classnames';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Generator, QaForm, Question } from 'src/model/Common';
+import { QaForm, Question, Type } from 'src/model/Common';
 import { generate } from 'src/service/QuestionService';
 
 const Add = () => {
   const navigate = useNavigate();
-  const { type } = useParams<{ type: keyof Generator }>();
+  const { type } = useParams<{ type: Type }>();
   const [question, setQuestion] = useState<string>();
   const [answer, setAnswer] = useState<string>();
   const [history, setHistory] = useState<Question[]>([]);

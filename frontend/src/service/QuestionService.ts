@@ -1,4 +1,4 @@
-import { Generator, Question } from 'src/model/Common';
+import { Generator, Question, Type } from 'src/model/Common';
 import { randomIntBetween } from 'src/util/math';
 
 const add = (): Question => {
@@ -17,10 +17,10 @@ const minus = (): Question => {
   return { question: `\\(${c}-${a}=\\square\\)`, answer: b.toString() };
 };
 
-export const generate = (type: keyof Generator): Question => {
+export const generate = (type: Type): Question => {
   const map: Generator = { add, minus };
 
-  if (!(type in map)) throw new Error(`type ${type} is invalid`);
+  if (Object.values(Type).includes(type) === false) throw new Error(`type ${type} is invalid`);
 
   return map[type]();
 };

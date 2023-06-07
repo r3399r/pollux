@@ -7,7 +7,15 @@ export type Question = {
   answer: string;
 };
 
+export enum Type {
+  Add = 'add',
+  Minus = 'minus',
+}
+
 export type Generator = {
-  add: () => Question;
-  minus: () => Question;
+  [key in Type]: () => Question;
+};
+
+export type LanguageMapping = {
+  [key in Type]: string;
 };
