@@ -45,8 +45,8 @@ const Add = () => {
 
   return (
     <MathJax dynamic>
-      {history?.map((v, i) => (
-        <div key={i} className="text-center">
+      {history?.map((v) => (
+        <div key={v.id} className="text-center">
           {v.q}
           <br />
           Ans: {v.a}

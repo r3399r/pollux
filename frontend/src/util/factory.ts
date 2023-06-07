@@ -1,3 +1,4 @@
+import uniqid from 'uniqid';
 import { Question } from 'src/model/Common';
 import { randomIntBetween } from './math';
 
@@ -6,7 +7,7 @@ export const add10 = (): Question => {
   const a = randomIntBetween(1, c - 1);
   const b = c - a;
 
-  return { q: `\\(${a}+${b}=\\square\\)`, a: c.toString() };
+  return { id: uniqid(), q: `\\(${a}+${b}=\\square\\)`, a: c.toString() };
 };
 
 export const minus10 = (): Question => {
@@ -14,5 +15,5 @@ export const minus10 = (): Question => {
   const a = randomIntBetween(1, c - 1);
   const b = c - a;
 
-  return { q: `\\(${c}-${a}=\\square\\)`, a: b.toString() };
+  return { id: uniqid(), q: `\\(${c}-${a}=\\square\\)`, a: b.toString() };
 };

@@ -3,6 +3,7 @@ export type QaForm = {
 };
 
 export type Question = {
+  id: string;
   q: string; // question
   a: string; // answer
 };
