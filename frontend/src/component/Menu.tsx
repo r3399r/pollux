@@ -2,8 +2,8 @@ import { useNavigate } from 'react-router-dom';
 import { LanguageMapping, Type } from 'src/model/Common';
 
 const zhTW: LanguageMapping = {
-  add: '十以內的加法',
-  minus: '十以內的減法',
+  add10: '十以內的加法',
+  minus10: '十以內的減法',
 };
 
 const Menu = () => {

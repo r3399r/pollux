@@ -1,24 +1,8 @@
 import { CurrentQuestion, Generator, HistoryQuestion, Question, Type } from 'src/model/Common';
-import { randomIntBetween } from 'src/util/math';
-
-const add = (): Question => {
-  const c = randomIntBetween(2, 9);
-  const a = randomIntBetween(1, c - 1);
-  const b = c - a;
-
-  return { q: `\\(${a}+${b}=\\square\\)`, a: c.toString() };
-};
-
-const minus = (): Question => {
-  const c = randomIntBetween(2, 9);
-  const a = randomIntBetween(1, c - 1);
-  const b = c - a;
-
-  return { q: `\\(${c}-${a}=\\square\\)`, a: b.toString() };
-};
+import { add10, minus10 } from 'src/util/factory';
 
 const generate = (type: Type): Question => {
-  const map: Generator = { add, minus };
+  const map: Generator = { add10, minus10 };
 
   if (Object.values(Type).includes(type) === false) throw new Error(`type ${type} is invalid`);
 

@@ -8,8 +8,8 @@ export type Question = {
 };
 
 export enum Type {
-  Add = 'add',
-  Minus = 'minus',
+  Add10 = 'add10',
+  Minus10 = 'minus10',
 }
 
 export type Generator = {
