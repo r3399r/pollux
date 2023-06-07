@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { QaForm, Question, Type } from 'src/model/Common';
-import { generate } from 'src/service/QuestionService';
+import { handleQuestion } from 'src/service/QuestionService';
 
 const Add = () => {
   const navigate = useNavigate();
@@ -20,36 +20,36 @@ const Add = () => {
     formState: { errors },
   } = useForm<QaForm>();
 
-  const initQuestion = () => {
+  const initQuestion = (next: boolean) => {
     if (!type) return;
     try {
-      const res = generate(type);
-      setQuestion(res.question);
-      setAnswer(res.answer);
+      const res = handleQuestion(type, next);
+      setQuestion(res.q);
+      setAnswer(res.a);
+      setHistory(res.history);
     } catch (e) {
       navigate('/add');
     }
   };
 
   const onSubmit = (data: QaForm) => {
-    if (data.answer === answer && question && answer) {
-      initQuestion();
-      setHistory([...history, { question, answer }]);
-      setValue('answer', '');
-    } else setError('answer', {}, { shouldFocus: true });
+    if (data.ans === answer && question && answer) {
+      initQuestion(true);
+      setValue('ans', '');
+    } else setError('ans', {}, { shouldFocus: true });
   };
 
   useEffect(() => {
-    initQuestion();
+    initQuestion(false);
   }, [type]);
 
   return (
     <MathJax dynamic>
       {history?.map((v, i) => (
         <div key={i} className="text-center">
-          {v.question}
+          {v.q}
           <br />
-          Ans: {v.answer}
+          Ans: {v.a}
         </div>
       ))}
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -58,12 +58,12 @@ const Add = () => {
           <span>答: </span>
           <input
             className={classNames('border-2 rounded-md focus:outline-none', {
-              'border-red-500': errors.answer,
-              'border-black': !errors.answer,
+              'border-red-500': errors.ans,
+              'border-black': !errors.ans,
             })}
             autoComplete="off"
             type="text"
-            {...register('answer', { required: true })}
+            {...register('ans', { required: true })}
           />
         </div>
         <div className="text-center">

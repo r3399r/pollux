@@ -1,10 +1,10 @@
 export type QaForm = {
-  answer: string;
+  ans: string;
 };
 
 export type Question = {
-  question: string;
-  answer: string;
+  q: string; // question
+  a: string; // answer
 };
 
 export enum Type {
@@ -18,4 +18,12 @@ export type Generator = {
 
 export type LanguageMapping = {
   [key in Type]: string;
+};
+
+export type CurrentQuestion = {
+  [key in Type]?: Question;
+};
+
+export type HistoryQuestion = {
+  [key in Type]?: Question[];
 };
