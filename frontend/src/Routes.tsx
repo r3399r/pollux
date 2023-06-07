@@ -4,7 +4,7 @@ import Add from './page/Question';
 const AppRoutes = () => (
   <Routes>
     <Route path="/:type" element={<Add />} />
-    <Route path="*" element={<Navigate to="/add" />} />
+    <Route path="*" element={<Navigate to="/add10" />} />
   </Routes>
 );
 

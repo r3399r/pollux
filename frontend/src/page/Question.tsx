@@ -28,7 +28,7 @@ const Add = () => {
       setAnswer(res.a);
       setHistory(res.history);
     } catch (e) {
-      navigate('/add');
+      navigate('/add10');
     }
   };
 
