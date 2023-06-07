@@ -1,11 +1,14 @@
 import { MathJax } from 'better-react-mathjax';
 import classNames from 'classnames';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { QaForm, Question } from 'src/model/Common';
-import { randomIntBetween } from 'src/util/math';
+import { useNavigate, useParams } from 'react-router-dom';
+import { Generator, QaForm, Question } from 'src/model/Common';
+import { generate } from 'src/service/QuestionService';
 
 const Add = () => {
+  const navigate = useNavigate();
+  const { type } = useParams<{ type: keyof Generator }>();
   const [question, setQuestion] = useState<string>();
   const [answer, setAnswer] = useState<string>();
   const [history, setHistory] = useState<Question[]>([]);
@@ -17,25 +20,28 @@ const Add = () => {
     formState: { errors },
   } = useForm<QaForm>();
 
-  const generate = useCallback(() => {
-    const answer = randomIntBetween(2, 9);
-    const a = randomIntBetween(1, answer - 1);
-    const b = answer - a;
-    setQuestion(`\\(${a}+${b}=\\square\\)`);
-    setAnswer(String(answer));
-  }, []);
+  const initQuestion = () => {
+    if (!type) return;
+    try {
+      const res = generate(type);
+      setQuestion(res.question);
+      setAnswer(res.answer);
+    } catch (e) {
+      navigate('/add');
+    }
+  };
 
   const onSubmit = (data: QaForm) => {
     if (data.answer === answer && question && answer) {
+      initQuestion();
       setHistory([...history, { question, answer }]);
-      generate();
       setValue('answer', '');
     } else setError('answer', {}, { shouldFocus: true });
   };
 
   useEffect(() => {
-    generate();
-  }, []);
+    initQuestion();
+  }, [type]);
 
   return (
     <MathJax dynamic>
@@ -51,7 +57,7 @@ const Add = () => {
         <div className="text-center">
           <span>答: </span>
           <input
-            className={classNames('border-2 rounded-md', {
+            className={classNames('border-2 rounded-md focus:outline-none', {
               'border-red-500': errors.answer,
               'border-black': !errors.answer,
             })}
