@@ -12,6 +12,7 @@ const Add = () => {
   const [question, setQuestion] = useState<string>();
   const [answer, setAnswer] = useState<string>();
   const [history, setHistory] = useState<Question[]>([]);
+  const [image, setImage] = useState<string>();
   const {
     register,
     handleSubmit,
@@ -26,6 +27,7 @@ const Add = () => {
       const res = handleQuestion(type, next);
       setQuestion(res.q);
       setAnswer(res.a);
+      setImage(res.img);
       setHistory(res.history);
     } catch (e) {
       navigate('/add10');
@@ -54,9 +56,10 @@ const Add = () => {
       <button className="border-2 border-black rounded-md" onClick={onClear}>
         Clear All
       </button>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="text-center">{question}</div>
-        <div className="text-center">
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center">
+        {image && <img src={image} />}
+        <div>{question}</div>
+        <div>
           <span>答: </span>
           <input
             className={classNames('border-2 rounded-md focus:outline-none', {
@@ -75,10 +78,10 @@ const Add = () => {
         </div>
       </form>
       {history?.map((v) => (
-        <div key={v.id} className="text-center">
-          {v.q}
-          <br />
-          Ans: {v.a}
+        <div key={v.id} className="flex flex-col items-center">
+          {v.img && <img src={v.img} />}
+          <div>{v.q}</div>
+          <div>答: {v.a}</div>
         </div>
       ))}
     </MathJax>

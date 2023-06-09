@@ -2,35 +2,30 @@ import { CurrentQuestion, HistoryQuestion, Question, Type } from 'src/model/Comm
 import { factory } from 'src/util/factory';
 
 const generate = (type: Type): Question => {
-  const map = factory;
-
   if (Object.values(Type).includes(type) === false) throw new Error(`type ${type} is invalid`);
 
-  return map[type]();
+  return factory[type]();
 };
 
 export const handleQuestion = (type: Type, next: boolean): Question & { history: Question[] } => {
-  const current = JSON.parse(localStorage.getItem('current') || '{}') as CurrentQuestion;
-  const history = JSON.parse(localStorage.getItem('history') || '{}') as HistoryQuestion;
+  const currentAll = JSON.parse(localStorage.getItem('current') || '{}') as CurrentQuestion;
+  const historyAll = JSON.parse(localStorage.getItem('history') || '{}') as HistoryQuestion;
 
-  const currentType = current[type];
-  const historyType = history[type];
+  const current = currentAll[type];
+  const history = historyAll[type];
 
-  if (currentType !== undefined && next === false)
-    return { ...currentType, history: historyType ?? [] };
+  if (current !== undefined && next === false) return { ...current, history: history ?? [] };
 
   const question = generate(type);
-  localStorage.setItem('current', JSON.stringify({ ...current, [type]: question }));
+  localStorage.setItem('current', JSON.stringify({ ...currentAll, [type]: question }));
 
-  if (currentType === undefined && next === false)
-    return { ...question, history: historyType ?? [] };
+  if (current === undefined && next === false) return { ...question, history: history ?? [] };
 
-  if (currentType === undefined && historyType === undefined) history[type] = [];
-  else if (currentType === undefined && historyType !== undefined) history[type] = [...historyType];
-  else if (currentType !== undefined && historyType !== undefined)
-    history[type] = [currentType, ...historyType];
-  else if (currentType !== undefined && historyType === undefined) history[type] = [currentType];
-  localStorage.setItem('history', JSON.stringify({ ...history }));
+  if (current === undefined && history === undefined) historyAll[type] = [];
+  else if (current === undefined && history !== undefined) historyAll[type] = [...history];
+  else if (current !== undefined && history === undefined) historyAll[type] = [current];
+  else if (current !== undefined && history !== undefined) historyAll[type] = [current, ...history];
+  localStorage.setItem('history', JSON.stringify({ ...historyAll }));
 
-  return { ...question, history: history[type] ?? [] };
+  return { ...question, history: historyAll[type] ?? [] };
 };
