@@ -35,7 +35,7 @@ const Add = () => {
   };
 
   const onSubmit = (data: QaForm) => {
-    if (data.ans === answer && question && answer) {
+    if (data.ans === answer && answer) {
       initQuestion(true);
       setValue('ans', '');
     } else setError('ans', {}, { shouldFocus: true });
@@ -58,7 +58,7 @@ const Add = () => {
       </button>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center">
         {image && <img src={image} />}
-        <div>{question}</div>
+        {question && <div>{question}</div>}
         <div>
           <span>答: </span>
           <input
@@ -80,7 +80,7 @@ const Add = () => {
       {history?.map((v) => (
         <div key={v.id} className="flex flex-col items-center">
           {v.img && <img src={v.img} />}
-          <div>{v.q}</div>
+          {v.q && <div>{v.q}</div>}
           <div>答: {v.a}</div>
         </div>
       ))}

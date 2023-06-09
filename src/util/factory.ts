@@ -68,7 +68,7 @@ const rectArea = () => {
   ctx.fillText(w.toString(), -h * 4 * Math.sin(rotate), h * 4 * Math.cos(rotate));
   ctx.fillText(h.toString(), w * 4 * Math.cos(rotate), w * 4 * Math.sin(rotate));
 
-  return { id: uniqid(), q: '求面積', a: (w * h).toString(), img: canvas.toDataURL() };
+  return { id: uniqid(), a: (w * h).toString(), img: canvas.toDataURL() };
 };
 
 export const factory: Factory = {

@@ -5,7 +5,7 @@ export type QaForm = {
 export type Question = {
   id: string;
   img?: string;
-  q: string; // question
+  q?: string; // question
   a: string; // answer
 };
 
