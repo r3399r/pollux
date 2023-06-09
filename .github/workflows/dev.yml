@@ -29,5 +29,4 @@ jobs:
       # Runs a single command using the runners shell
       - name: Deploy to dev environment
         run: |
-          cd deployment
           sh deploy.sh test

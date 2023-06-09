@@ -1,17 +1,66 @@
 {
-  "name": "pollux",
-  "version": "1.0.0",
-  "author": "Yue Chang",
-  "license": "ISC",
+  "name": "pollux-frontend",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "check:frontend": "npm --prefix ./frontend/ run pre:commit",
-    "fix:frontend": "npm --prefix ./frontend/ run fix",
-    "pre:commit": "run-p check:*",
-    "fix": "run-p fix:*",
-    "prepare": "husky install"
+    "start": "cross-env BROWSER=none PORT=3000 react-scripts start",
+    "build": "cross-env BUILD_PATH='./dist' react-scripts build",
+    "test": "react-scripts test --coverage",
+    "test:nowatch": "npm run test -- --watchAll=false",
+    "eject": "react-scripts eject",
+    "lint:es": "eslint -c ./eslint.json src",
+    "fix:es": "npm run lint:es -- --fix",
+    "lint:format": "prettier --list-different \"{src,public}/**/*.{tsx,ts,js,html,scss,css,json}\"",
+    "fix:format": "npm run lint:format -- --write",
+    "lint": "run-s lint:*",
+    "fix": "run-s fix:*",
+    "clean": "del-cli dist -f",
+    "prepare": "husky install",
+    "pre:commit": "npm run lint",
+    "pre:deploy": "run-s clean build"
+  },
+  "dependencies": {
+    "better-react-mathjax": "^2.0.2",
+    "classnames": "^2.3.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-hook-form": "^7.44.3",
+    "react-router-dom": "^6.11.2",
+    "uniqid": "^5.4.0",
+    "web-vitals": "^2.1.4"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "@types/jest": "^27.5.2",
+    "@types/node": "^16.18.34",
+    "@types/react": "^18.2.8",
+    "@types/react-dom": "^18.2.4",
+    "@types/uniqid": "^5.3.2",
+    "cross-env": "^7.0.3",
+    "del-cli": "^5.0.0",
+    "eslint": "^8.42.0",
+    "eslint-import-resolver-typescript": "^3.5.5",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-react": "^7.32.2",
     "husky": "^7.0.4",
-    "npm-run-all": "^4.1.5"
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.8.8",
+    "react-scripts": "5.0.1",
+    "tailwindcss": "^3.3.2",
+    "typescript": "^4.9.5"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
