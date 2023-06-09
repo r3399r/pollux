@@ -9,3 +9,21 @@ export const gcd = (a: number, b: number): number => {
 };
 
 export const lcm = (a: number, b: number): number => (a * b) / gcd(a, b);
+
+export const coefficient = (c: number, x = '', isLeading = false) => {
+  if (c === 0) return '';
+  if (isLeading) {
+    if (x === '') return `${c}`;
+    if (x !== '' && c === 1) return x;
+    if (x !== '' && c === -1) return `-${x}`;
+  } else {
+    if (x === '' && c > 0) return `+${c}`;
+    if (x === '' && c < 0) return `${c}`;
+
+    if (x !== '' && c === 1) return `+${x}`;
+    if (x !== '' && c === -1) return `-${x}`;
+    if (x !== '' && c > 0) return `+${c}${x}`;
+  }
+
+  return `${c}${x}`;
+};

@@ -10,7 +10,7 @@ const Add = () => {
   const navigate = useNavigate();
   const { type } = useParams<{ type: Type }>();
   const [question, setQuestion] = useState<string>();
-  const [answer, setAnswer] = useState<string>();
+  const [validate, setValidate] = useState<string[]>();
   const [history, setHistory] = useState<Question[]>([]);
   const [image, setImage] = useState<string>();
   const {
@@ -26,7 +26,7 @@ const Add = () => {
     try {
       const res = handleQuestion(type, next);
       setQuestion(res.q);
-      setAnswer(res.a);
+      setValidate(res.v);
       setImage(res.img);
       setHistory(res.history);
     } catch (e) {
@@ -35,7 +35,7 @@ const Add = () => {
   };
 
   const onSubmit = (data: QaForm) => {
-    if (data.ans === answer && answer) {
+    if (validate && validate.includes(data.ans)) {
       initQuestion(true);
       setValue('ans', '');
     } else setError('ans', {}, { shouldFocus: true });
