@@ -34,6 +34,13 @@ const minus20 = (): Question => {
   return { id: uniqid(), q: `\\(${c}-${a}=\\square\\)`, a: b.toString() };
 };
 
+const timesTable = (): Question => {
+  const a = randomIntBetween(1, 9);
+  const b = randomIntBetween(1, 9);
+
+  return { id: uniqid(), q: `\\(${a}\\times${b}=\\square\\)`, a: (a * b).toString() };
+};
+
 const gcd = (): Question => {
   const base = randomElement([1, 2, 3, 5, 7, 11, 13, 17, 19, 23, 29]);
   const a = base * randomIntBetween(1, 20);
@@ -85,6 +92,7 @@ export const factory: Factory = {
   minus10,
   add20,
   minus20,
+  timesTable,
   gcd,
   lcm,
   rectArea,
