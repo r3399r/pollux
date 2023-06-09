@@ -5,6 +5,7 @@ import {
   primeFactorization as doPrimeFactorization,
   gcd as findGcd,
   lcm as findLcm,
+  polynomial,
   randomElement,
   randomIntBetween,
 } from './math';
@@ -101,16 +102,17 @@ const factorization = (): Question => {
   const b = randomIntBetween(-10, 10);
   const d = randomIntBetween(1, 10) * randomElement([-1, 1]);
 
-  const gcd1 = b === 0 ? a : findGcd(a, Math.abs(b));
-  const gcd2 = d === 0 ? c : findGcd(c, Math.abs(d));
+  const gcd1 = b === 0 ? a : (findGcd(Math.abs(a), Math.abs(b)) * a) / Math.abs(a);
+  const gcd2 = d === 0 ? c : (findGcd(Math.abs(c), Math.abs(d)) * c) / Math.abs(c);
   const leading = gcd1 * gcd2;
   const a1 = a / gcd1;
   const b1 = b / gcd1;
   const c1 = c / gcd2;
   const d1 = d / gcd2;
 
-  const first = b === 0 ? 'x' : `(${coefficient(a1, 'x', true)}${coefficient(b1)})`;
-  const second = d === 0 ? 'x' : `(${coefficient(c1, 'x', true)}${coefficient(d1)})`;
+  const first = b === 0 ? 'x' : `(${polynomial(a1, b1)})`;
+  const second = d === 0 ? 'x' : `(${polynomial(c1, d1)})`;
+
   const ans = [
     `${coefficient(leading, `${first}${second}`, true)}`,
     `${coefficient(leading, `${second}${first}`, true)}`,
@@ -118,9 +120,7 @@ const factorization = (): Question => {
 
   return {
     id: uniqid(),
-    q: `\\(${coefficient(a * c, 'x^2', true)}${coefficient(a * d + b * c, 'x')}${coefficient(
-      b * d,
-    )}\\)`,
+    q: `\\(${polynomial(a * c, a * d + b * c, b * d)}\\)`,
     a: `\\(${ans[0]}\\)`,
     v: ans,
   };

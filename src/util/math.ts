@@ -28,6 +28,17 @@ export const coefficient = (c: number, x = '', isLeading = false) => {
   return `${c}${x}`;
 };
 
+export const polynomial = (...coefficients: number[]) =>
+  coefficients
+    .map((c, i) => {
+      const pow = coefficients.length - i - 1;
+      if (pow === 1) return coefficient(c, 'x', i === 0);
+      if (pow === 0) return coefficient(c, '', i === 0);
+
+      return coefficient(c, `x^${pow}`, i === 0);
+    })
+    .join('');
+
 export const primeFactorization = (n: number) => {
   const factors: number[] = [];
   let i = 2;
