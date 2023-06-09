@@ -1,6 +1,6 @@
 import uniqid from 'uniqid';
 import { Factory, Question } from 'src/model/Common';
-import { findGcf, randomIntBetween } from './math';
+import { gcd as findGcd, lcm as findLcm, randomElement, randomIntBetween } from './math';
 
 const add10 = (): Question => {
   const c = randomIntBetween(0, 10);
@@ -35,11 +35,20 @@ const minus20 = (): Question => {
 };
 
 const gcd = (): Question => {
-  const a = randomIntBetween(1, 100);
-  const b = randomIntBetween(1, 100);
-  const c = findGcf(a, b);
+  const base = randomElement([1, 2, 3, 5, 7, 11, 13, 17, 19, 23, 29]);
+  const a = base * randomIntBetween(1, 20);
+  const b = base * randomIntBetween(1, 20);
+  const c = findGcd(a, b);
 
   return { id: uniqid(), q: `求 ${a} 與 ${b} 的最大公因數`, a: c.toString() };
+};
+
+const lcm = (): Question => {
+  const a = randomIntBetween(2, 30);
+  const b = randomIntBetween(2, 30);
+  const c = findLcm(a, b);
+
+  return { id: uniqid(), q: `求 ${a} 與 ${b} 的最小公倍數`, a: c.toString() };
 };
 
 const rectArea = () => {
@@ -77,5 +86,6 @@ export const factory: Factory = {
   add20,
   minus20,
   gcd,
+  lcm,
   rectArea,
 };

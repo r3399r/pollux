@@ -15,6 +15,7 @@ export enum Type {
   Add20 = 'add20',
   Minus20 = 'minus20',
   Gcd = 'gcd',
+  Lcm = 'lcm',
   RectArea = 'rectArea',
 }
 
@@ -26,6 +27,7 @@ export const LangZhTw: {
   add20: '20以內的加法',
   minus20: '20以內的減法',
   gcd: '最大公因數',
+  lcm: '最小公倍數',
   rectArea: '矩形面積',
 };
 
