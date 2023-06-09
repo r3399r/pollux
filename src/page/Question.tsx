@@ -42,9 +42,9 @@ const Add = () => {
   };
 
   const onClear = () => {
+    localStorage.clear();
     initQuestion(false);
     setHistory([]);
-    localStorage.clear();
   };
 
   useEffect(() => {
