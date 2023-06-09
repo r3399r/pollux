@@ -9,10 +9,8 @@ import { handleQuestion } from 'src/service/QuestionService';
 const Add = () => {
   const navigate = useNavigate();
   const { type } = useParams<{ type: Type }>();
-  const [question, setQuestion] = useState<string>();
-  const [validate, setValidate] = useState<string[]>();
+  const [current, setCurrent] = useState<Question>();
   const [history, setHistory] = useState<Question[]>([]);
-  const [image, setImage] = useState<string>();
   const {
     register,
     handleSubmit,
@@ -24,18 +22,16 @@ const Add = () => {
   const initQuestion = (next: boolean) => {
     if (!type) return;
     try {
-      const res = handleQuestion(type, next);
-      setQuestion(res.q);
-      setValidate(res.v);
-      setImage(res.img);
-      setHistory(res.history);
+      const { history, ...res } = handleQuestion(type, next);
+      setCurrent(res);
+      setHistory(history);
     } catch (e) {
       navigate('/add10');
     }
   };
 
   const onSubmit = (data: QaForm) => {
-    if (validate && validate.includes(data.ans)) {
+    if (current && current.v.includes(data.ans)) {
       initQuestion(true);
       setValue('ans', '');
     } else setError('ans', {}, { shouldFocus: true });
@@ -57,8 +53,8 @@ const Add = () => {
         Clear All
       </button>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center">
-        {image && <img src={image} />}
-        {question && <div>{question}</div>}
+        {current?.img && <img src={current.img} />}
+        {current?.q && <div>{current.q}</div>}
         <div>
           <span>答: </span>
           <input
@@ -76,6 +72,7 @@ const Add = () => {
             確認
           </button>
         </div>
+        {current?.h && <div>{current.h}</div>}
       </form>
       {history?.map((v) => (
         <div key={v.id} className="flex flex-col items-center">

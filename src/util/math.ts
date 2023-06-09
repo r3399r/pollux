@@ -27,3 +27,17 @@ export const coefficient = (c: number, x = '', isLeading = false) => {
 
   return `${c}${x}`;
 };
+
+export const primeFactorization = (n: number) => {
+  const factors: number[] = [];
+  let i = 2;
+  while (i * i <= n)
+    if (n % i === 0) {
+      factors.push(i);
+      n = n / i;
+    } else i = i + 1;
+
+  if (n > 1) factors.push(n);
+
+  return factors;
+};

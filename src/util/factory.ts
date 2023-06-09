@@ -2,6 +2,7 @@ import uniqid from 'uniqid';
 import { Factory, Question } from 'src/model/Common';
 import {
   coefficient,
+  primeFactorization as doPrimeFactorization,
   gcd as findGcd,
   lcm as findLcm,
   randomElement,
@@ -125,6 +126,26 @@ const factorization = (): Question => {
   };
 };
 
+const primeFactorization = (): Question => {
+  const q = randomIntBetween(2, 400);
+
+  const factors = doPrimeFactorization(q);
+
+  const ans: string[] = [];
+  for (const b of new Set(factors)) {
+    const n = factors.filter((f) => f === b).length;
+    ans.push(n === 1 ? `${b}` : `${b}^${n}`);
+  }
+
+  return {
+    id: uniqid(),
+    q: `將 ${q} 質因數分解`,
+    a: `\\(${ans.join('\\times')}\\)`,
+    v: [factors.join()],
+    h: '質因數輸入請由小到大、重複、以逗號分隔、無空白，例如：180 之答案為 2,2,3,3,5',
+  };
+};
+
 export const factory: Factory = {
   add10,
   minus10,
@@ -135,4 +156,5 @@ export const factory: Factory = {
   lcm,
   rectArea,
   factorization,
+  primeFactorization,
 };

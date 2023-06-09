@@ -8,6 +8,7 @@ export type Question = {
   q?: string; // question
   a: string; // answer
   v: string[]; // answer for validation
+  h?: string; // hint
 };
 
 export enum Type {
@@ -20,6 +21,7 @@ export enum Type {
   Gcd = 'gcd',
   Lcm = 'lcm',
   Factorization = 'factorization',
+  PrimeFactorization = 'primeFactorization',
 }
 
 export const LangZhTw: {
@@ -34,6 +36,7 @@ export const LangZhTw: {
   gcd: '最大公因數',
   lcm: '最小公倍數',
   factorization: '二次式因式分解',
+  primeFactorization: '質因數分解',
 };
 
 export type Factory = {
