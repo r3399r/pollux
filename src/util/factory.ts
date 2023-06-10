@@ -3,6 +3,7 @@ import { Factory, Question } from 'src/model/Common';
 import {
   coefficient,
   primeFactorization as doPrimeFactorization,
+  simplifyRadical as doSimplifyRadical,
   gcd as findGcd,
   lcm as findLcm,
   polynomial,
@@ -146,6 +147,26 @@ const primeFactorization = (): Question => {
   };
 };
 
+const simplifyRadical = (): Question => {
+  let c = 1;
+  let n = 1;
+  let q = 1;
+
+  while (c === 1 || n === 1) {
+    q = randomIntBetween(8, 400);
+    const res = doSimplifyRadical(q);
+    c = res.coefficient;
+    n = res.n;
+  }
+
+  return {
+    id: uniqid(),
+    q: `化簡 \\(\\sqrt{${q}}\\)`,
+    a: `\\(${c}\\sqrt{${n}}\\)`,
+    v: [`${c},${n}`],
+  };
+};
+
 export const factory: Factory = {
   add10,
   minus10,
@@ -157,4 +178,5 @@ export const factory: Factory = {
   rectArea,
   factorization,
   primeFactorization,
+  simplifyRadical,
 };

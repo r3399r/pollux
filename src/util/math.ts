@@ -52,3 +52,17 @@ export const primeFactorization = (n: number) => {
 
   return factors;
 };
+
+export const simplifyRadical = (n: number) => {
+  const factors = primeFactorization(n);
+  const counts = new Set<number>();
+  let coefficient = 1;
+  for (const f of factors)
+    if (counts.has(f)) {
+      coefficient = coefficient * f;
+      n = n / f / f;
+      counts.delete(f);
+    } else counts.add(f);
+
+  return { coefficient, n };
+};

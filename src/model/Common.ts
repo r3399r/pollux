@@ -22,6 +22,7 @@ export enum Type {
   Lcm = 'lcm',
   Factorization = 'factorization',
   PrimeFactorization = 'primeFactorization',
+  SimplifiyRadical = 'simplifyRadical',
 }
 
 export const LangZhTw: {
@@ -37,6 +38,7 @@ export const LangZhTw: {
   lcm: '最小公倍數',
   factorization: '二次式因式分解',
   primeFactorization: '質因數分解',
+  simplifyRadical: '根號化簡',
 };
 
 export type Factory = {
