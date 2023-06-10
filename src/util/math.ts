@@ -66,3 +66,19 @@ export const simplifyRadical = (n: number) => {
 
   return { coefficient, n };
 };
+
+export const rationalizeSingle = (denominator: number, numerator: number) => {
+  const d = gcd(denominator, numerator);
+  denominator = denominator / d;
+  numerator = numerator / d;
+
+  const numerator2 = simplifyRadical(numerator * denominator);
+
+  const d2 = gcd(numerator2.coefficient, denominator);
+
+  return {
+    denominator: denominator / d2,
+    numeratorCoeffifient: numerator2.coefficient / d2,
+    numeratorRadical: numerator2.n,
+  };
+};

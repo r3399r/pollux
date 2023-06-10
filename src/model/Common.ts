@@ -23,6 +23,7 @@ export enum Type {
   Factorization = 'factorization',
   PrimeFactorization = 'primeFactorization',
   SimplifiyRadical = 'simplifyRadical',
+  rationalize = 'rationalize',
 }
 
 export const LangZhTw: {
@@ -39,6 +40,7 @@ export const LangZhTw: {
   factorization: '二次式因式分解',
   primeFactorization: '質因數分解',
   simplifyRadical: '根號化簡',
+  rationalize: '有理化',
 };
 
 export type Factory = {

@@ -9,6 +9,7 @@ import {
   polynomial,
   randomElement,
   randomIntBetween,
+  rationalizeSingle,
 } from './math';
 
 const add10 = (): Question => {
@@ -167,6 +168,21 @@ const simplifyRadical = (): Question => {
   };
 };
 
+const rationalize = (): Question => {
+  const denominator = randomIntBetween(2, 10);
+  const numerator = randomIntBetween(1, 10);
+
+  const a = rationalizeSingle(denominator, numerator);
+  console.log(denominator, numerator, a);
+
+  return {
+    id: uniqid(),
+    q: `\\(\\sqrt{\\dfrac{${numerator}}{${denominator}}}\\)`,
+    a: `\\(\\dfrac{${a.numeratorCoeffifient}\\sqrt{${a.numeratorRadical}}}{${a.denominator}}\\)`,
+    v: ['1'],
+  };
+};
+
 export const factory: Factory = {
   add10,
   minus10,
@@ -179,4 +195,5 @@ export const factory: Factory = {
   factorization,
   primeFactorization,
   simplifyRadical,
+  rationalize,
 };
