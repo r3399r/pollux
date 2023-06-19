@@ -11,6 +11,8 @@ export type Question = {
   h?: string; // hint
 };
 
+export type SavedQuestion = Omit<Question, 'h' | 'v'>;
+
 export enum Type {
   Add10 = 'add10',
   Minus10 = 'minus10',
@@ -26,7 +28,7 @@ export enum Type {
   rationalize = 'rationalize',
 }
 
-export const LangZhTw: {
+export const TypeName: {
   [key in Type]: string;
 } = {
   add10: '10以內的加法',
@@ -52,5 +54,5 @@ export type CurrentQuestion = {
 };
 
 export type HistoryQuestion = {
-  [key in Type]?: Question[];
+  [key in Type]?: SavedQuestion[];
 };

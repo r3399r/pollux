@@ -1,4 +1,4 @@
-import { CurrentQuestion, HistoryQuestion, Question, Type } from 'src/model/Common';
+import { CurrentQuestion, HistoryQuestion, Question, SavedQuestion, Type } from 'src/model/Common';
 import { factory } from 'src/util/factory';
 
 const generate = (type: Type): Question => {
@@ -7,12 +7,20 @@ const generate = (type: Type): Question => {
   return factory[type]();
 };
 
-export const handleQuestion = (type: Type, next: boolean): Question & { history: Question[] } => {
+export const handleQuestion = (
+  type: Type,
+  next: boolean,
+): Question & { history: SavedQuestion[] } => {
   const currentAll = JSON.parse(localStorage.getItem('current') || '{}') as CurrentQuestion;
   const historyAll = JSON.parse(localStorage.getItem('history') || '{}') as HistoryQuestion;
 
   const current = currentAll[type];
-  const history = historyAll[type];
+  const history = historyAll[type]?.map((v) => ({
+    id: v.id,
+    img: v.img,
+    q: v.q,
+    a: v.a,
+  }));
 
   if (current !== undefined && next === false) return { ...current, history: history ?? [] };
 
