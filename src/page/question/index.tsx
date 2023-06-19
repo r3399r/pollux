@@ -1,7 +1,9 @@
 import { MathJax } from 'better-react-mathjax';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import Body from 'src/component/typography/Body';
 import H2 from 'src/component/typography/H2';
+import IcMenu from 'src/image/ic-menu.svg';
 import { Question, SavedQuestion, Type, TypeName } from 'src/model/Common';
 import { handleQuestion } from 'src/service/QuestionService';
 import History from './History';
@@ -36,7 +38,13 @@ const QuestionPage = () => {
 
   return (
     <MathJax dynamic>
-      <H2 className="mt-0 md:mt-[30px] pb-7">{type && TypeName[type]}</H2>
+      <div className="flex justify-between items-center mt-0 md:mt-[30px] pb-7">
+        <div className="flex items-center">
+          <H2>{type && TypeName[type]}</H2>
+          <img src={IcMenu} className="md:hidden cursor-pointer" />
+        </div>
+        <Body className="md:hidden cursor-pointer">歷史題庫</Body>
+      </div>
       {/* <button className="border-2 border-black rounded-md" onClick={onClear}>
         Clear All
       </button> */}
