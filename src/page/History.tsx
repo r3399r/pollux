@@ -11,7 +11,10 @@ const History = ({ history }: Props) => (
       <div key={v.id} className="border-[1px] border-beige-500 rounded-[10px] p-5">
         {v.img && <img src={v.img} />}
         {v.q && <div>{v.q}</div>}
-        <Body className="mt-1">Ans: {v.a}</Body>
+        <Body className="mt-1">
+          <span className="mr-[10px]">Ans:</span>
+          {v.a}
+        </Body>
       </div>
     ))}
   </div>

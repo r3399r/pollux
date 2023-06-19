@@ -24,13 +24,6 @@ const QuestionPage = () => {
     }
   };
 
-  // const onSubmit = (data: QaForm) => {
-  //   if (current && current.v.includes(data.ans)) {
-  //     initQuestion(true);
-  //     setValue('ans', '');
-  //   } else setError('ans', {}, { shouldFocus: true });
-  // };
-
   // const onClear = () => {
   //   localStorage.clear();
   //   initQuestion(false);
@@ -51,7 +44,7 @@ const QuestionPage = () => {
         <div className="hidden md:block w-1/2 h-[calc(100vh-140px-92px)] md:h-[calc(100vh-170px-92px)] overflow-y-auto">
           <History history={history} />
         </div>
-        <div className="w-full md:w-1/2">
+        <div className="w-full md:w-1/2 h-[calc(100vh-140px-92px)] md:h-[calc(100vh-170px-92px)] overflow-y-auto">
           <QuestionForm initQuestion={initQuestion} current={current} />
         </div>
       </div>
