@@ -49,7 +49,7 @@ const QuestionForm = ({ initQuestion, current }: Props) => {
             })}
             autoComplete="off"
             type="text"
-            {...register('ans', { required: true })}
+            {...register('ans')}
           />
           <Body bold className="absolute top-[50%] left-4 translate-y-[-50%] text-navy-300">
             回答：
