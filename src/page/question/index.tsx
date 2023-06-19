@@ -26,12 +26,6 @@ const QuestionPage = () => {
     }
   };
 
-  // const onClear = () => {
-  //   localStorage.clear();
-  //   initQuestion(false);
-  //   setHistory([]);
-  // };
-
   useEffect(() => {
     initQuestion(false);
   }, [type]);
@@ -45,9 +39,6 @@ const QuestionPage = () => {
         </div>
         <Body className="md:hidden cursor-pointer">歷史題庫</Body>
       </div>
-      {/* <button className="border-2 border-black rounded-md" onClick={onClear}>
-        Clear All
-      </button> */}
       <div className="flex">
         <div className="hidden md:block w-1/2 h-[calc(100vh-140px-92px)] md:h-[calc(100vh-170px-92px)] overflow-y-auto">
           <History history={history} />
