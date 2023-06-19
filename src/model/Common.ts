@@ -8,7 +8,7 @@ export type Question = {
   q?: string; // question
   a: string; // answer
   v: string[]; // answer for validation
-  h?: string; // hint
+  h?: { rules: string[]; example: string }; // hint
 };
 
 export type SavedQuestion = Omit<Question, 'h' | 'v'>;

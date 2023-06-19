@@ -6,6 +6,7 @@ import Button from 'src/component/Button';
 import Body from 'src/component/typography/Body';
 import H4 from 'src/component/typography/H4';
 import IcCross from 'src/image/ic-cross.svg';
+import IcHint from 'src/image/ic-hint.svg';
 import { QaForm, Question } from 'src/model/Common';
 
 type Props = {
@@ -34,7 +35,7 @@ const QuestionForm = ({ initQuestion, current }: Props) => {
     <>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="bg-white h-full p-[30px] sm:p-[60px] md:px-[30px] md:pt-[40px] lg:p-[60px]"
+        className="p-[30px] sm:p-[60px] md:px-[30px] md:py-[40px] lg:p-[60px]"
       >
         <div className="flex justify-center">
           {current?.img && <img src={current.img} />}
@@ -73,7 +74,19 @@ const QuestionForm = ({ initQuestion, current }: Props) => {
           )}
           <Button type="submit">確認</Button>
         </div>
-        {current?.h && <div>{current.h}</div>}
+        {current?.h && (
+          <div className="mt-[30px] rounded-[10px] bg-haze-100 p-5 flex gap-5 items-start">
+            <img src={IcHint} />
+            <div>
+              {current.h.rules.map((v, i) => (
+                <Body className="text-navy-500" key={i}>
+                  - {v}
+                </Body>
+              ))}
+              <H4 className="text-haze-500 mt-[15px]">Ex. {current.h.example}</H4>
+            </div>
+          </div>
+        )}
       </form>
       <Popover
         open={Boolean(anchorEl)}

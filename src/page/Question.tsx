@@ -44,7 +44,7 @@ const QuestionPage = () => {
         <div className="hidden md:block w-1/2 h-[calc(100vh-140px-92px)] md:h-[calc(100vh-170px-92px)] overflow-y-auto">
           <History history={history} />
         </div>
-        <div className="w-full md:w-1/2 h-[calc(100vh-140px-92px)] md:h-[calc(100vh-170px-92px)] overflow-y-auto">
+        <div className="w-full md:w-1/2 h-[calc(100vh-140px-92px)] bg-white md:h-[calc(100vh-170px-92px)] overflow-y-auto">
           <QuestionForm initQuestion={initQuestion} current={current} />
         </div>
       </div>
