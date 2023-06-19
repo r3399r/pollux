@@ -4,7 +4,11 @@ module.exports = {
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
-    extend: {},
+    screens: {
+      'sm': '640px',
+      'md': '1024px',
+      'lg': '1400px',
+    }
   },
   plugins: [],
 }
