@@ -36,7 +36,7 @@ const QuestionPage = () => {
 
   return (
     <MathJax dynamic>
-      <H2 className="mt-[30px] pb-7">{type && TypeName[type]}</H2>
+      <H2 className="mt-0 md:mt-[30px] pb-7">{type && TypeName[type]}</H2>
       {/* <button className="border-2 border-black rounded-md" onClick={onClear}>
         Clear All
       </button> */}

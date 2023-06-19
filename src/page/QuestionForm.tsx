@@ -32,7 +32,10 @@ const QuestionForm = ({ initQuestion, current }: Props) => {
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)} className="bg-white h-full p-[60px]">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="bg-white h-full p-[30px] sm:p-[60px] md:px-[30px] md:pt-[40px] lg:p-[60px]"
+      >
         <div className="flex justify-center">
           {current?.img && <img src={current.img} />}
           {current?.q && <div>{current.q}</div>}
@@ -51,10 +54,10 @@ const QuestionForm = ({ initQuestion, current }: Props) => {
             回答：
           </Body>
         </div>
-        <div className="mt-[30px] relative">
-          {errors.ans && (
-            <div className="absolute top-0 left-0 text-brickred-500">
-              <div className="flex gap-[5px] items-center">
+        <div className="mt-[30px] flex justify-between items-start">
+          {errors.ans ? (
+            <div className="text-brickred-500">
+              <div className="flex gap-[5px] items-center flex-wrap">
                 <img src={IcCross} />
                 <Body>答錯了</Body>
               </div>
@@ -65,10 +68,10 @@ const QuestionForm = ({ initQuestion, current }: Props) => {
                 看參考答案
               </Body>
             </div>
+          ) : (
+            <div />
           )}
-          <Button className="absolute top-0 right-0" type="submit">
-            確認
-          </Button>
+          <Button type="submit">確認</Button>
         </div>
         {current?.h && <div>{current.h}</div>}
       </form>
