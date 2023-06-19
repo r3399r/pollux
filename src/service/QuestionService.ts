@@ -31,8 +31,25 @@ export const handleQuestion = (
 
   if (current === undefined && history === undefined) historyAll[type] = [];
   else if (current === undefined && history !== undefined) historyAll[type] = [...history];
-  else if (current !== undefined && history === undefined) historyAll[type] = [current];
-  else if (current !== undefined && history !== undefined) historyAll[type] = [current, ...history];
+  else if (current !== undefined && history === undefined)
+    historyAll[type] = [
+      {
+        id: current.id,
+        img: current.img,
+        q: current.q,
+        a: current.a,
+      },
+    ];
+  else if (current !== undefined && history !== undefined)
+    historyAll[type] = [
+      {
+        id: current.id,
+        img: current.img,
+        q: current.q,
+        a: current.a,
+      },
+      ...history,
+    ];
   localStorage.setItem('history', JSON.stringify({ ...historyAll }));
 
   return { ...question, history: historyAll[type] ?? [] };

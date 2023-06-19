@@ -1,9 +1,9 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
-import Add from './page/Question';
+import QuestionPage from './page/question';
 
 const AppRoutes = () => (
   <Routes>
-    <Route path="/:type" element={<Add />} />
+    <Route path="/:type" element={<QuestionPage />} />
     <Route path="*" element={<Navigate to="/add10" />} />
   </Routes>
 );

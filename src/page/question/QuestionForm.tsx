@@ -77,14 +77,14 @@ const QuestionForm = ({ initQuestion, current }: Props) => {
         {current?.h && (
           <div className="mt-[30px] rounded-[10px] bg-haze-100 p-5 flex gap-5 items-start">
             <img src={IcHint} />
-            <div>
+            <ul>
               {current.h.rules.map((v, i) => (
-                <Body className="text-navy-500" key={i}>
-                  - {v}
-                </Body>
+                <li className="text-navy-500 list-['-'] pl-[5px]" key={i}>
+                  {v}
+                </li>
               ))}
               <H4 className="text-haze-500 mt-[15px]">Ex. {current.h.example}</H4>
-            </div>
+            </ul>
           </div>
         )}
       </form>
