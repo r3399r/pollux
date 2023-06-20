@@ -19,10 +19,10 @@ const QuestionPage = () => {
   const [openMenu, setOpenMenu] = useState<boolean>(false);
   const [openHistory, setOpenHistory] = useState<boolean>(false);
 
-  const initQuestion = (next: boolean) => {
+  const initQuestion = (next: boolean, save?: boolean) => {
     if (!type) return;
     try {
-      const { history, ...res } = handleQuestion(type, next);
+      const { history, ...res } = handleQuestion(type, next, save);
       setCurrent(res);
       setHistory(history);
     } catch (e) {
@@ -47,7 +47,7 @@ const QuestionPage = () => {
             />
           </div>
           <Body className="md:hidden cursor-pointer" onClick={() => setOpenHistory(true)}>
-            歷史題庫
+            答題紀錄
           </Body>
         </div>
         <div className="flex">

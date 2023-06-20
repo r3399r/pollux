@@ -7,11 +7,12 @@ export type Question = {
   img?: string;
   q?: string; // question
   a: string; // answer
-  v: string[]; // answer for validation
-  h?: { rules: string[]; example: string }; // hint
+  validate: string[]; // answer for validation
+  hint?: { rules: string[]; example: string }; // hint
+  hasViewed?: boolean;
 };
 
-export type SavedQuestion = Omit<Question, 'h' | 'v'>;
+export type SavedQuestion = Omit<Question, 'hint' | 'validate' | 'hasViewed'>;
 
 export enum Type {
   Add10 = 'add10',

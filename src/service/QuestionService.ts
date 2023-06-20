@@ -7,9 +7,20 @@ const generate = (type: Type): Question => {
   return factory[type]();
 };
 
+export const setCurrentHasViewed = (type: Type) => {
+  const currentAll = JSON.parse(localStorage.getItem('current') || '{}') as CurrentQuestion;
+  const current = currentAll[type];
+
+  localStorage.setItem(
+    'current',
+    JSON.stringify({ ...currentAll, [type]: { ...current, hasViewed: true } }),
+  );
+};
+
 export const handleQuestion = (
   type: Type,
   next: boolean,
+  save = true,
 ): Question & { history: SavedQuestion[] } => {
   const currentAll = JSON.parse(localStorage.getItem('current') || '{}') as CurrentQuestion;
   const historyAll = JSON.parse(localStorage.getItem('history') || '{}') as HistoryQuestion;
@@ -27,7 +38,8 @@ export const handleQuestion = (
   const question = generate(type);
   localStorage.setItem('current', JSON.stringify({ ...currentAll, [type]: question }));
 
-  if (current === undefined && next === false) return { ...question, history: history ?? [] };
+  if ((current === undefined && next === false) || save === false)
+    return { ...question, history: history ?? [] };
 
   if (current === undefined && history === undefined) historyAll[type] = [];
   else if (current === undefined && history !== undefined) historyAll[type] = [...history];
