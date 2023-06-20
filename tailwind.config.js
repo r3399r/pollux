@@ -23,7 +23,7 @@ module.exports = {
       },
       haze: {
         100: '#D7E4f8',
-        500: '#5678AA',
+        500: '#5085D4',
       },
     },
     screens: {
