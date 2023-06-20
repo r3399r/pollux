@@ -17,7 +17,7 @@ const add10 = (): Question => {
   const a = randomIntBetween(0, c);
   const b = c - a;
 
-  return { id: uniqid(), q: `\\(${a}+${b}=\\square\\)`, a: `${c}`, v: [`${c}`] };
+  return { id: uniqid(), q: `\\(${a}+${b}=\\square\\)`, a: `${c}`, validate: [`${c}`] };
 };
 
 const minus10 = (): Question => {
@@ -25,7 +25,7 @@ const minus10 = (): Question => {
   const a = randomIntBetween(0, c);
   const b = c - a;
 
-  return { id: uniqid(), q: `\\(${c}-${a}=\\square\\)`, a: `${b}`, v: [`${b}`] };
+  return { id: uniqid(), q: `\\(${c}-${a}=\\square\\)`, a: `${b}`, validate: [`${b}`] };
 };
 
 const add20 = (): Question => {
@@ -33,7 +33,7 @@ const add20 = (): Question => {
   const b = a < 11 ? randomIntBetween(11 - a, 20 - a) : randomIntBetween(0, 20 - a);
   const c = a + b;
 
-  return { id: uniqid(), q: `\\(${a}+${b}=\\square\\)`, a: `${c}`, v: [`${c}`] };
+  return { id: uniqid(), q: `\\(${a}+${b}=\\square\\)`, a: `${c}`, validate: [`${c}`] };
 };
 
 const minus20 = (): Question => {
@@ -41,14 +41,19 @@ const minus20 = (): Question => {
   const a = randomIntBetween(0, c);
   const b = c - a;
 
-  return { id: uniqid(), q: `\\(${c}-${a}=\\square\\)`, a: `${b}`, v: [`${b}`] };
+  return { id: uniqid(), q: `\\(${c}-${a}=\\square\\)`, a: `${b}`, validate: [`${b}`] };
 };
 
 const timesTable = (): Question => {
   const a = randomIntBetween(1, 9);
   const b = randomIntBetween(1, 9);
 
-  return { id: uniqid(), q: `\\(${a}\\times${b}=\\square\\)`, a: `${a * b}`, v: [`${a * b}`] };
+  return {
+    id: uniqid(),
+    q: `\\(${a}\\times${b}=\\square\\)`,
+    a: `${a * b}`,
+    validate: [`${a * b}`],
+  };
 };
 
 const gcd = (): Question => {
@@ -57,7 +62,7 @@ const gcd = (): Question => {
   const b = base * randomIntBetween(1, 20);
   const c = findGcd(a, b);
 
-  return { id: uniqid(), q: `求 ${a} 與 ${b} 的最大公因數`, a: `${c}`, v: [`${c}`] };
+  return { id: uniqid(), q: `求 ${a} 與 ${b} 的最大公因數`, a: `${c}`, validate: [`${c}`] };
 };
 
 const lcm = (): Question => {
@@ -65,7 +70,7 @@ const lcm = (): Question => {
   const b = randomIntBetween(2, 30);
   const c = findLcm(a, b);
 
-  return { id: uniqid(), q: `求 ${a} 與 ${b} 的最小公倍數`, a: `${c}`, v: [`${c}`] };
+  return { id: uniqid(), q: `求 ${a} 與 ${b} 的最小公倍數`, a: `${c}`, validate: [`${c}`] };
 };
 
 const rectArea = (): Question => {
@@ -94,7 +99,7 @@ const rectArea = (): Question => {
   ctx.fillText(w.toString(), -h * 4 * Math.sin(rotate), h * 4 * Math.cos(rotate));
   ctx.fillText(h.toString(), w * 4 * Math.cos(rotate), w * 4 * Math.sin(rotate));
 
-  return { id: uniqid(), a: `${w * h}`, v: [`${w * h}`], img: canvas.toDataURL() };
+  return { id: uniqid(), a: `${w * h}`, validate: [`${w * h}`], img: canvas.toDataURL() };
 };
 
 // (ax+b)(cx+d)-> a*c, a*d+b*c, b*d
@@ -124,7 +129,7 @@ const factorization = (): Question => {
     id: uniqid(),
     q: `\\(${polynomial(a * c, a * d + b * c, b * d)}\\)`,
     a: `\\(${ans[0]}\\)`,
-    v: ans,
+    validate: ans,
   };
 };
 
@@ -143,8 +148,8 @@ const primeFactorization = (): Question => {
     id: uniqid(),
     q: `將 ${q} 質因數分解`,
     a: `\\(${ans.join('\\times')}\\)`,
-    v: [factors.join()],
-    h: {
+    validate: [factors.join()],
+    hint: {
       rules: ['質因數由小到大排列', '重複的質因數請重複輸入', '以逗號分隔', '無空白'],
       example: '2,2,3,3,5',
     },
@@ -167,7 +172,7 @@ const simplifyRadical = (): Question => {
     id: uniqid(),
     q: `化簡 \\(\\sqrt{${q}}\\)`,
     a: `\\(${c}\\sqrt{${n}}\\)`,
-    v: [`${c},${n}`],
+    validate: [`${c},${n}`],
   };
 };
 
@@ -182,7 +187,7 @@ const rationalize = (): Question => {
     id: uniqid(),
     q: `\\(\\sqrt{\\dfrac{${numerator}}{${denominator}}}\\)`,
     a: `\\(\\dfrac{${a.numeratorCoeffifient}\\sqrt{${a.numeratorRadical}}}{${a.denominator}}\\)`,
-    v: ['1'],
+    validate: ['1'],
   };
 };
 
