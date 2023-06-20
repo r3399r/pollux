@@ -24,6 +24,7 @@ const QuestionForm = ({ initQuestion, current }: Props) => {
     setValue,
     setError,
     setFocus,
+    reset,
     formState: { errors },
   } = useForm<QaForm>();
   const [ansViewed, setAnsViewed] = useState<boolean>(false);
@@ -32,6 +33,7 @@ const QuestionForm = ({ initQuestion, current }: Props) => {
   useEffect(() => {
     setValue('ans', '');
     setFocus('ans');
+    reset();
   }, [current]);
 
   const onSubmit = (data: QaForm) => {

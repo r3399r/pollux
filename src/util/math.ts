@@ -78,7 +78,7 @@ export const rationalizeSingle = (denominator: number, numerator: number) => {
 
   return {
     denominator: denominator / d2,
-    numeratorCoeffifient: numerator2.coefficient / d2,
+    numeratorCoefficient: numerator2.coefficient / d2,
     numeratorRadical: numerator2.n,
   };
 };

@@ -120,16 +120,17 @@ const factorization = (): Question => {
   const first = b === 0 ? 'x' : `(${polynomial(a1, b1)})`;
   const second = d === 0 ? 'x' : `(${polynomial(c1, d1)})`;
 
-  const ans = [
-    `${coefficient(leading, `${first}${second}`, true)}`,
-    `${coefficient(leading, `${second}${first}`, true)}`,
-  ];
+  const validate = [[leading, a1, b1, c1, d1].join(), [leading, c1, d1, a1, b1].join()];
 
   return {
     id: uniqid(),
-    q: `\\(${polynomial(a * c, a * d + b * c, b * d)}\\)`,
-    a: `\\(${ans[0]}\\)`,
-    validate: ans,
+    q: `\\(${polynomial(a * c, a * d + b * c, b * d)}=k(ax+b)(cx+d)\\)`,
+    a: `\\(${coefficient(leading, `${first}${second}`, true)}\\)`,
+    validate,
+    hint: {
+      rules: ['依序填入 k,a,b,c,d', 'a,c 為正數', '以逗號分隔、無空白'],
+      example: '-1,2,-3,1,4',
+    },
   };
 };
 
@@ -150,7 +151,7 @@ const primeFactorization = (): Question => {
     a: `\\(${ans.join('\\times')}\\)`,
     validate: [factors.join()],
     hint: {
-      rules: ['質因數由小到大排列', '重複的質因數請重複輸入', '以逗號分隔', '無空白'],
+      rules: ['質因數由小到大排列', '重複的質因數請重複輸入', '以逗號分隔、無空白'],
       example: '2,2,3,3,5',
     },
   };
@@ -170,24 +171,57 @@ const simplifyRadical = (): Question => {
 
   return {
     id: uniqid(),
-    q: `化簡 \\(\\sqrt{${q}}\\)`,
+    q: `化簡 \\(\\sqrt{${q}}=a\\sqrt b\\)`,
     a: `\\(${c}\\sqrt{${n}}\\)`,
     validate: [`${c},${n}`],
+    hint: {
+      rules: ['依序填入 a,b', '化至最簡', '以逗號分隔、無空白'],
+      example: '2,2,3,3,5',
+    },
   };
 };
 
 const rationalize = (): Question => {
-  const denominator = randomIntBetween(2, 10);
-  const numerator = randomIntBetween(1, 10);
+  let denominator = 1;
+  let numerator = 1;
+  let a = { numeratorCoefficient: 1, numeratorRadical: 1, denominator: 1 };
+  let q = '';
 
-  const a = rationalizeSingle(denominator, numerator);
-  console.log(denominator, numerator, a);
+  while (denominator === numerator || a.numeratorRadical === 1) {
+    denominator = randomIntBetween(2, 20);
+    numerator = randomIntBetween(1, 20);
+    a = rationalizeSingle(denominator, numerator);
+  }
+
+  // 1: sqrt{a}/sqrt{b}, 2: sqrt{a/b}, 3: a/sqrt{b}
+  const type = randomIntBetween(1, 4);
+  switch (type) {
+    case 1:
+      a = rationalizeSingle(denominator, numerator);
+      q = `化簡 \\(\\dfrac{\\sqrt{${numerator}}}{\\sqrt{${denominator}}}=\\dfrac{a\\sqrt b}{c}\\)`;
+      break;
+    case 2:
+      a = rationalizeSingle(denominator, numerator);
+      q = `化簡 \\(\\sqrt{\\dfrac{${numerator}}{${denominator}}}=\\dfrac{a\\sqrt b}{c}\\)`;
+      break;
+    case 3:
+      a = rationalizeSingle(denominator, numerator * numerator);
+      q = `化簡 \\(\\dfrac{${numerator}}{\\sqrt{${denominator}}}=\\dfrac{a\\sqrt b}{c}\\)`;
+      break;
+  }
+
+  const ansNumerator = coefficient(a.numeratorCoefficient, `\\sqrt{${a.numeratorRadical}}`, true);
+  const ans = a.denominator === 1 ? ansNumerator : `\\dfrac{${ansNumerator}}{${a.denominator}}`;
 
   return {
     id: uniqid(),
-    q: `\\(\\sqrt{\\dfrac{${numerator}}{${denominator}}}\\)`,
-    a: `\\(\\dfrac{${a.numeratorCoeffifient}\\sqrt{${a.numeratorRadical}}}{${a.denominator}}\\)`,
-    validate: ['1'],
+    q,
+    a: `\\(${ans}\\)`,
+    validate: [[a.numeratorCoefficient, a.numeratorRadical, a.denominator].join()],
+    hint: {
+      rules: ['依序填入 a,b,c', '化至最簡', '以逗號分隔、無空白'],
+      example: '1,2,5',
+    },
   };
 };
 
