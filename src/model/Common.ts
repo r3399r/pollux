@@ -12,7 +12,7 @@ export type Question = {
   hasViewed?: boolean;
 };
 
-export type SavedQuestion = Omit<Question, 'hint' | 'validate' | 'hasViewed'>;
+export type SavedQuestion = Pick<Question, 'id' | 'img' | 'q' | 'a'>;
 
 export enum Type {
   Add10 = 'add10',
@@ -27,6 +27,10 @@ export enum Type {
   PrimeFactorization = 'primeFactorization',
   SimplifiyRadical = 'simplifyRadical',
   rationalize = 'rationalize',
+  // triangleAreaFomula = 'triangleAreaFomula',
+  // lawOfSines = 'lawOfSines',
+  // lawOfCosines = 'lawOfCosines',
+  // heronFormula = 'heronFormula',
 }
 
 export const TypeName: {
@@ -44,6 +48,10 @@ export const TypeName: {
   primeFactorization: '質因數分解',
   simplifyRadical: '根號化簡',
   rationalize: '有理化',
+  // triangleAreaFomula: '面積公式',
+  // lawOfSines: '正弦定理',
+  // lawOfCosines: '餘弦定理',
+  // heronFormula: '海龍公式',
 };
 
 export type Factory = {

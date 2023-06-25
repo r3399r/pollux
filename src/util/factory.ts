@@ -225,6 +225,14 @@ const rationalize = (): Question => {
   };
 };
 
+// const triangleAreaFomula = (): Question => ({ id: uniqid(), a: `1`, validate: [`1`], q: 's' });
+
+// const lawOfSines = (): Question => ({ id: uniqid(), a: `1`, validate: [`1`], q: 's' });
+
+// const lawOfCosines = (): Question => ({ id: uniqid(), a: `1`, validate: [`1`], q: 's' });
+
+// const heronFormula = (): Question => ({ id: uniqid(), a: `1`, validate: [`1`], q: 's' });
+
 export const factory: Factory = {
   add10,
   minus10,
@@ -238,4 +246,8 @@ export const factory: Factory = {
   primeFactorization,
   simplifyRadical,
   rationalize,
+  // triangleAreaFomula,
+  // lawOfSines,
+  // lawOfCosines,
+  // heronFormula,
 };

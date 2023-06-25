@@ -68,7 +68,7 @@ const QuestionForm = ({ initQuestion, current }: Props) => {
               'outline-beige-200': !errors.ans,
             })}
             autoComplete="off"
-            inputMode="numeric"
+            // inputMode="decimal"
             type="text"
             {...register('ans')}
           />

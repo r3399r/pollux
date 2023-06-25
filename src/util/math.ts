@@ -3,6 +3,14 @@ export const randomIntBetween = (min: number, max: number) =>
 
 export const randomElement = <T>(arr: T[]): T => arr[randomIntBetween(0, arr.length - 1)];
 
+export const randomElementExcept = <T>(arr: T[], except: T): T => {
+  let element: T;
+  do element = randomElement(arr);
+  while (element === except);
+
+  return element;
+};
+
 export const gcd = (a: number, b: number): number => {
   if (b === 0) return a;
   else return gcd(b, a % b);
