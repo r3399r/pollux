@@ -35,33 +35,40 @@ const QuestionPage = () => {
   }, [type]);
 
   return (
-    <>
-      <MathJax dynamic>
-        <div className="flex justify-between items-center mt-0 md:mt-[30px] pb-7">
-          <div className="flex items-center">
-            <H2>{type && TypeName[type]}</H2>
-            <img
-              src={IcMenu}
-              className="md:hidden cursor-pointer"
-              onClick={() => setOpenMenu(true)}
-            />
-          </div>
-          <Body
-            className="md:hidden cursor-pointer text-olive-500"
-            onClick={() => setOpenHistory(true)}
-          >
-            答題紀錄
-          </Body>
+    <div className="flex pt-[30px]">
+      <div className="hidden md:block w-[256px] h-[calc(100vh-140px)] md:h-[calc(100vh-170px)]">
+        <Menu />
+      </div>
+      <div className="flex-1">
+        <div className="box-content md:px-10 lg:max-w-[1024px] lg:mx-auto">
+          <MathJax dynamic>
+            <div className="flex justify-between items-center mt-0 md:mt-[30px] pb-7">
+              <div className="flex items-center">
+                <H2>{type && TypeName[type]}</H2>
+                <img
+                  src={IcMenu}
+                  className="md:hidden cursor-pointer"
+                  onClick={() => setOpenMenu(true)}
+                />
+              </div>
+              <Body
+                className="md:hidden cursor-pointer text-olive-500"
+                onClick={() => setOpenHistory(true)}
+              >
+                答題紀錄
+              </Body>
+            </div>
+            <div className="flex">
+              <div className="hidden md:block w-1/2 h-[calc(100vh-140px-92px)] md:h-[calc(100vh-170px-92px)] overflow-y-auto">
+                <History history={history} />
+              </div>
+              <div className="w-full md:w-1/2 h-[calc(100vh-140px-92px)] bg-white md:h-[calc(100vh-170px-92px)] overflow-y-auto">
+                <QuestionForm initQuestion={initQuestion} current={current} />
+              </div>
+            </div>
+          </MathJax>
         </div>
-        <div className="flex">
-          <div className="hidden md:block w-1/2 h-[calc(100vh-140px-92px)] md:h-[calc(100vh-170px-92px)] overflow-y-auto">
-            <History history={history} />
-          </div>
-          <div className="w-full md:w-1/2 h-[calc(100vh-140px-92px)] bg-white md:h-[calc(100vh-170px-92px)] overflow-y-auto">
-            <QuestionForm initQuestion={initQuestion} current={current} />
-          </div>
-        </div>
-      </MathJax>
+      </div>
       <Drawer anchor="left" open={openMenu} onClose={() => setOpenMenu(false)}>
         <Menu isDrawer onClick={() => setOpenMenu(false)} />
       </Drawer>
@@ -70,7 +77,7 @@ const QuestionPage = () => {
           <History history={history} />
         </MathJax>
       </Drawer>
-    </>
+    </div>
   );
 };
 

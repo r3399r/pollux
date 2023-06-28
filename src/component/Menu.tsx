@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Type, TypeName } from 'src/model/Common';
 import Accordion from './Accordion';
 import Body from './typography/Body';
@@ -10,7 +10,9 @@ type Props = {
 };
 
 const Menu = ({ isDrawer = false, onClick }: Props) => {
+  const { type } = useParams<{ type: Type }>();
   const navigate = useNavigate();
+  console.log(type);
 
   return (
     <div
