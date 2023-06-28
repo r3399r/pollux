@@ -59,16 +59,18 @@ const QuestionForm = ({ initQuestion, current }: Props) => {
       >
         <div className="flex justify-center">
           {current?.img && <img src={current.img} />}
-          {current?.q && <div>{current.q}</div>}
+          {current?.q && <div className="text-center">{current.q}</div>}
         </div>
         <div className="relative mt-[30px]">
           <input
-            className={classNames('outline-2 rounded-lg bg-beige-200 pl-[72px] py-4 pr-4 w-full', {
-              'outline-brickred-500': errors.ans,
-              'outline-beige-200': !errors.ans,
-            })}
+            className={classNames(
+              'outline-2 border-0 rounded-lg bg-beige-200 pl-[72px] py-4 pr-4 w-full',
+              {
+                'outline-brickred-500': errors.ans,
+                'outline-beige-200': !errors.ans,
+              },
+            )}
             autoComplete="off"
-            // inputMode="decimal"
             type="text"
             {...register('ans')}
           />

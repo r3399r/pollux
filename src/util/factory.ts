@@ -124,7 +124,7 @@ const factorization = (): Question => {
 
   return {
     id: uniqid(),
-    q: `\\(${polynomial(a * c, a * d + b * c, b * d)}=k(ax+b)(cx+d)\\)`,
+    q: `將 \\(${polynomial(a * c, a * d + b * c, b * d)}\\) 化簡為 \\(k(ax+b)(cx+d)\\)`,
     a: `\\(${coefficient(leading, `${first}${second}`, true)}\\)`,
     validate,
     hint: {
@@ -194,18 +194,15 @@ const rationalize = (): Question => {
   }
 
   // 1: sqrt{a}/sqrt{b}, 2: sqrt{a/b}, 3: a/sqrt{b}
-  const type = randomIntBetween(1, 4);
+  const type = randomIntBetween(1, 3);
   switch (type) {
     case 1:
-      a = rationalizeSingle(denominator, numerator);
       q = `化簡 \\(\\dfrac{\\sqrt{${numerator}}}{\\sqrt{${denominator}}}=\\dfrac{a\\sqrt b}{c}\\)`;
       break;
     case 2:
-      a = rationalizeSingle(denominator, numerator);
       q = `化簡 \\(\\sqrt{\\dfrac{${numerator}}{${denominator}}}=\\dfrac{a\\sqrt b}{c}\\)`;
       break;
     case 3:
-      a = rationalizeSingle(denominator, numerator * numerator);
       q = `化簡 \\(\\dfrac{${numerator}}{\\sqrt{${denominator}}}=\\dfrac{a\\sqrt b}{c}\\)`;
       break;
   }

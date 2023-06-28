@@ -22,9 +22,9 @@ const QuestionPage = () => {
   const initQuestion = (next: boolean, save?: boolean) => {
     if (!type) return;
     try {
-      const { history, ...res } = handleQuestion(type, next, save);
-      setCurrent(res);
-      setHistory(history);
+      const { current: c, history: h } = handleQuestion(type, next, save);
+      setCurrent(c);
+      setHistory(h);
     } catch (e) {
       navigate('/add10');
     }

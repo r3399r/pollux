@@ -57,11 +57,3 @@ export const TypeName: {
 export type Factory = {
   [key in Type]: () => Question;
 };
-
-export type CurrentQuestion = {
-  [key in Type]?: Question;
-};
-
-export type HistoryQuestion = {
-  [key in Type]?: SavedQuestion[];
-};
