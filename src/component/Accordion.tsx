@@ -8,10 +8,17 @@ type Props = {
   summary: string;
   details: string[];
   current: string;
+  onClickDetail: (detail: string) => void;
+  expanded: boolean;
 };
 
-const Accordion = ({ summary, details, current }: Props) => (
-  <MuiAccordion disableGutters classes={{ root: '!bg-olive-500 !shadow-none' }}>
+const Accordion = ({ summary, details, current, onClickDetail, expanded }: Props) => (
+  <MuiAccordion
+    disableGutters
+    classes={{ root: '!bg-olive-500 !border-0 before:!bg-olive-500' }}
+    defaultExpanded={expanded}
+    elevation={0}
+  >
     <AccordionSummary
       expandIcon={<img src={IcArrow} />}
       sx={{ borderBottom: '1px', borderBottomColor: 'white', borderBottomStyle: 'solid' }}
@@ -29,6 +36,7 @@ const Accordion = ({ summary, details, current }: Props) => (
             'bg-beige-200 text-olive-500': current === v,
             'text-white hover:bg-olive-700': current !== v,
           })}
+          onClick={() => onClickDetail(v)}
         >
           {v}
         </Body>

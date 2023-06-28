@@ -14,6 +14,10 @@ export const setCurrentHasViewed = (type: Type) => {
   localStorage.setItem(`${type}-current`, JSON.stringify({ ...current, hasViewed: true }));
 };
 
+export const removeRecord = (type: Type) => {
+  localStorage.removeItem(`${type}-history`);
+};
+
 export const handleQuestion = (
   type: Type,
   next: boolean,
