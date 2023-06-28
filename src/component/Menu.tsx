@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import { useNavigate } from 'react-router-dom';
 import { Type, TypeName } from 'src/model/Common';
+import Accordion from './Accordion';
 import Body from './typography/Body';
 
 type Props = {
@@ -14,12 +15,13 @@ const Menu = ({ isDrawer = false, onClick }: Props) => {
   return (
     <div
       className={classNames(
-        'flex flex-col gap-[5px] bg-olive-500 h-full text-white px-[10px] py-5 overflow-y-auto',
+        'flex flex-col gap-[5px] bg-olive-500 h-full text-white px-[15px] py-5 overflow-y-auto',
         {
           'rounded-[15px]': !isDrawer,
         },
       )}
     >
+      <Accordion summary="小學數學" details={['add10', 'b', 'c']} current={'add10'} />
       {Object.values(Type).map((v, i) => (
         <Body
           key={i}

@@ -15,7 +15,7 @@ const App = () => {
         <H2>無限 ∞ 算術</H2>
       </div>
       <div className="flex pt-[30px]">
-        <div className="hidden md:block w-[296px] h-[calc(100vh-140px)] md:h-[calc(100vh-170px)]">
+        <div className="hidden md:block w-[256px] h-[calc(100vh-140px)] md:h-[calc(100vh-170px)]">
           <Menu />
         </div>
         <div className="flex-1">

@@ -46,7 +46,10 @@ const QuestionPage = () => {
               onClick={() => setOpenMenu(true)}
             />
           </div>
-          <Body className="md:hidden cursor-pointer" onClick={() => setOpenHistory(true)}>
+          <Body
+            className="md:hidden cursor-pointer text-olive-500"
+            onClick={() => setOpenHistory(true)}
+          >
             答題紀錄
           </Body>
         </div>

@@ -17,6 +17,7 @@ module.exports = {
       },
       olive: {
         500: '#779382',
+        700: '#5e7e6b',
       },
       brickred: {
         500: '#9E5349',
