@@ -102,7 +102,7 @@ const rectArea = (): Question => {
   return { id: uniqid(), a: `${w * h}`, validate: [`${w * h}`], img: canvas.toDataURL() };
 };
 
-// (ax+b)(cx+d)-> a*c, a*d+b*c, b*d
+// (ax+b)(cx+d) -> a*c, a*d+b*c, b*d
 const factorization = (): Question => {
   const a = randomElement([1, 1, 1, 2, 2, 3]) * randomElement([-1, 1]);
   const c = randomElement([1, 1, 1, 2, 2, 3]) * randomElement([-1, 1]);
@@ -231,6 +231,67 @@ const rationalize = (): Question => {
   };
 };
 
+// (ax+b)(cx+d) -> a*c, a*d+b*c, b*d
+const distributiveLaw = (): Question => {
+  const sign = randomElement([-1, 1, 1, 1, 1]);
+  const a = randomElement([1, 1, 1, 2, 2, 3, 4, 5]) * randomElement([-1, 1]);
+  const c = randomElement([1, 1, 1, 2, 2, 3, 4, 5]) * randomElement([-1, 1]);
+  const b = randomIntBetween(1, 10) * randomElement([-1, 1]);
+  const d = randomIntBetween(1, 10) * randomElement([-1, 1]);
+
+  const first = a * c;
+  const second = a * d + b * c;
+  const third = b * d;
+
+  return {
+    id: uniqid(),
+    q: `\\(${sign === 1 ? '' : '-'}(${polynomial(a, b)})(${polynomial(
+      c,
+      d,
+    )})\\) 展開為 \\(ax^2+bx+c\\)`,
+    a: `\\(${polynomial(first * sign, second * sign, third * sign)}\\)`,
+    validate: [[first * sign, second * sign, third * sign].join()],
+    hint: {
+      rules: ['依序填入 a,b,c', '以逗號分隔、無空白'],
+      example: '1,2,-5',
+    },
+  };
+};
+
+const multipleFormula = (): Question => {
+  const a = randomElement([1, 1, 1, 2, 2, 3, 4, 5]) * randomElement([-1, 1]);
+  const b = randomIntBetween(1, 10) * randomElement([-1, 1]);
+  let q = '';
+  let first = a * a;
+  let second = 0;
+  let third = b * b;
+
+  // 1: (ax+b)^2 -> a^2, 2*a*b, b^2, 2: (a+b)(a-b) -> a^2, b^2
+  const type = randomIntBetween(1, 2);
+  switch (type) {
+    case 1:
+      q = `\\((${polynomial(a, b)})^2\\) 展開為 \\(ax^2+bx+c\\)`;
+      second = 2 * a * b;
+      break;
+    case 2:
+      q = `\\((${polynomial(a, b)})(${polynomial(a, b * -1)})\\) 展開為 \\(ax^2+bx+c\\)`;
+      first = a * a;
+      third = -1 * b * b;
+      break;
+  }
+
+  return {
+    id: uniqid(),
+    q,
+    a: `\\(${polynomial(first, second, third)}\\)`,
+    validate: [[first, second, third].join()],
+    hint: {
+      rules: ['依序填入 a,b,c', '以逗號分隔、無空白'],
+      example: '1,-4,4',
+    },
+  };
+};
+
 export const factory: Factory = {
   [Type.Add10]: add10,
   [Type.Minus10]: minus10,
@@ -244,4 +305,6 @@ export const factory: Factory = {
   [Type.PrimeFactorization]: primeFactorization,
   [Type.SimplifiyRadical]: simplifyRadical,
   [Type.Rationalize]: rationalize,
+  [Type.DistributiveLaw]: distributiveLaw,
+  [Type.MultipleFormula]: multipleFormula,
 };

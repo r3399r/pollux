@@ -72,10 +72,10 @@ const QuestionPage = () => {
               </Body>
             </div>
             <div className="flex">
-              <div className="hidden md:block w-1/2 h-[calc(100vh-140px-92px)] md:h-[calc(100vh-170px-92px)] overflow-y-auto">
+              <div className="hidden md:block w-1/2 md:h-[calc(100vh-170px-92px)] overflow-y-auto">
                 <History history={history} onRemoveRecord={onRemoveRecord} />
               </div>
-              <div className="w-full md:w-1/2 h-[calc(100vh-140px-92px)] bg-white md:h-[calc(100vh-170px-92px)] overflow-y-auto rounded-[15px]">
+              <div className="w-full md:w-1/2 bg-white md:h-[calc(100vh-170px-92px)] overflow-y-auto rounded-[15px]">
                 <QuestionForm initQuestion={initQuestion} current={current} />
               </div>
             </div>
