@@ -1,4 +1,4 @@
-import { CurrentQuestion, HistoryQuestion, Question, SavedQuestion, Type } from 'src/model/Common';
+import { Question, SavedQuestion, Type } from 'src/model/Common';
 import { factory } from 'src/util/factory';
 
 const generate = (type: Type): Question => {
@@ -8,43 +8,39 @@ const generate = (type: Type): Question => {
 };
 
 export const setCurrentHasViewed = (type: Type) => {
-  const currentAll = JSON.parse(localStorage.getItem('current') || '{}') as CurrentQuestion;
-  const current = currentAll[type];
+  const localCurrent = localStorage.getItem(`${type}-current`);
+  const current = localCurrent ? (JSON.parse(localCurrent) as Question) : undefined;
 
-  localStorage.setItem(
-    'current',
-    JSON.stringify({ ...currentAll, [type]: { ...current, hasViewed: true } }),
-  );
+  localStorage.setItem(`${type}-current`, JSON.stringify({ ...current, hasViewed: true }));
+};
+
+export const removeRecord = (type: Type) => {
+  localStorage.removeItem(`${type}-history`);
 };
 
 export const handleQuestion = (
   type: Type,
   next: boolean,
   save = true,
-): Question & { history: SavedQuestion[] } => {
-  const currentAll = JSON.parse(localStorage.getItem('current') || '{}') as CurrentQuestion;
-  const historyAll = JSON.parse(localStorage.getItem('history') || '{}') as HistoryQuestion;
+): { current: Question; history: SavedQuestion[] } => {
+  const localCurrent = localStorage.getItem(`${type}-current`);
+  const localHistory = localStorage.getItem(`${type}-history`);
+  const current = localCurrent ? (JSON.parse(localCurrent) as Question) : undefined;
+  const history = localHistory ? (JSON.parse(localHistory) as SavedQuestion[]) : undefined;
 
-  const current = currentAll[type];
-  const history = historyAll[type]?.map((v) => ({
-    id: v.id,
-    img: v.img,
-    q: v.q,
-    a: v.a,
-  }));
-
-  if (current !== undefined && next === false) return { ...current, history: history ?? [] };
+  if (current !== undefined && next === false) return { current, history: history ?? [] };
 
   const question = generate(type);
-  localStorage.setItem('current', JSON.stringify({ ...currentAll, [type]: question }));
+  localStorage.setItem(`${type}-current`, JSON.stringify(question));
 
   if ((current === undefined && next === false) || save === false)
-    return { ...question, history: history ?? [] };
+    return { current: question, history: history ?? [] };
 
-  if (current === undefined && history === undefined) historyAll[type] = [];
-  else if (current === undefined && history !== undefined) historyAll[type] = [...history];
+  let updatedHistory: SavedQuestion[] = [];
+  if (current === undefined && history === undefined) updatedHistory = [];
+  else if (current === undefined && history !== undefined) updatedHistory = [...history];
   else if (current !== undefined && history === undefined)
-    historyAll[type] = [
+    updatedHistory = [
       {
         id: current.id,
         img: current.img,
@@ -53,7 +49,7 @@ export const handleQuestion = (
       },
     ];
   else if (current !== undefined && history !== undefined)
-    historyAll[type] = [
+    updatedHistory = [
       {
         id: current.id,
         img: current.img,
@@ -62,7 +58,7 @@ export const handleQuestion = (
       },
       ...history,
     ];
-  localStorage.setItem('history', JSON.stringify({ ...historyAll }));
+  localStorage.setItem(`${type}-history`, JSON.stringify(updatedHistory));
 
-  return { ...question, history: historyAll[type] ?? [] };
+  return { current: question, history: updatedHistory ?? [] };
 };

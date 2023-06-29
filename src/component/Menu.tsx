@@ -1,36 +1,39 @@
 import classNames from 'classnames';
-import { useNavigate } from 'react-router-dom';
-import { Type, TypeName } from 'src/model/Common';
-import Body from './typography/Body';
+import { useNavigate, useParams } from 'react-router-dom';
+import { CategoryType, Type } from 'src/model/Common';
+import Accordion from './Accordion';
 
 type Props = {
   isDrawer?: boolean;
-  onClick?: () => void;
+  onCloseDrawer?: () => void;
 };
 
-const Menu = ({ isDrawer = false, onClick }: Props) => {
+const Menu = ({ isDrawer = false, onCloseDrawer }: Props) => {
+  const { type } = useParams<{ type: Type }>();
   const navigate = useNavigate();
 
   return (
     <div
       className={classNames(
-        'flex flex-col gap-[5px] bg-olive-500 h-full text-white px-[10px] py-5 overflow-y-auto',
+        'flex flex-col gap-[5px] bg-olive-500 h-full text-white px-[15px] py-5 overflow-y-auto',
         {
-          'rounded-[15px]': !isDrawer,
+          'rounded-[15px] w-[256px]': !isDrawer,
+          'w-[300px]': isDrawer,
         },
       )}
     >
-      {Object.values(Type).map((v, i) => (
-        <Body
-          key={i}
-          onClick={() => {
-            onClick && onClick();
-            navigate(`/${v}`);
+      {CategoryType.map((c) => (
+        <Accordion
+          key={c.category}
+          summary={c.name}
+          details={c.types.map((t) => t.name)}
+          current={c.types.find((t) => t.type === type)?.name ?? ''}
+          onClickDetail={(name) => {
+            navigate(`/${c.types.find((v) => v.name === name)?.type ?? Type.Add10}`);
+            onCloseDrawer && onCloseDrawer();
           }}
-          className="cursor-pointer py-2 px-5"
-        >
-          {TypeName[v]}
-        </Body>
+          expanded={!!c.types.find((t) => t.type === type)}
+        />
       ))}
     </div>
   );
