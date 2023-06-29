@@ -29,7 +29,9 @@ const Menu = ({ isDrawer = false, onCloseDrawer }: Props) => {
           details={c.types.map((t) => t.name)}
           current={c.types.find((t) => t.type === type)?.name ?? ''}
           onClickDetail={(name) => {
-            navigate(`/${c.types.find((v) => v.name === name)?.type ?? Type.Add10}`);
+            const target = c.types.find((v) => v.name === name)?.type;
+            navigate(target ? `/${target}` : '/');
+            if (target) localStorage.setItem('target', target);
             onCloseDrawer && onCloseDrawer();
           }}
           expanded={!!c.types.find((t) => t.type === type)}
