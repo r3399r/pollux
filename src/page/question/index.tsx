@@ -20,7 +20,7 @@ const QuestionPage = () => {
   const [openHistory, setOpenHistory] = useState<boolean>(false);
 
   const title = useMemo(() => {
-    let res = '';
+    let res = null;
     CategoryType.forEach((c) => {
       c.types.forEach((t) => {
         if (t.type === type) res = t.name;
@@ -37,7 +37,7 @@ const QuestionPage = () => {
       setCurrent(c);
       setHistory(h);
     } catch (e) {
-      navigate('/add-10');
+      navigate('/');
     }
   };
 
@@ -51,9 +51,11 @@ const QuestionPage = () => {
     initQuestion(false);
   }, [type]);
 
+  if (!title) return <></>;
+
   return (
     <div className="flex pt-[30px]">
-      <div className="hidden md:block h-[calc(100vh-140px)] md:h-[calc(100vh-170px)]">
+      <div className="hidden md:block h-[calc(100vh-170px)]">
         <Menu />
       </div>
       <div className="flex-1">
