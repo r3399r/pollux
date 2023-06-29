@@ -3,7 +3,7 @@ set -e
 
 env=$1
 project=pollux
-subDomain=gemini
+subDomain=infinity
 domain=celestialstudio.net
 
 echo ====================================================================================
@@ -18,7 +18,7 @@ aws cloudformation deploy --template-file packaged.yaml --stack-name $project-$e
 echo ====================================================================================
 
 echo deploy frontend to S3...
-npm i
+npm ci
 npm run pre:deploy
 aws s3 sync ./dist s3://$project-$env-y --delete --cache-control no-cache
 echo ====================================================================================
