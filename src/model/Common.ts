@@ -40,7 +40,9 @@ export enum Type {
   SimplifiyRadical = 'simplify-radical',
   Rationalize = 'rationalize',
   DistributiveLaw = 'distributive-law',
-  MultipleFormula = 'multiple-formula',
+  MultipleFormula1 = 'multiple-formula-1',
+  MultipleFormula2 = 'multiple-formula-2',
+  CompletingTheSquare = 'completing-the-square',
 }
 
 export const CategoryType: {
@@ -66,10 +68,16 @@ export const CategoryType: {
     name: '國中數學',
     types: [
       { type: Type.DistributiveLaw, name: '乘法分配律' },
-      { type: Type.MultipleFormula, name: '乘法公式' },
+      { type: Type.MultipleFormula1, name: '乘法公式(一)' },
       { type: Type.Factorization, name: '二次式因式分解' },
       { type: Type.SimplifiyRadical, name: '根號化簡' },
       { type: Type.Rationalize, name: '根號有理化' },
+      { type: Type.CompletingTheSquare, name: '配方法' },
     ],
+  },
+  {
+    category: Category.SeniorHigh,
+    name: '高中數學',
+    types: [{ type: Type.MultipleFormula2, name: '乘法公式(二)' }],
   },
 ];
