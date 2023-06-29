@@ -22,10 +22,10 @@ const Menu = ({ isDrawer = false, onCloseDrawer }: Props) => {
         },
       )}
     >
-      {CategoryType.map((c, i) => (
+      {CategoryType.map((c) => (
         <Accordion
-          key={i}
-          summary={c.category}
+          key={c.category}
+          summary={c.name}
           details={c.types.map((t) => t.name)}
           current={c.types.find((t) => t.type === type)?.name ?? ''}
           onClickDetail={(name) => {

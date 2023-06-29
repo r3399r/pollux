@@ -18,12 +18,14 @@ export type Factory = {
   [key in Type]: () => Question;
 };
 
+// 分類
 export enum Category {
-  Elementary = '國小數學',
-  JuniorHigh = '國中數學',
-  SeniorHigh = '高中數學',
+  Elementary,
+  JuniorHigh,
+  SeniorHigh,
 }
 
+// 題型
 export enum Type {
   Add10 = 'add10',
   Minus10 = 'minus10',
@@ -45,10 +47,12 @@ export enum Type {
 
 export const CategoryType: {
   category: Category;
+  name: string;
   types: { type: Type; name: string }[];
 }[] = [
   {
     category: Category.Elementary,
+    name: '國小數學',
     types: [
       { type: Type.Add10, name: '10以內的加法' },
       { type: Type.Minus10, name: '10以內的減法' },
@@ -56,6 +60,7 @@ export const CategoryType: {
   },
   {
     category: Category.JuniorHigh,
+    name: '國中數學',
     types: [
       { type: Type.Factorization, name: '二次式因式分解' },
       { type: Type.PrimeFactorization, name: '質因數分解' },
@@ -63,6 +68,7 @@ export const CategoryType: {
   },
   {
     category: Category.SeniorHigh,
+    name: '高中數學',
     types: [{ type: Type.SimplifiyRadical, name: '根號化簡' }],
   },
 ];
