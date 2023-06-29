@@ -59,27 +59,21 @@ const QuestionPage = () => {
       <div className="flex-1">
         <div className="box-content md:px-10 lg:max-w-[1024px] lg:mx-auto">
           <MathJax dynamic>
-            <div className="flex justify-between items-center mt-0 md:mt-[30px] pb-7">
-              <div className="flex items-center">
+            <H2 className="hidden md:block mt-[30px] pb-7">{title}</H2>
+            <div className="flex justify-between items-center mt-0 md:mt-[30px] pb-7 md:hidden gap-x-1">
+              <div className="flex flex-wrap items-center">
                 <H2>{title}</H2>
-                <img
-                  src={IcMenu}
-                  className="md:hidden cursor-pointer"
-                  onClick={() => setOpenMenu(true)}
-                />
+                <img src={IcMenu} className="cursor-pointer" onClick={() => setOpenMenu(true)} />
               </div>
-              <Body
-                className="md:hidden cursor-pointer text-olive-700"
-                onClick={() => setOpenHistory(true)}
-              >
-                答題紀錄
+              <Body className="cursor-pointer text-olive-700" onClick={() => setOpenHistory(true)}>
+                觀看答題紀錄
               </Body>
             </div>
             <div className="flex">
               <div className="hidden md:block w-1/2 h-[calc(100vh-140px-92px)] md:h-[calc(100vh-170px-92px)] overflow-y-auto">
                 <History history={history} onRemoveRecord={onRemoveRecord} />
               </div>
-              <div className="w-full md:w-1/2 h-[calc(100vh-140px-92px)] bg-white md:h-[calc(100vh-170px-92px)] overflow-y-auto">
+              <div className="w-full md:w-1/2 h-[calc(100vh-140px-92px)] bg-white md:h-[calc(100vh-170px-92px)] overflow-y-auto rounded-[15px]">
                 <QuestionForm initQuestion={initQuestion} current={current} />
               </div>
             </div>
