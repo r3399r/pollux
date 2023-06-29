@@ -117,14 +117,14 @@ const factorization = (): Question => {
   const c1 = c / gcd2;
   const d1 = d / gcd2;
 
-  const first = b === 0 ? 'x' : `(${polynomial(a1, b1)})`;
-  const second = d === 0 ? 'x' : `(${polynomial(c1, d1)})`;
+  const first = b === 0 ? 'x' : `(${polynomial('x', a1, b1)})`;
+  const second = d === 0 ? 'x' : `(${polynomial('x', c1, d1)})`;
 
   const validate = [[leading, a1, b1, c1, d1].join(), [leading, c1, d1, a1, b1].join()];
 
   return {
     id: uniqid(),
-    q: `將 \\(${polynomial(a * c, a * d + b * c, b * d)}\\) 化簡為 \\(k(ax+b)(cx+d)\\)`,
+    q: `將 \\(${polynomial('x', a * c, a * d + b * c, b * d)}\\) 化簡為 \\(k(ax+b)(cx+d)\\)`,
     a: `\\(${coefficient(leading, `${first}${second}`, true)}\\)`,
     validate,
     hint: {
@@ -245,11 +245,12 @@ const distributiveLaw = (): Question => {
 
   return {
     id: uniqid(),
-    q: `\\(${sign === 1 ? '' : '-'}(${polynomial(a, b)})(${polynomial(
+    q: `\\(${sign === 1 ? '' : '-'}(${polynomial('x', a, b)})(${polynomial(
+      'x',
       c,
       d,
     )})\\) 展開為 \\(ax^2+bx+c\\)`,
-    a: `\\(${polynomial(first * sign, second * sign, third * sign)}\\)`,
+    a: `\\(${polynomial('x', first * sign, second * sign, third * sign)}\\)`,
     validate: [[first * sign, second * sign, third * sign].join()],
     hint: {
       rules: ['依序填入 a,b,c', '以逗號分隔、無空白'],
@@ -258,7 +259,7 @@ const distributiveLaw = (): Question => {
   };
 };
 
-const multipleFormula = (): Question => {
+const multipleFormula1 = (): Question => {
   const a = randomElement([1, 1, 1, 2, 2, 3, 4, 5]) * randomElement([-1, 1]);
   const b = randomIntBetween(1, 10) * randomElement([-1, 1]);
   let q = '';
@@ -270,11 +271,11 @@ const multipleFormula = (): Question => {
   const type = randomIntBetween(1, 2);
   switch (type) {
     case 1:
-      q = `\\((${polynomial(a, b)})^2\\) 展開為 \\(ax^2+bx+c\\)`;
+      q = `\\((${polynomial('x', a, b)})^2\\) 展開為 \\(ax^2+bx+c\\)`;
       second = 2 * a * b;
       break;
     case 2:
-      q = `\\((${polynomial(a, b)})(${polynomial(a, b * -1)})\\) 展開為 \\(ax^2+bx+c\\)`;
+      q = `\\((${polynomial('x', a, b)})(${polynomial('x', a, b * -1)})\\) 展開為 \\(ax^2+bx+c\\)`;
       first = a * a;
       third = -1 * b * b;
       break;
@@ -283,11 +284,53 @@ const multipleFormula = (): Question => {
   return {
     id: uniqid(),
     q,
-    a: `\\(${polynomial(first, second, third)}\\)`,
+    a: `\\(${polynomial('x', first, second, third)}\\)`,
     validate: [[first, second, third].join()],
     hint: {
       rules: ['依序填入 a,b,c', '以逗號分隔、無空白'],
       example: '1,-4,4',
+    },
+  };
+};
+
+// (ax+b)^3 -> a^3, 3*a*a*b, 3*a*b*b, b^3
+const multipleFormula2 = (): Question => {
+  const a = randomElement([1, 1, 1, 2, 2, 3]) * randomElement([-1, 1]);
+  const b = randomIntBetween(1, 5) * randomElement([-1, 1]);
+
+  const first = a * a * a;
+  const second = 3 * a * a * b;
+  const third = 3 * a * b * b;
+  const fourth = b * b * b;
+
+  return {
+    id: uniqid(),
+    q: `\\((${polynomial('x', a, b)})^3\\) 展開為 \\(ax^3+bx^2+cx+d\\)`,
+    a: `\\(${polynomial('x', first, second, third, fourth)}\\)`,
+    validate: [[first, second, third, fourth].join()],
+    hint: {
+      rules: ['依序填入 a,b,c,d', '以逗號分隔、無空白'],
+      example: '1,-6,9,27',
+    },
+  };
+};
+
+const completingTheSquare = (): Question => {
+  const a = randomElement([1, 1, 1, 2, 2, 3]) * randomElement([-1, 1]);
+  const h = randomElement([1, 1, 1, 2, 2, 3, 4, 5]) * randomElement([-1, 1]);
+  const k = randomIntBetween(-10, 10);
+
+  const b = 2 * a * h;
+  const c = a * h * h + k;
+
+  return {
+    id: uniqid(),
+    q: `\\(${polynomial('x', a, b, c)}\\) 配方成 \\(a(x+h)^2+k\\)`,
+    a: `\\(${polynomial(`(${polynomial('x', 1, h)})`, a, 0, k)}\\)`,
+    validate: [[a, h, k].join()],
+    hint: {
+      rules: ['依序填入 a,h,k', '以逗號分隔、無空白'],
+      example: '2,-1,3',
     },
   };
 };
@@ -306,5 +349,7 @@ export const factory: Factory = {
   [Type.SimplifiyRadical]: simplifyRadical,
   [Type.Rationalize]: rationalize,
   [Type.DistributiveLaw]: distributiveLaw,
-  [Type.MultipleFormula]: multipleFormula,
+  [Type.MultipleFormula1]: multipleFormula1,
+  [Type.MultipleFormula2]: multipleFormula2,
+  [Type.CompletingTheSquare]: completingTheSquare,
 };
