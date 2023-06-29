@@ -1,5 +1,5 @@
 import uniqid from 'uniqid';
-import { Factory, Question } from 'src/model/Common';
+import { Factory, Question, Type } from 'src/model/Common';
 import {
   coefficient,
   primeFactorization as doPrimeFactorization,
@@ -222,29 +222,17 @@ const rationalize = (): Question => {
   };
 };
 
-// const triangleAreaFomula = (): Question => ({ id: uniqid(), a: `1`, validate: [`1`], q: 's' });
-
-// const lawOfSines = (): Question => ({ id: uniqid(), a: `1`, validate: [`1`], q: 's' });
-
-// const lawOfCosines = (): Question => ({ id: uniqid(), a: `1`, validate: [`1`], q: 's' });
-
-// const heronFormula = (): Question => ({ id: uniqid(), a: `1`, validate: [`1`], q: 's' });
-
 export const factory: Factory = {
-  add10,
-  minus10,
-  add20,
-  minus20,
-  timesTable,
-  gcd,
-  lcm,
-  rectArea,
-  factorization,
-  primeFactorization,
-  simplifyRadical,
-  rationalize,
-  // triangleAreaFomula,
-  // lawOfSines,
-  // lawOfCosines,
-  // heronFormula,
+  [Type.Add10]: add10,
+  [Type.Minus10]: minus10,
+  [Type.Add20]: add20,
+  [Type.Minus20]: minus20,
+  [Type.TimesTable]: timesTable,
+  [Type.RectArea]: rectArea,
+  [Type.Gcd]: gcd,
+  [Type.Lcm]: lcm,
+  [Type.Factorization]: factorization,
+  [Type.PrimeFactorization]: primeFactorization,
+  [Type.SimplifiyRadical]: simplifyRadical,
+  [Type.Rationalize]: rationalize,
 };

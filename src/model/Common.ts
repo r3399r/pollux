@@ -27,22 +27,18 @@ export enum Category {
 
 // 題型
 export enum Type {
-  Add10 = 'add10',
-  Minus10 = 'minus10',
-  Add20 = 'add20',
-  Minus20 = 'minus20',
-  TimesTable = 'timesTable',
-  RectArea = 'rectArea',
-  Gcd = 'gcd',
-  Lcm = 'lcm',
+  Add10 = 'add-10',
+  Minus10 = 'minus-10',
+  Add20 = 'add-20',
+  Minus20 = 'minus-20',
+  TimesTable = 'times-table',
+  RectArea = 'rectangle-area',
+  Gcd = 'greatest-common-divisor',
+  Lcm = 'least-common-multiple',
+  PrimeFactorization = 'prime-factorization',
   Factorization = 'factorization',
-  PrimeFactorization = 'primeFactorization',
-  SimplifiyRadical = 'simplifyRadical',
+  SimplifiyRadical = 'simplify-radical',
   Rationalize = 'rationalize',
-  // triangleAreaFomula = 'triangleAreaFomula',
-  // lawOfSines = 'lawOfSines',
-  // lawOfCosines = 'lawOfCosines',
-  // heronFormula = 'heronFormula',
 }
 
 export const CategoryType: {
@@ -56,6 +52,11 @@ export const CategoryType: {
     types: [
       { type: Type.Add10, name: '10以內的加法' },
       { type: Type.Minus10, name: '10以內的減法' },
+      { type: Type.TimesTable, name: '九九乘法' },
+      { type: Type.RectArea, name: '矩形面積' },
+      { type: Type.Gcd, name: '最大公因數' },
+      { type: Type.Lcm, name: '最小公倍數' },
+      { type: Type.PrimeFactorization, name: '質因數分解' },
     ],
   },
   {
@@ -63,33 +64,8 @@ export const CategoryType: {
     name: '國中數學',
     types: [
       { type: Type.Factorization, name: '二次式因式分解' },
-      { type: Type.PrimeFactorization, name: '質因數分解' },
+      { type: Type.SimplifiyRadical, name: '根號化簡' },
+      { type: Type.Rationalize, name: '根號有理化' },
     ],
   },
-  {
-    category: Category.SeniorHigh,
-    name: '高中數學',
-    types: [{ type: Type.SimplifiyRadical, name: '根號化簡' }],
-  },
 ];
-
-// export const TypeName: {
-//   [key in Type]: string;
-// } = {
-//   add10: '10以內的加法',
-//   minus10: '10以內的減法',
-//   add20: '20以內的加法',
-//   minus20: '20以內的減法',
-//   timesTable: '九九乘法',
-//   rectArea: '矩形面積',
-//   gcd: '最大公因數',
-//   lcm: '最小公倍數',
-//   factorization: '二次式因式分解',
-//   primeFactorization: '質因數分解',
-//   simplifyRadical: '根號化簡',
-//   rationalize: '有理化',
-//   // triangleAreaFomula: '面積公式',
-//   // lawOfSines: '正弦定理',
-//   // lawOfCosines: '餘弦定理',
-//   // heronFormula: '海龍公式',
-// };

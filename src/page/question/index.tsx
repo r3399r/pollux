@@ -37,7 +37,7 @@ const QuestionPage = () => {
       setCurrent(c);
       setHistory(h);
     } catch (e) {
-      navigate('/add10');
+      navigate('/add-10');
     }
   };
 
