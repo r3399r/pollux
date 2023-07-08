@@ -35,6 +35,7 @@ export enum Type {
   RectArea = 'rectangle-area',
   Gcd = 'greatest-common-divisor',
   Lcm = 'least-common-multiple',
+  ScientificNotation = 'scientific-notation',
   PrimeFactorization = 'prime-factorization',
   Factorization = 'factorization',
   SimplifiyRadical = 'simplify-radical',
@@ -67,6 +68,7 @@ export const CategoryType: {
     category: Category.JuniorHigh,
     name: '國中數學',
     types: [
+      { type: Type.ScientificNotation, name: '科學記號' },
       { type: Type.DistributiveLaw, name: '乘法分配律' },
       { type: Type.MultipleFormula1, name: '乘法公式(一)' },
       { type: Type.Factorization, name: '二次式因式分解' },

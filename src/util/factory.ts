@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import uniqid from 'uniqid';
 import { Factory, Question, Type } from 'src/model/Common';
 import {
@@ -8,6 +9,7 @@ import {
   lcm as findLcm,
   polynomial,
   randomElement,
+  randomFloatBetween,
   randomIntBetween,
   rationalizeSingle,
 } from './math';
@@ -71,6 +73,19 @@ const lcm = (): Question => {
   const c = findLcm(a, b);
 
   return { id: uniqid(), q: `求 ${a} 與 ${b} 的最小公倍數`, a: `${c}`, validate: [`${c}`] };
+};
+
+const scientificNotation = (): Question => {
+  const m = randomFloatBetween(1, 9.999, 3);
+  const n = randomIntBetween(-15, 15);
+  const q = new BigNumber(10).pow(n).times(m).toString();
+
+  return {
+    id: uniqid(),
+    q: `\\(${q}=a\\times10^n\\)`,
+    a: `\\(${m}\\times10^{${n}}\\)`,
+    validate: [`${m},${n}`],
+  };
 };
 
 const rectArea = (): Question => {
@@ -344,6 +359,7 @@ export const factory: Factory = {
   [Type.RectArea]: rectArea,
   [Type.Gcd]: gcd,
   [Type.Lcm]: lcm,
+  [Type.ScientificNotation]: scientificNotation,
   [Type.Factorization]: factorization,
   [Type.PrimeFactorization]: primeFactorization,
   [Type.SimplifiyRadical]: simplifyRadical,
