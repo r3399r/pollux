@@ -85,6 +85,10 @@ const scientificNotation = (): Question => {
     q: `\\(${q}=a\\times10^n\\)`,
     a: `\\(${m}\\times10^{${n}}\\)`,
     validate: [`${m},${n}`],
+    hint: {
+      rules: ['依序填入 m,n', '以逗號分隔、無空白'],
+      example: '3.42,-2',
+    },
   };
 };
 
