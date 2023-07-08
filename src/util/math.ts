@@ -1,6 +1,9 @@
 export const randomIntBetween = (min: number, max: number) =>
   Math.floor(Math.random() * (max - min + 1) + min);
 
+export const randomFloatBetween = (min: number, max: number, dp = 2) =>
+  parseFloat((Math.random() * (max - min) + min).toFixed(dp));
+
 export const randomElement = <T>(arr: T[]): T => arr[randomIntBetween(0, arr.length - 1)];
 
 export const randomElementExcept = <T>(arr: T[], except: T): T => {
