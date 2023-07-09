@@ -1,5 +1,5 @@
+import factory from 'src/factory';
 import { Question, SavedQuestion, Type } from 'src/model/Common';
-import { factory } from 'src/util/factory';
 
 const generate = (type: Type): Question => {
   if (Object.values(Type).includes(type) === false) throw new Error(`type ${type} is invalid`);
