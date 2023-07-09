@@ -5,6 +5,7 @@ env=$1
 project=pollux
 subDomain=infinity
 domain=celestialstudio.net
+s3bucket=y-cf-midway-singapore
 
 echo ====================================================================================
 echo env: $env
@@ -13,8 +14,8 @@ echo domain: $subDomain.$domain
 echo ====================================================================================
 
 echo deploy backend AWS...
-aws cloudformation package --template-file aws/cloudformation/template.yaml --output-template-file packaged.yaml --s3-bucket y-cf-midway-singapore
-aws cloudformation deploy --template-file packaged.yaml --stack-name $project-$env-stack --parameter-overrides TargetEnvr=$env Project=$project SubDomain=$subDomain Domain=$domain --no-fail-on-empty-changeset --s3-bucket y-cf-midway-singapore
+aws cloudformation package --template-file aws/cloudformation/template.yaml --output-template-file packaged.yaml --s3-bucket $s3bucket
+aws cloudformation deploy --template-file packaged.yaml --stack-name $project-$env-stack --parameter-overrides TargetEnvr=$env Project=$project SubDomain=$subDomain Domain=$domain --no-fail-on-empty-changeset --s3-bucket $s3bucket
 echo ====================================================================================
 
 echo deploy frontend to S3...
