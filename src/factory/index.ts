@@ -13,7 +13,8 @@ import multipleFormula2 from './multipleFormula2';
 import primeFactorization from './primeFactorization';
 import rationalize from './rationalize';
 import rectArea from './rectArea';
-import scientificNotation from './scientificNotation';
+import scientificNotation1 from './scientificNotation1';
+import scientificNotation2 from './scientificNotation2';
 import simplifyRadical from './simplifyRadical';
 import timesTable from './timesTable';
 
@@ -26,7 +27,8 @@ const factory: Factory = {
   [Type.RectArea]: rectArea,
   [Type.Gcd]: gcd,
   [Type.Lcm]: lcm,
-  [Type.ScientificNotation]: scientificNotation,
+  [Type.ScientificNotation1]: scientificNotation1,
+  [Type.ScientificNotation2]: scientificNotation2,
   [Type.Factorization]: factorization,
   [Type.PrimeFactorization]: primeFactorization,
   [Type.SimplifiyRadical]: simplifyRadical,

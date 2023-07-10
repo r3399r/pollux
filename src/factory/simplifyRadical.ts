@@ -20,7 +20,7 @@ const simplifyRadical = (): Question => {
     a: `\\(${c}\\sqrt{${n}}\\)`,
     validate: [`${c},${n}`],
     hint: {
-      rules: ['依序填入 a,b', '化至最簡', '以逗號分隔、無空白'],
+      rules: ['依序填入 a,b', '化至最簡', '以逗號或空白分隔'],
       example: '2,2,3,3,5',
     },
   };

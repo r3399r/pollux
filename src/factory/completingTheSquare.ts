@@ -16,7 +16,7 @@ const completingTheSquare = (): Question => {
     a: `\\(${polynomial(`(${polynomial('x', 1, h)})`, a, 0, k)}\\)`,
     validate: [[a, h, k].join()],
     hint: {
-      rules: ['依序填入 a,h,k', '以逗號分隔、無空白'],
+      rules: ['依序填入 a,h,k', '以逗號或空白分隔'],
       example: '2,-1,3',
     },
   };

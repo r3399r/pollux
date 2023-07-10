@@ -25,6 +25,7 @@
     "better-react-mathjax": "^2.0.2",
     "bignumber.js": "^9.1.1",
     "classnames": "^2.3.2",
+    "date-fns": "^2.30.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.44.3",
