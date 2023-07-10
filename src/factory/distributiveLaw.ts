@@ -24,7 +24,7 @@ const distributiveLaw = (): Question => {
     a: `\\(${polynomial('x', first * sign, second * sign, third * sign)}\\)`,
     validate: [[first * sign, second * sign, third * sign].join()],
     hint: {
-      rules: ['依序填入 a,b,c', '以逗號分隔、無空白'],
+      rules: ['依序填入 a,b,c', '以逗號或空白分隔'],
       example: '1,2,-5',
     },
   };

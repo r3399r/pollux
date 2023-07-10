@@ -19,7 +19,7 @@ const primeFactorization = (): Question => {
     a: `\\(${ans.join('\\times')}\\)`,
     validate: [factors.join()],
     hint: {
-      rules: ['質因數由小到大排列', '重複的質因數請重複輸入', '以逗號分隔、無空白'],
+      rules: ['質因數由小到大排列', '重複的質因數請重複輸入', '以逗號或空白分隔'],
       example: '2,2,3,3,5',
     },
   };

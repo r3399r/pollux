@@ -12,7 +12,7 @@ export type Question = {
   hasViewed?: boolean;
 };
 
-export type SavedQuestion = Pick<Question, 'id' | 'img' | 'q' | 'a'>;
+export type SavedQuestion = Pick<Question, 'id' | 'img' | 'q' | 'a'> & { t: number };
 
 export type Factory = {
   [key in Type]: () => Question;
@@ -35,7 +35,8 @@ export enum Type {
   RectArea = 'rectangle-area',
   Gcd = 'greatest-common-divisor',
   Lcm = 'least-common-multiple',
-  ScientificNotation = 'scientific-notation',
+  ScientificNotation1 = 'scientific-notation-1',
+  ScientificNotation2 = 'scientific-notation-2',
   PrimeFactorization = 'prime-factorization',
   Factorization = 'factorization',
   SimplifiyRadical = 'simplify-radical',
@@ -68,7 +69,8 @@ export const CategoryType: {
     category: Category.JuniorHigh,
     name: '國中數學',
     types: [
-      { type: Type.ScientificNotation, name: '科學記號' },
+      { type: Type.ScientificNotation1, name: '科學記號(一)' },
+      { type: Type.ScientificNotation2, name: '科學記號(二)' },
       { type: Type.DistributiveLaw, name: '乘法分配律' },
       { type: Type.MultipleFormula1, name: '乘法公式(一)' },
       { type: Type.Factorization, name: '二次式因式分解' },
