@@ -18,7 +18,7 @@ const multipleFormula2 = (): Question => {
     a: `\\(${polynomial('x', first, second, third, fourth)}\\)`,
     validate: [[first, second, third, fourth].join()],
     hint: {
-      rules: ['依序填入 a,b,c,d', '以逗號分隔、無空白'],
+      rules: ['依序填入 a,b,c,d', '以逗號或空白分隔'],
       example: '1,-6,9,27',
     },
   };

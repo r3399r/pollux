@@ -46,6 +46,7 @@ export const handleQuestion = (
         img: current.img,
         q: current.q,
         a: current.a,
+        t: Date.now(),
       },
     ];
   else if (current !== undefined && history !== undefined)
@@ -55,6 +56,7 @@ export const handleQuestion = (
         img: current.img,
         q: current.q,
         a: current.a,
+        t: Date.now(),
       },
       ...history,
     ];

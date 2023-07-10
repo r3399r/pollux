@@ -28,7 +28,7 @@ const factorization = (): Question => {
     a: `\\(${coefficient(leading, `${first}${second}`, true)}\\)`,
     validate,
     hint: {
-      rules: ['依序填入 k,a,b,c,d', 'a,c 為正數', '以逗號分隔、無空白'],
+      rules: ['依序填入 k,a,b,c,d', 'a,c 為正數', '以逗號或空白分隔'],
       example: '-1,2,-3,1,4',
     },
   };

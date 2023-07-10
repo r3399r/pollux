@@ -37,7 +37,10 @@ const QuestionForm = ({ initQuestion, current }: Props) => {
   }, [current]);
 
   const onSubmit = (data: QaForm) => {
-    if (current && current.validate.includes(data.ans)) {
+    if (
+      current &&
+      (current.validate.includes(data.ans) || current.validate.includes(data.ans.replace(' ', ',')))
+    ) {
       initQuestion(true, !ansViewed && !current.hasViewed);
       setValue('ans', '');
       setAnsViewed(false);
