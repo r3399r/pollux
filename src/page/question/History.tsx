@@ -32,7 +32,7 @@ const History = ({ history, isDrawer = false, onRemoveRecord }: Props) => (
         {v.img && <img src={v.img} />}
         {v.q && <div>{v.q}</div>}
         <Body className="mt-1">
-          <span className="mr-[10px]">Ans:</span>
+          <span className="mr-[10px]">答:</span>
           {v.a}
         </Body>
       </div>
