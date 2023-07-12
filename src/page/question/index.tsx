@@ -63,9 +63,12 @@ const QuestionPage = () => {
           <MathJax dynamic>
             <H2 className="hidden md:block mt-[30px] pb-7">{title}</H2>
             <div className="flex justify-between items-center mt-0 md:mt-[30px] pb-7 md:hidden gap-x-1">
-              <div className="flex flex-wrap items-center">
+              <div
+                className="flex flex-wrap items-center cursor-pointer"
+                onClick={() => setOpenMenu(true)}
+              >
                 <H2>{title}</H2>
-                <img src={IcMenu} className="cursor-pointer" onClick={() => setOpenMenu(true)} />
+                <img src={IcMenu} />
               </div>
               <Body className="cursor-pointer text-olive-700" onClick={() => setOpenHistory(true)}>
                 觀看答題紀錄
