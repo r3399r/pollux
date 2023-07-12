@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom';
 import Button from 'src/component/Button';
 import Body from 'src/component/typography/Body';
 import H4 from 'src/component/typography/H4';
+import IcCheck from 'src/image/ic-check.svg';
 import IcCross from 'src/image/ic-cross.svg';
 import IcHint from 'src/image/ic-hint.svg';
 import { QaForm, Question, Type } from 'src/model/Common';
@@ -29,6 +30,7 @@ const QuestionForm = ({ initQuestion, current }: Props) => {
   } = useForm<QaForm>();
   const [ansViewed, setAnsViewed] = useState<boolean>(false);
   const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null);
+  const [checked, setChecked] = useState<boolean>(false);
 
   useEffect(() => {
     setValue('ans', '');
@@ -41,9 +43,13 @@ const QuestionForm = ({ initQuestion, current }: Props) => {
       current &&
       (current.validate.includes(data.ans) || current.validate.includes(data.ans.replace(' ', ',')))
     ) {
-      initQuestion(true, !ansViewed && !current.hasViewed);
-      setValue('ans', '');
-      setAnsViewed(false);
+      setChecked(true);
+      setTimeout(() => {
+        initQuestion(true, !ansViewed && !current.hasViewed);
+        setValue('ans', '');
+        setAnsViewed(false);
+        setChecked(false);
+      }, 1000);
     } else setError('ans', {}, { shouldFocus: true });
   };
 
@@ -75,6 +81,7 @@ const QuestionForm = ({ initQuestion, current }: Props) => {
             )}
             autoComplete="off"
             type="text"
+            disabled={checked}
             {...register('ans')}
           />
           <Body bold className="absolute top-[50%] left-4 translate-y-[-50%] text-navy-300">
@@ -82,7 +89,7 @@ const QuestionForm = ({ initQuestion, current }: Props) => {
           </Body>
         </div>
         <div className="mt-[30px] flex gap-[5px] justify-between items-start">
-          {errors.ans ? (
+          {errors.ans && (
             <div className="text-brickred-500">
               <div className="flex gap-[5px] items-center flex-wrap">
                 <img src={IcCross} />
@@ -92,9 +99,14 @@ const QuestionForm = ({ initQuestion, current }: Props) => {
               </div>
               <Body>看過後將不計入答題紀錄</Body>
             </div>
-          ) : (
-            <div />
           )}
+          {checked && (
+            <div className="text-olive-700 flex gap-[5px]">
+              <img src={IcCheck} />
+              <Body>答對了！</Body>
+            </div>
+          )}
+          {!errors.ans && !checked && <div />}
           <Button type="submit">確認</Button>
         </div>
         {current?.hint && (
