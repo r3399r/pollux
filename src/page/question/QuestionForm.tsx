@@ -118,7 +118,7 @@ const QuestionForm = ({ initQuestion, current }: Props) => {
                   {v}
                 </li>
               ))}
-              <H4 className="text-haze-500 mt-[15px]">Ex. {current.hint.example}</H4>
+              <H4 className="text-haze-500 mt-[15px]">例: {current.hint.example}</H4>
             </ul>
           </div>
         )}
