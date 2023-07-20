@@ -93,3 +93,14 @@ export const rationalizeSingle = (denominator: number, numerator: number) => {
     numeratorRadical: numerator2.n,
   };
 };
+
+export const fraction = (denominator: number, numerator: number) => {
+  const d = gcd(denominator, numerator);
+  denominator = denominator / d;
+  numerator = numerator / d;
+
+  return {
+    denominator,
+    numerator,
+  };
+};
