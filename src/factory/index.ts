@@ -3,6 +3,7 @@ import add10 from './add10';
 import add20 from './add20';
 import completingTheSquare from './completingTheSquare';
 import distributiveLaw from './distributiveLaw';
+import divisionPoint from './divisionPoint';
 import factorization from './factorization';
 import gcd from './gcd';
 import lcm from './lcm';
@@ -39,6 +40,7 @@ const factory: Factory = {
   [Type.MultipleFormula2]: multipleFormula2,
   [Type.MultipleFormula2Ex]: multipleFormula2Ex,
   [Type.CompletingTheSquare]: completingTheSquare,
+  [Type.DivisionPoint]: divisionPoint,
 };
 
 export default factory;
