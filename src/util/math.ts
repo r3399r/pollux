@@ -1,15 +1,23 @@
 export const randomIntBetween = (min: number, max: number) =>
   Math.floor(Math.random() * (max - min + 1) + min);
 
+export const randomIntBetweenExcept = (min: number, max: number, except: number[]) => {
+  let x: number;
+  do x = randomIntBetween(min, max);
+  while (except.includes(x));
+
+  return x;
+};
+
 export const randomFloatBetween = (min: number, max: number, dp = 2) =>
   parseFloat((Math.random() * (max - min) + min).toFixed(dp));
 
 export const randomElement = <T>(arr: T[]): T => arr[randomIntBetween(0, arr.length - 1)];
 
-export const randomElementExcept = <T>(arr: T[], except: T): T => {
+export const randomElementExcept = <T>(arr: T[], except: T[]): T => {
   let element: T;
   do element = randomElement(arr);
-  while (element === except);
+  while (except.includes(element));
 
   return element;
 };
@@ -94,7 +102,7 @@ export const rationalizeSingle = (denominator: number, numerator: number) => {
   };
 };
 
-export const fraction = (denominator: number, numerator: number) => {
+const fraction = (denominator: number, numerator: number) => {
   const d = gcd(denominator, numerator);
   denominator = denominator / d;
   numerator = numerator / d;
@@ -102,5 +110,20 @@ export const fraction = (denominator: number, numerator: number) => {
   return {
     denominator,
     numerator,
+  };
+};
+
+export const fractionText = (denominator: number, numerator: number) => {
+  const sign = denominator * numerator < 0 ? -1 : 1;
+  const f = fraction(Math.abs(denominator), Math.abs(numerator));
+  if (f.denominator === 1)
+    return {
+      text: (sign * f.numerator).toString(),
+      latex: (sign * f.numerator).toString(),
+    };
+
+  return {
+    text: `${sign > 0 ? '' : '-'}${f.numerator}/${f.denominator}`,
+    latex: `${sign > 0 ? '' : '-'}\\dfrac{${f.numerator}}{${f.denominator}}`,
   };
 };
