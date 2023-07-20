@@ -8,7 +8,8 @@ const App = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    init();
+    const navigateToHome = init();
+    if (navigateToHome) navigate('/');
   }, []);
 
   return (

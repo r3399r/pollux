@@ -10,6 +10,7 @@ import minus10 from './minus10';
 import minus20 from './minus20';
 import multipleFormula1 from './multipleFormula1';
 import multipleFormula2 from './multipleFormula2';
+import multipleFormula2Ex from './multipleFormula2Ex';
 import primeFactorization from './primeFactorization';
 import rationalize from './rationalize';
 import rectArea from './rectArea';
@@ -36,6 +37,7 @@ const factory: Factory = {
   [Type.DistributiveLaw]: distributiveLaw,
   [Type.MultipleFormula1]: multipleFormula1,
   [Type.MultipleFormula2]: multipleFormula2,
+  [Type.MultipleFormula2Ex]: multipleFormula2Ex,
   [Type.CompletingTheSquare]: completingTheSquare,
 };
 
