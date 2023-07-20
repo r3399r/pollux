@@ -47,6 +47,7 @@ export enum Type {
   MultipleFormula2Ex = 'multiple-formula-2-ex',
   CompletingTheSquare = 'completing-the-square',
   DivisionPoint = 'division-point',
+  CommonLogarithm = 'common-logarithm',
 }
 
 export const CategoryType: {
@@ -88,6 +89,7 @@ export const CategoryType: {
       { type: Type.MultipleFormula2, name: '乘法公式(二)' },
       { type: Type.MultipleFormula2Ex, name: '乘法公式(二) 題型' },
       { type: Type.DivisionPoint, name: '分點公式' },
+      { type: Type.CommonLogarithm, name: '常用對數' },
     ],
   },
 ];

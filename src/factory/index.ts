@@ -1,6 +1,7 @@
 import { Factory, Type } from 'src/model/Common';
 import add10 from './add10';
 import add20 from './add20';
+import commonLogarithm from './commonLogarithm';
 import completingTheSquare from './completingTheSquare';
 import distributiveLaw from './distributiveLaw';
 import divisionPoint from './divisionPoint';
@@ -41,6 +42,7 @@ const factory: Factory = {
   [Type.MultipleFormula2Ex]: multipleFormula2Ex,
   [Type.CompletingTheSquare]: completingTheSquare,
   [Type.DivisionPoint]: divisionPoint,
+  [Type.CommonLogarithm]: commonLogarithm,
 };
 
 export default factory;
