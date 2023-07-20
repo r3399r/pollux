@@ -44,6 +44,7 @@ export enum Type {
   DistributiveLaw = 'distributive-law',
   MultipleFormula1 = 'multiple-formula-1',
   MultipleFormula2 = 'multiple-formula-2',
+  MultipleFormula2Ex = 'multiple-formula-2-ex',
   CompletingTheSquare = 'completing-the-square',
 }
 
@@ -82,6 +83,9 @@ export const CategoryType: {
   {
     category: Category.SeniorHigh,
     name: '高中數學',
-    types: [{ type: Type.MultipleFormula2, name: '乘法公式(二)' }],
+    types: [
+      { type: Type.MultipleFormula2, name: '乘法公式(二)' },
+      { type: Type.MultipleFormula2Ex, name: '乘法公式(二) 題型' },
+    ],
   },
 ];
