@@ -1,8 +1,10 @@
 import { Factory, Type } from 'src/model/Common';
 import add10 from './add10';
 import add20 from './add20';
+import arcLengthFormula from './arcLengthFormula';
 import commonLogarithm from './commonLogarithm';
 import completingTheSquare from './completingTheSquare';
+import degreeRadianTransform from './degreeRadianTransform';
 import distributiveLaw from './distributiveLaw';
 import divisionPoint from './divisionPoint';
 import factorization from './factorization';
@@ -18,6 +20,7 @@ import rationalize from './rationalize';
 import rectArea from './rectArea';
 import scientificNotation1 from './scientificNotation1';
 import scientificNotation2 from './scientificNotation2';
+import sectorAreaFormula from './sectorAreaFormula';
 import simplifyRadical from './simplifyRadical';
 import timesTable from './timesTable';
 
@@ -43,6 +46,9 @@ const factory: Factory = {
   [Type.CompletingTheSquare]: completingTheSquare,
   [Type.DivisionPoint]: divisionPoint,
   [Type.CommonLogarithm]: commonLogarithm,
+  [Type.DegreeRadianTransform]: degreeRadianTransform,
+  [Type.ArcLengthFormula]: arcLengthFormula,
+  [Type.SectorAreaFormula]: sectorAreaFormula,
 };
 
 export default factory;

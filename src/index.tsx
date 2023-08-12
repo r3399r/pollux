@@ -7,7 +7,18 @@ import './index.css';
 const root = createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <BrowserRouter>
-    <MathJaxContext>
+    <MathJaxContext
+      config={{
+        // loader: { load: ['[tex]/mathtools', '[tex]/cancel'] },
+        tex: {
+          // inlineMath: [['$', '$']],
+          // packages: { '[+]': ['mathtools', 'physics', 'cancel'] },
+          macros: {
+            du: ['^\\circ', 0],
+          },
+        },
+      }}
+    >
       <App />
     </MathJaxContext>
   </BrowserRouter>,
