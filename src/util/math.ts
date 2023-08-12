@@ -102,7 +102,7 @@ export const rationalizeSingle = (denominator: number, numerator: number) => {
   };
 };
 
-const fraction = (denominator: number, numerator: number) => {
+export const fraction = (denominator: number, numerator: number) => {
   const d = gcd(denominator, numerator);
   denominator = denominator / d;
   numerator = numerator / d;
