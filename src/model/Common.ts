@@ -48,6 +48,9 @@ export enum Type {
   CompletingTheSquare = 'completing-the-square',
   DivisionPoint = 'division-point',
   CommonLogarithm = 'common-logarithm',
+  DegreeRadianTransform = 'degree-radian-transform',
+  ArcLengthFormula = 'arc-length-formula',
+  SectorAreaFormula = 'sector-area-formula',
 }
 
 export const CategoryType: {
@@ -90,6 +93,9 @@ export const CategoryType: {
       { type: Type.MultipleFormula2Ex, name: '乘法公式(二) 題型' },
       { type: Type.DivisionPoint, name: '分點公式' },
       { type: Type.CommonLogarithm, name: '常用對數' },
+      { type: Type.DegreeRadianTransform, name: '角度弧度換算' },
+      { type: Type.ArcLengthFormula, name: '弧長公式' },
+      { type: Type.SectorAreaFormula, name: '扇形面積公式' },
     ],
   },
 ];
