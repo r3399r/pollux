@@ -31,13 +31,16 @@ const Home = () => {
             <img src={IcMenu} />
           </div>
           <div className="bg-white md:h-[calc(100vh-170px-92px)] overflow-y-auto rounded-[15px] p-[30px] flex flex-col gap-3">
+            <Body className="flex md:hidden">
+              如何開始：請點擊圖示 <img src={IcMenu} className="h-6" /> 以開啟題型選單
+            </Body>
             <Body>
               這個網站的題目是透過隨機亂數出題，讓學生們練習固定算法的題型，不再因為找不到類似題目練習而苦惱。希望學生們不要再卡在乘法展開、配方、根號運算...諸如此類純算術的地方！
             </Body>
             <Body>醞釀許久，如今終於做出來了～</Body>
             <Body>之後會再擴充各式各樣能夠進行亂數出題的題型，也仰賴有需求的朋友們提供意見！</Body>
             <Body bold className="underline flex gap-3">
-              <a href="https://github.com/r3399r/pollux/issues" target="_blank" rel="noreferrer">
+              <a href="https://github.com/r3399r/pollux" target="_blank" rel="noreferrer">
                 Github
               </a>
               <a
