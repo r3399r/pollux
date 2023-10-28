@@ -39,10 +39,7 @@ const QuestionForm = ({ initQuestion, current }: Props) => {
   }, [current]);
 
   const onSubmit = (data: QaForm) => {
-    if (
-      current &&
-      (current.validate.includes(data.ans) || current.validate.includes(data.ans.replace(' ', ',')))
-    ) {
+    if (current && current.validate.includes(data.ans.trim().split(/[ ,]+/).join())) {
       setChecked(true);
       setTimeout(() => {
         initQuestion(true, !ansViewed && !current.hasViewed);
