@@ -9,7 +9,7 @@ import H4 from 'src/component/typography/H4';
 import IcCheck from 'src/image/ic-check.svg';
 import IcCross from 'src/image/ic-cross.svg';
 import IcHint from 'src/image/ic-hint.svg';
-import { QaForm, Question, Type } from 'src/model/Common';
+import { QaForm, Question } from 'src/model/Common';
 import { setCurrentHasViewed } from 'src/service/QuestionService';
 
 type Props = {
@@ -18,7 +18,7 @@ type Props = {
 };
 
 const QuestionForm = ({ initQuestion, current }: Props) => {
-  const { type } = useParams<{ type: Type }>();
+  const { topic } = useParams<{ topic: string }>();
   const {
     register,
     handleSubmit,
@@ -51,9 +51,9 @@ const QuestionForm = ({ initQuestion, current }: Props) => {
   };
 
   const onViewAnswer = (event: MouseEvent<HTMLDivElement>) => {
-    if (!type) return;
+    if (!topic) return;
     setAnchorEl(event.currentTarget);
-    setCurrentHasViewed(type);
+    setCurrentHasViewed(topic);
     setAnsViewed(true);
   };
 

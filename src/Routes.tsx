@@ -5,7 +5,7 @@ import QuestionPage from './page/question';
 const AppRoutes = () => (
   <Routes>
     <Route path="/" element={<Home />} />
-    <Route path="/:type" element={<QuestionPage />} />
+    <Route path="/:topic" element={<QuestionPage />} />
     <Route path="*" element={<Navigate to="/" />} />
   </Routes>
 );

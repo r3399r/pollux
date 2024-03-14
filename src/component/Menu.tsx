@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { useNavigate, useParams } from 'react-router-dom';
-import { CategoryType, Type } from 'src/model/Common';
+import { categories, topics } from 'src/model/Common';
 import Accordion from './Accordion';
 
 type Props = {
@@ -9,7 +9,7 @@ type Props = {
 };
 
 const Menu = ({ isDrawer = false, onCloseDrawer }: Props) => {
-  const { type } = useParams<{ type: Type }>();
+  const { topic } = useParams<{ topic: string }>();
   const navigate = useNavigate();
 
   return (
@@ -22,21 +22,25 @@ const Menu = ({ isDrawer = false, onCloseDrawer }: Props) => {
         },
       )}
     >
-      {CategoryType.map((c) => (
-        <Accordion
-          key={c.category}
-          summary={c.name}
-          details={c.types.map((t) => t.name)}
-          current={c.types.find((t) => t.type === type)?.name ?? ''}
-          onClickDetail={(name) => {
-            const target = c.types.find((v) => v.name === name)?.type;
-            navigate(target ? `/${target}` : '/');
-            if (target) localStorage.setItem('target', target);
-            onCloseDrawer && onCloseDrawer();
-          }}
-          expanded={!!c.types.find((t) => t.type === type)}
-        />
-      ))}
+      {categories.map((c) => {
+        const currentTopics = topics.filter((t) => t.category.id === c.id);
+
+        return (
+          <Accordion
+            key={c.id}
+            summary={c.name}
+            details={currentTopics.map((t) => t.name)}
+            current={currentTopics.find((t) => t.id === topic)?.name ?? ''}
+            onClickDetail={(name) => {
+              const target = currentTopics.find((t) => t.name === name)?.id;
+              navigate(target ? `/${target}` : '/');
+              if (target) localStorage.setItem('target', target);
+              onCloseDrawer && onCloseDrawer();
+            }}
+            expanded={!!currentTopics.find((t) => t.id === topic)}
+          />
+        );
+      })}
     </div>
   );
 };

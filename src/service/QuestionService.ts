@@ -1,37 +1,37 @@
-import factory from 'src/factory';
-import { Question, SavedQuestion, Type } from 'src/model/Common';
+import { Question, SavedQuestion, topics } from 'src/model/Common';
 
-const generate = (type: Type): Question => {
-  if (Object.values(Type).includes(type) === false) throw new Error(`type ${type} is invalid`);
+const generate = (topic: string): Question => {
+  const topicObj = topics.find((t) => t.id === topic);
+  if (topicObj === undefined) throw Error('undefined topic');
 
-  return factory[type]();
+  return topicObj.factory();
 };
 
-export const setCurrentHasViewed = (type: Type) => {
-  const localCurrent = localStorage.getItem(`${type}-current`);
+export const setCurrentHasViewed = (topic: string) => {
+  const localCurrent = localStorage.getItem(`${topic}-current`);
   const current = localCurrent ? (JSON.parse(localCurrent) as Question) : undefined;
 
-  localStorage.setItem(`${type}-current`, JSON.stringify({ ...current, hasViewed: true }));
+  localStorage.setItem(`${topic}-current`, JSON.stringify({ ...current, hasViewed: true }));
 };
 
-export const removeRecord = (type: Type) => {
-  localStorage.removeItem(`${type}-history`);
+export const removeRecord = (topic: string) => {
+  localStorage.removeItem(`${topic}-history`);
 };
 
 export const handleQuestion = (
-  type: Type,
+  topic: string,
   next: boolean,
   save = true,
 ): { current: Question; history: SavedQuestion[] } => {
-  const localCurrent = localStorage.getItem(`${type}-current`);
-  const localHistory = localStorage.getItem(`${type}-history`);
+  const localCurrent = localStorage.getItem(`${topic}-current`);
+  const localHistory = localStorage.getItem(`${topic}-history`);
   const current = localCurrent ? (JSON.parse(localCurrent) as Question) : undefined;
   const history = localHistory ? (JSON.parse(localHistory) as SavedQuestion[]) : undefined;
 
   if (current !== undefined && next === false) return { current, history: history ?? [] };
 
-  const question = generate(type);
-  localStorage.setItem(`${type}-current`, JSON.stringify(question));
+  const question = generate(topic);
+  localStorage.setItem(`${topic}-current`, JSON.stringify(question));
 
   if ((current === undefined && next === false) || save === false)
     return { current: question, history: history ?? [] };
@@ -60,7 +60,7 @@ export const handleQuestion = (
       },
       ...history,
     ];
-  localStorage.setItem(`${type}-history`, JSON.stringify(updatedHistory));
+  localStorage.setItem(`${topic}-history`, JSON.stringify(updatedHistory));
 
   return { current: question, history: updatedHistory ?? [] };
 };

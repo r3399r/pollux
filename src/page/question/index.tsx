@@ -6,34 +6,25 @@ import Menu from 'src/component/Menu';
 import Body from 'src/component/typography/Body';
 import H2 from 'src/component/typography/H2';
 import IcMenu from 'src/image/ic-menu.svg';
-import { CategoryType, Question, SavedQuestion, Type } from 'src/model/Common';
+import { Question, SavedQuestion, topics } from 'src/model/Common';
 import { handleQuestion, removeRecord } from 'src/service/QuestionService';
 import History from './History';
 import QuestionForm from './QuestionForm';
 
 const QuestionPage = () => {
   const navigate = useNavigate();
-  const { type } = useParams<{ type: Type }>();
+  const { topic } = useParams<{ topic: string }>();
   const [current, setCurrent] = useState<Question>();
   const [history, setHistory] = useState<SavedQuestion[]>([]);
   const [openMenu, setOpenMenu] = useState<boolean>(false);
   const [openHistory, setOpenHistory] = useState<boolean>(false);
 
-  const title = useMemo(() => {
-    let res = null;
-    CategoryType.forEach((c) => {
-      c.types.forEach((t) => {
-        if (t.type === type) res = t.name;
-      });
-    });
-
-    return res;
-  }, [type]);
+  const title = useMemo(() => topics.find((t) => t.id === topic)?.name, [topic]);
 
   const initQuestion = (next: boolean, save?: boolean) => {
-    if (!type) return;
+    if (!topic) return;
     try {
-      const { current: c, history: h } = handleQuestion(type, next, save);
+      const { current: c, history: h } = handleQuestion(topic, next, save);
       setCurrent(c);
       setHistory(h);
     } catch (e) {
@@ -42,14 +33,14 @@ const QuestionPage = () => {
   };
 
   const onRemoveRecord = () => {
-    if (!type) return;
-    removeRecord(type);
+    if (!topic) return;
+    removeRecord(topic);
     setHistory([]);
   };
 
   useEffect(() => {
     initQuestion(false);
-  }, [type]);
+  }, [topic]);
 
   if (!title) return <></>;
 
