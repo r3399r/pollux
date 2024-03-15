@@ -1,4 +1,5 @@
 import add10 from 'src/factory/add10';
+import add100 from 'src/factory/add100';
 import arcLengthFormula from 'src/factory/arcLengthFormula';
 import commonLogarithm from 'src/factory/commonLogarithm';
 import completingTheSquare from 'src/factory/completingTheSquare';
@@ -32,7 +33,8 @@ export type Question = {
   a: string; // answer
   validate: string[]; // answer for validation
   hint?: { rules: string[]; example: string }; // hint
-  hasViewed?: boolean;
+  isRevealed?: boolean; // answer is revealed
+  isWrong?: boolean; // reply wrong answer for the first time
 };
 
 export type SavedQuestion = Pick<Question, 'id' | 'img' | 'q' | 'a'> & { t: number };
@@ -42,11 +44,14 @@ type Category = {
   name: string;
 };
 
-type Topic = {
+export type Topic = {
   id: string;
   name: string;
   category: Category;
-  factory: () => Question;
+  factory: (level?: number) => Question;
+  maxLevel?: number;
+  upgradeNeed?: number;
+  downgradeNeed?: number;
 };
 
 export const categories: Category[] = [
@@ -67,6 +72,15 @@ export const topics: Topic[] = [
     name: '10以內的減法',
     category: categories[0],
     factory: minus10,
+  },
+  {
+    id: 'add-100',
+    name: '雙位數的加法',
+    category: categories[0],
+    factory: add100,
+    maxLevel: 3,
+    upgradeNeed: 5,
+    downgradeNeed: 4,
   },
   {
     id: 'times-table',
