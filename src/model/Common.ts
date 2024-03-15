@@ -1,3 +1,27 @@
+import add10 from 'src/factory/add10';
+import add100 from 'src/factory/add100';
+import arcLengthFormula from 'src/factory/arcLengthFormula';
+import commonLogarithm from 'src/factory/commonLogarithm';
+import completingTheSquare from 'src/factory/completingTheSquare';
+import degreeRadianTransform from 'src/factory/degreeRadianTransform';
+import distributiveLaw from 'src/factory/distributiveLaw';
+import divisionPoint from 'src/factory/divisionPoint';
+import factorization from 'src/factory/factorization';
+import gcd from 'src/factory/gcd';
+import lcm from 'src/factory/lcm';
+import minus10 from 'src/factory/minus10';
+import multipleFormula1 from 'src/factory/multipleFormula1';
+import multipleFormula2 from 'src/factory/multipleFormula2';
+import multipleFormula2Ex from 'src/factory/multipleFormula2Ex';
+import primeFactorization from 'src/factory/primeFactorization';
+import rationalize from 'src/factory/rationalize';
+import rectArea from 'src/factory/rectArea';
+import scientificNotation1 from 'src/factory/scientificNotation1';
+import scientificNotation2 from 'src/factory/scientificNotation2';
+import sectorAreaFormula from 'src/factory/sectorAreaFormula';
+import simplifyRadical from 'src/factory/simplifyRadical';
+import timesTable from 'src/factory/timesTable';
+
 export type QaForm = {
   ans: string;
 };
@@ -9,93 +33,173 @@ export type Question = {
   a: string; // answer
   validate: string[]; // answer for validation
   hint?: { rules: string[]; example: string }; // hint
-  hasViewed?: boolean;
+  isRevealed?: boolean; // answer is revealed
+  isWrong?: boolean; // reply wrong answer for the first time
 };
 
 export type SavedQuestion = Pick<Question, 'id' | 'img' | 'q' | 'a'> & { t: number };
 
-export type Factory = {
-  [key in Type]: () => Question;
+type Category = {
+  id: string;
+  name: string;
 };
 
-// 分類
-export enum Category {
-  Elementary,
-  JuniorHigh,
-  SeniorHigh,
-}
-
-// 題型
-export enum Type {
-  Add10 = 'add-10',
-  Minus10 = 'minus-10',
-  Add20 = 'add-20',
-  Minus20 = 'minus-20',
-  TimesTable = 'times-table',
-  RectArea = 'rectangle-area',
-  Gcd = 'greatest-common-divisor',
-  Lcm = 'least-common-multiple',
-  ScientificNotation1 = 'scientific-notation-1',
-  ScientificNotation2 = 'scientific-notation-2',
-  PrimeFactorization = 'prime-factorization',
-  Factorization = 'factorization',
-  SimplifiyRadical = 'simplify-radical',
-  Rationalize = 'rationalize',
-  DistributiveLaw = 'distributive-law',
-  MultipleFormula1 = 'multiple-formula-1',
-  MultipleFormula2 = 'multiple-formula-2',
-  MultipleFormula2Ex = 'multiple-formula-2-ex',
-  CompletingTheSquare = 'completing-the-square',
-  DivisionPoint = 'division-point',
-  CommonLogarithm = 'common-logarithm',
-  DegreeRadianTransform = 'degree-radian-transform',
-  ArcLengthFormula = 'arc-length-formula',
-  SectorAreaFormula = 'sector-area-formula',
-}
-
-export const CategoryType: {
-  category: Category;
+export type Topic = {
+  id: string;
   name: string;
-  types: { type: Type; name: string }[];
-}[] = [
+  category: Category;
+  factory: (level?: number) => Question;
+  maxLevel?: number;
+  upgradeNeed?: number;
+  downgradeNeed?: number;
+};
+
+export const categories: Category[] = [
+  { id: 'elementary', name: '國小數學' },
+  { id: 'junior-high', name: '國中數學' },
+  { id: 'senior-high', name: '高中數學' },
+];
+
+export const topics: Topic[] = [
   {
-    category: Category.Elementary,
-    name: '國小數學',
-    types: [
-      { type: Type.Add10, name: '10以內的加法' },
-      { type: Type.Minus10, name: '10以內的減法' },
-      { type: Type.TimesTable, name: '九九乘法' },
-      { type: Type.RectArea, name: '矩形面積' },
-      { type: Type.Gcd, name: '最大公因數' },
-      { type: Type.Lcm, name: '最小公倍數' },
-      { type: Type.PrimeFactorization, name: '質因數分解' },
-    ],
+    id: 'add-10',
+    name: '10以內的加法',
+    category: categories[0],
+    factory: add10,
   },
   {
-    category: Category.JuniorHigh,
-    name: '國中數學',
-    types: [
-      { type: Type.ScientificNotation1, name: '科學記號(一)' },
-      { type: Type.ScientificNotation2, name: '科學記號(二)' },
-      { type: Type.DistributiveLaw, name: '乘法分配律' },
-      { type: Type.MultipleFormula1, name: '乘法公式(一)' },
-      { type: Type.Factorization, name: '二次式因式分解' },
-      { type: Type.SimplifiyRadical, name: '根號化簡' },
-      { type: Type.Rationalize, name: '根號有理化' },
-      { type: Type.CompletingTheSquare, name: '配方法' },
-    ],
+    id: 'minus-10',
+    name: '10以內的減法',
+    category: categories[0],
+    factory: minus10,
   },
   {
-    category: Category.SeniorHigh,
-    name: '高中數學',
-    types: [
-      { type: Type.MultipleFormula2, name: '乘法公式(二)' },
-      { type: Type.MultipleFormula2Ex, name: '乘法公式(二) 題型' },
-      { type: Type.DivisionPoint, name: '分點公式' },
-      { type: Type.CommonLogarithm, name: '常用對數' },
-      { type: Type.DegreeRadianTransform, name: '角度弧度換算' },
-      { type: Type.ArcLengthFormula, name: '弧長公式' },
-      { type: Type.SectorAreaFormula, name: '扇形面積公式' },
-    ],
+    id: 'add-100',
+    name: '雙位數的加法',
+    category: categories[0],
+    factory: add100,
+    maxLevel: 3,
+    upgradeNeed: 5,
+    downgradeNeed: 4,
+  },
+  {
+    id: 'times-table',
+    name: '九九乘法',
+    category: categories[0],
+    factory: timesTable,
+  },
+  {
+    id: 'rectangle-area',
+    name: '矩形面積',
+    category: categories[0],
+    factory: rectArea,
+  },
+  {
+    id: 'greatest-common-divisor',
+    name: '最大公因數',
+    category: categories[0],
+    factory: gcd,
+  },
+  {
+    id: 'least-common-multiple',
+    name: '最小公倍數',
+    category: categories[0],
+    factory: lcm,
+  },
+  {
+    id: 'prime-factorization',
+    name: '質因數分解',
+    category: categories[0],
+    factory: primeFactorization,
+  },
+  {
+    id: 'scientific-notation-1',
+    name: '科學記號(一)',
+    category: categories[1],
+    factory: scientificNotation1,
+  },
+  {
+    id: 'scientific-notation-2',
+    name: '科學記號(二)',
+    category: categories[1],
+    factory: scientificNotation2,
+  },
+  {
+    id: 'distributive-law',
+    name: '乘法分配律',
+    category: categories[1],
+    factory: distributiveLaw,
+  },
+  {
+    id: 'multiple-formula-1',
+    name: '乘法公式(一)',
+    category: categories[1],
+    factory: multipleFormula1,
+  },
+  {
+    id: 'factorization',
+    name: '二次式因式分解',
+    category: categories[1],
+    factory: factorization,
+  },
+  {
+    id: 'simplify-radical',
+    name: '根號化簡',
+    category: categories[1],
+    factory: simplifyRadical,
+  },
+  {
+    id: 'rationalize',
+    name: '根號有理化',
+    category: categories[1],
+    factory: rationalize,
+  },
+  {
+    id: 'completing-the-square',
+    name: '配方法',
+    category: categories[1],
+    factory: completingTheSquare,
+  },
+  {
+    id: 'multiple-foamula-2',
+    name: '乘法公式(二)',
+    category: categories[2],
+    factory: multipleFormula2,
+  },
+  {
+    id: 'multiple-formula-2-ex',
+    name: '乘法公式(二) 題型',
+    category: categories[2],
+    factory: multipleFormula2Ex,
+  },
+  {
+    id: 'division-point',
+    name: '分點公式',
+    category: categories[2],
+    factory: divisionPoint,
+  },
+  {
+    id: 'common-logarithm',
+    name: '常用對數',
+    category: categories[2],
+    factory: commonLogarithm,
+  },
+  {
+    id: 'degree-radian-transform',
+    name: '角度弧度換算',
+    category: categories[2],
+    factory: degreeRadianTransform,
+  },
+  {
+    id: 'arc-length-formula',
+    name: '弧長公式',
+    category: categories[2],
+    factory: arcLengthFormula,
+  },
+  {
+    id: 'sector-area-formula',
+    name: '扇形面積公式',
+    category: categories[2],
+    factory: sectorAreaFormula,
   },
 ];

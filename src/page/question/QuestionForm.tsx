@@ -9,8 +9,8 @@ import H4 from 'src/component/typography/H4';
 import IcCheck from 'src/image/ic-check.svg';
 import IcCross from 'src/image/ic-cross.svg';
 import IcHint from 'src/image/ic-hint.svg';
-import { QaForm, Question, Type } from 'src/model/Common';
-import { setCurrentHasViewed } from 'src/service/QuestionService';
+import { QaForm, Question } from 'src/model/Common';
+import { onCorrectAnswer, onWrongAnswer, setAnswerIsRevealed } from 'src/service/QuestionService';
 
 type Props = {
   initQuestion: (next: boolean, save?: boolean) => void;
@@ -18,7 +18,7 @@ type Props = {
 };
 
 const QuestionForm = ({ initQuestion, current }: Props) => {
-  const { type } = useParams<{ type: Type }>();
+  const { topic } = useParams<{ topic: string }>();
   const {
     register,
     handleSubmit,
@@ -40,20 +40,24 @@ const QuestionForm = ({ initQuestion, current }: Props) => {
 
   const onSubmit = (data: QaForm) => {
     if (current && current.validate.includes(data.ans.trim().split(/[ ,]+/).join())) {
+      if (topic) onCorrectAnswer(topic);
       setChecked(true);
       setTimeout(() => {
-        initQuestion(true, !ansViewed && !current.hasViewed);
+        initQuestion(true, !ansViewed && !current.isRevealed);
         setValue('ans', '');
         setAnsViewed(false);
         setChecked(false);
       }, 1000);
-    } else setError('ans', {}, { shouldFocus: true });
+    } else {
+      setError('ans', {}, { shouldFocus: true });
+      if (topic) onWrongAnswer(topic);
+    }
   };
 
   const onViewAnswer = (event: MouseEvent<HTMLDivElement>) => {
-    if (!type) return;
+    if (!topic) return;
     setAnchorEl(event.currentTarget);
-    setCurrentHasViewed(type);
+    setAnswerIsRevealed(topic);
     setAnsViewed(true);
   };
 
