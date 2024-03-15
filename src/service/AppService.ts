@@ -1,4 +1,4 @@
-const version = 'v5';
+const version = 'v6';
 
 export const init = () => {
   const ver = localStorage.getItem('ver');
