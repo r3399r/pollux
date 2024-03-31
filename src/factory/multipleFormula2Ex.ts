@@ -1,9 +1,9 @@
 import uniqid from 'uniqid';
-import { Question } from 'src/model/Common';
+import { QuestionValues } from 'src/model/Common';
 import { randomElement, randomIntBetween } from 'src/util/math';
 
 // given x±1/x, find x^2+1/x^2 and x^3±1/x^3
-const values = (): Question => {
+const values = (): QuestionValues => {
   let given = 0;
   let a = 0;
   let b = 0;

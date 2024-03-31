@@ -1,5 +1,5 @@
 import uniqid from 'uniqid';
-import { Question } from 'src/model/Common';
+import { QuestionValues } from 'src/model/Common';
 import { bn } from 'src/util/bignumber';
 import {
   fractionText,
@@ -8,7 +8,7 @@ import {
   randomIntBetweenExcept,
 } from 'src/util/math';
 
-const values = (): Question => {
+const values = (): QuestionValues => {
   let n = 0;
   let b = 0;
   let v = '';

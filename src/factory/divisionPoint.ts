@@ -1,5 +1,5 @@
 import uniqid from 'uniqid';
-import { Question } from 'src/model/Common';
+import { QuestionValues } from 'src/model/Common';
 import {
   gcd as findGcd,
   fractionText,
@@ -8,7 +8,7 @@ import {
   randomIntBetweenExcept,
 } from 'src/util/math';
 
-const values = (): Question => {
+const values = (): QuestionValues => {
   const a = randomIntBetween(-10, 10);
   const b = randomIntBetweenExcept(-10, 10, [a]);
 

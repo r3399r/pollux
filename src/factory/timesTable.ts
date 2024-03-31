@@ -1,8 +1,8 @@
 import uniqid from 'uniqid';
-import { Question } from 'src/model/Common';
+import { QuestionValues } from 'src/model/Common';
 import { randomIntBetween } from 'src/util/math';
 
-const values = (): Question => {
+const values = (): QuestionValues => {
   const a = randomIntBetween(1, 9);
   const b = randomIntBetween(1, 9);
   const c = a * b;

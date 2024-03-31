@@ -26,7 +26,7 @@ export type QaForm = {
   ans: string;
 };
 
-export type Question = {
+export type QuestionValues = {
   id: string;
   qp?: number[]; // question params
   ap: number[]; // answer params
@@ -37,13 +37,13 @@ export type Question = {
 };
 
 export type Factory = {
-  values: (level?: number) => Question;
+  values: (level?: number) => QuestionValues;
   question?: (...params: number[]) => string;
   image?: (...params: number[]) => string;
   answer?: (...params: number[]) => string;
 };
 
-export type SavedQuestion = Pick<Question, 'id' | 'qp' | 'ap'> & { t: number };
+export type SavedQuestionValues = Pick<QuestionValues, 'id' | 'qp' | 'ap'> & { t: number };
 
 type Category = {
   id: string;

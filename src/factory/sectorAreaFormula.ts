@@ -1,8 +1,8 @@
 import uniqid from 'uniqid';
-import { Question } from 'src/model/Common';
+import { QuestionValues } from 'src/model/Common';
 import { randomIntBetween } from 'src/util/math';
 
-const values = (): Question => {
+const values = (): QuestionValues => {
   const r = randomIntBetween(1, 10);
   const theta = randomIntBetween(1, 6);
   const area = (r * r * theta) / 2;

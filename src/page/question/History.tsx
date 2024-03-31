@@ -3,10 +3,10 @@ import { format } from 'date-fns';
 import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import Body from 'src/component/typography/Body';
-import { SavedQuestion, topics } from 'src/model/Common';
+import { SavedQuestionValues, topics } from 'src/model/Common';
 
 type Props = {
-  history: SavedQuestion[];
+  history: SavedQuestionValues[];
   isDrawer?: boolean;
   onRemoveRecord: () => void;
 };
@@ -39,12 +39,12 @@ const History = ({ history, isDrawer = false, onRemoveRecord }: Props) => {
             <div>{currentTopic.factory.question(...v.qp)}</div>
           )}
           {currentTopic?.factory.image && v.qp && <img src={currentTopic.factory.image(...v.qp)} />}
-          <Body className="mt-1">
-            <span className="mr-[10px]">答:</span>
-            {currentTopic?.factory?.answer && (
-              <div>{currentTopic.factory.answer(...(v.ap ?? []))}</div>
-            )}
-          </Body>
+          {currentTopic?.factory?.answer && v.ap && (
+            <Body className="mt-1">
+              <span className="mr-[10px]">答:</span>
+              {currentTopic.factory.answer(...v.ap)}
+            </Body>
+          )}
         </div>
       ))}
     </div>

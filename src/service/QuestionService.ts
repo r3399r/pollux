@@ -1,4 +1,4 @@
-import { Question, SavedQuestion, Topic, topics } from 'src/model/Common';
+import { QuestionValues, SavedQuestionValues, Topic, topics } from 'src/model/Common';
 
 const getTopic = (topic: string): Topic => {
   const topicObj = topics.find((t) => t.id === topic);
@@ -10,13 +10,13 @@ const getTopic = (topic: string): Topic => {
 const getCurrent = (topic: string) => {
   const localCurrent = localStorage.getItem(`${topic}-current`);
 
-  return localCurrent ? (JSON.parse(localCurrent) as Question) : undefined;
+  return localCurrent ? (JSON.parse(localCurrent) as QuestionValues) : undefined;
 };
 
 const getHistory = (topic: string) => {
   const localHistory = localStorage.getItem(`${topic}-history`);
 
-  return localHistory ? (JSON.parse(localHistory) as SavedQuestion[]) : undefined;
+  return localHistory ? (JSON.parse(localHistory) as SavedQuestionValues[]) : undefined;
 };
 
 export const setAnswerIsRevealed = (topic: string) => {
@@ -60,7 +60,7 @@ export const handleQuestion = (
   topic: string,
   next: boolean,
   save = true,
-): { current: Question; history: SavedQuestion[] } => {
+): { current: QuestionValues; history: SavedQuestionValues[] } => {
   const current = getCurrent(topic);
   const history = getHistory(topic);
 
@@ -96,7 +96,7 @@ export const handleQuestion = (
     return { current: question, history: history ?? [] };
 
   // save record then return new question
-  let updatedHistory: SavedQuestion[] = [];
+  let updatedHistory: SavedQuestionValues[] = [];
   if (current === undefined && history === undefined) updatedHistory = [];
   else if (current === undefined && history !== undefined) updatedHistory = [...history];
   else if (current !== undefined && history === undefined)

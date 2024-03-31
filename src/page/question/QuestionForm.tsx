@@ -9,12 +9,12 @@ import H4 from 'src/component/typography/H4';
 import IcCheck from 'src/image/ic-check.svg';
 import IcCross from 'src/image/ic-cross.svg';
 import IcHint from 'src/image/ic-hint.svg';
-import { QaForm, Question, topics } from 'src/model/Common';
+import { QaForm, QuestionValues, topics } from 'src/model/Common';
 import { onCorrectAnswer, onWrongAnswer, setAnswerIsRevealed } from 'src/service/QuestionService';
 
 type Props = {
   initQuestion: (next: boolean, save?: boolean) => void;
-  current?: Question;
+  current?: QuestionValues;
 };
 
 const QuestionForm = ({ initQuestion, current }: Props) => {

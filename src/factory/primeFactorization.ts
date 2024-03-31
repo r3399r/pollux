@@ -1,8 +1,8 @@
 import uniqid from 'uniqid';
-import { Question } from 'src/model/Common';
+import { QuestionValues } from 'src/model/Common';
 import { primeFactorization as doPrimeFactorization, randomIntBetween } from 'src/util/math';
 
-const values = (): Question => {
+const values = (): QuestionValues => {
   const q = randomIntBetween(2, 400);
 
   const factors = doPrimeFactorization(q);

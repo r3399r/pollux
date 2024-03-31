@@ -1,9 +1,9 @@
 import uniqid from 'uniqid';
-import { Question } from 'src/model/Common';
+import { QuestionValues } from 'src/model/Common';
 import { coefficient, gcd, polynomial, randomElement, randomIntBetween } from 'src/util/math';
 
 // (ax+b)(cx+d) -> a*c, a*d+b*c, b*d
-const values = (): Question => {
+const values = (): QuestionValues => {
   const a = randomElement([1, 1, 1, 2, 2, 3]) * randomElement([-1, 1]);
   const c = randomElement([1, 1, 1, 2, 2, 3]) * randomElement([-1, 1]);
   const b = randomIntBetween(-10, 10);

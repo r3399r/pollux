@@ -1,8 +1,8 @@
 import uniqid from 'uniqid';
-import { Question } from 'src/model/Common';
+import { QuestionValues } from 'src/model/Common';
 import { randomIntBetween } from 'src/util/math';
 
-const values = (): Question => {
+const values = (): QuestionValues => {
   const w = randomIntBetween(2, 10);
   const h = randomIntBetween(2, 10);
   const rotate = (randomIntBetween(0, 360) * Math.PI) / 180;
