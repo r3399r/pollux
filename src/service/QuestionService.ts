@@ -106,6 +106,8 @@ export const handleQuestion = (
         img: current.img,
         q: current.q,
         a: current.a,
+        qp: current.qp,
+        ap: current.ap,
         t: Date.now(),
       },
     ];
@@ -116,6 +118,8 @@ export const handleQuestion = (
         img: current.img,
         q: current.q,
         a: current.a,
+        qp: current.qp,
+        ap: current.ap,
         t: Date.now(),
       },
       ...history,

@@ -1,6 +1,6 @@
 import { Popover } from '@mui/material';
 import classNames from 'classnames';
-import { MouseEvent, useEffect, useState } from 'react';
+import { MouseEvent, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import Button from 'src/component/Button';
@@ -9,7 +9,7 @@ import H4 from 'src/component/typography/H4';
 import IcCheck from 'src/image/ic-check.svg';
 import IcCross from 'src/image/ic-cross.svg';
 import IcHint from 'src/image/ic-hint.svg';
-import { QaForm, Question } from 'src/model/Common';
+import { QaForm, Question, topics } from 'src/model/Common';
 import { onCorrectAnswer, onWrongAnswer, setAnswerIsRevealed } from 'src/service/QuestionService';
 
 type Props = {
@@ -31,6 +31,7 @@ const QuestionForm = ({ initQuestion, current }: Props) => {
   const [ansViewed, setAnsViewed] = useState<boolean>(false);
   const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null);
   const [checked, setChecked] = useState<boolean>(false);
+  const currentTopic = useMemo(() => topics.find((t) => t.id === topic), [topic]);
 
   useEffect(() => {
     setValue('ans', '');
@@ -69,7 +70,9 @@ const QuestionForm = ({ initQuestion, current }: Props) => {
       >
         <div className="flex justify-center">
           {current?.img && <img src={current.img} />}
-          {current?.q && <div className="text-center">{current.q}</div>}
+          {currentTopic?.generator?.question && current?.qp && (
+            <div className="text-center">{currentTopic.generator.question(...current.qp)}</div>
+          )}
         </div>
         <div className="relative mt-[30px]">
           <input

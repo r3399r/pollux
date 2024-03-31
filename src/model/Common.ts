@@ -29,15 +29,17 @@ export type QaForm = {
 export type Question = {
   id: string;
   img?: string;
-  q?: string; // question
-  a: string; // answer
+  q?: string; // question // depreacated
+  a: string; // answer // depreacated
+  qp?: number[]; // question params
+  ap?: number[]; // answer params
   validate: string[]; // answer for validation
   hint?: { rules: string[]; example: string }; // hint
   isRevealed?: boolean; // answer is revealed
   isWrong?: boolean; // reply wrong answer for the first time
 };
 
-export type SavedQuestion = Pick<Question, 'id' | 'img' | 'q' | 'a'> & { t: number };
+export type SavedQuestion = Pick<Question, 'id' | 'img' | 'q' | 'a' | 'qp' | 'ap'> & { t: number };
 
 type Category = {
   id: string;
@@ -49,6 +51,10 @@ export type Topic = {
   name: string;
   category: Category;
   factory: (level?: number) => Question;
+  generator?: {
+    question: (...params: number[]) => string;
+    answer: (...params: number[]) => string;
+  };
   maxLevel?: number;
   upgradeNeed?: number;
   downgradeNeed?: number;
@@ -66,6 +72,10 @@ export const topics: Topic[] = [
     name: '10以內的加法',
     category: categories[0],
     factory: add10,
+    generator: {
+      question: (a, b) => `\\(${a}+${b}=\\square\\)`,
+      answer: (c) => `${c}`,
+    },
   },
   {
     id: 'minus-10',

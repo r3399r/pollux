@@ -7,7 +7,14 @@ const add10 = (): Question => {
   const a = randomIntBetween(0, c);
   const b = c - a;
 
-  return { id: uniqid(), q: `\\(${a}+${b}=\\square\\)`, a: `${c}`, validate: [`${c}`] };
+  return {
+    id: uniqid(),
+    q: `\\(${a}+${b}=\\square\\)`,
+    a: `${c}`,
+    qp: [a, b],
+    ap: [c],
+    validate: [`${c}`],
+  };
 };
 
 export default add10;
