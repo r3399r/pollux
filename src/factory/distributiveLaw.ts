@@ -1,9 +1,9 @@
 import uniqid from 'uniqid';
-import { Question } from 'src/model/Common';
+import { QuestionValues } from 'src/model/Common';
 import { polynomial, randomElement, randomIntBetween } from 'src/util/math';
 
 // (ax+b)(cx+d) -> a*c, a*d+b*c, b*d
-const distributiveLaw = (): Question => {
+const values = (): QuestionValues => {
   const sign = randomElement([-1, 1, 1, 1, 1]);
   const a = randomElement([1, 1, 1, 2, 2, 3, 4, 5]) * randomElement([-1, 1]);
   const c = randomElement([1, 1, 1, 2, 2, 3, 4, 5]) * randomElement([-1, 1]);
@@ -16,12 +16,8 @@ const distributiveLaw = (): Question => {
 
   return {
     id: uniqid(),
-    q: `\\(${sign === 1 ? '' : '-'}(${polynomial('x', a, b)})(${polynomial(
-      'x',
-      c,
-      d,
-    )})\\) 展開為 \\(ax^2+bx+c\\)`,
-    a: `\\(${polynomial('x', first * sign, second * sign, third * sign)}\\)`,
+    qp: [sign, a, b, c, d],
+    ap: [sign, first, second, third],
     validate: [[first * sign, second * sign, third * sign].join()],
     hint: {
       rules: ['依序填入 a,b,c', '以逗號或空白分隔'],
@@ -30,4 +26,14 @@ const distributiveLaw = (): Question => {
   };
 };
 
-export default distributiveLaw;
+const question = (sign: number, a: number, b: number, c: number, d: number) =>
+  `\\(${sign === 1 ? '' : '-'}(${polynomial('x', a, b)})(${polynomial(
+    'x',
+    c,
+    d,
+  )})\\) 展開為 \\(ax^2+bx+c\\)`;
+
+const answer = (sign: number, first: number, second: number, third: number) =>
+  `\\(${polynomial('x', first * sign, second * sign, third * sign)}\\)`;
+
+export default { values, question, answer };

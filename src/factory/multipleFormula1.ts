@@ -1,11 +1,10 @@
 import uniqid from 'uniqid';
-import { Question } from 'src/model/Common';
+import { QuestionValues } from 'src/model/Common';
 import { polynomial, randomElement, randomIntBetween } from 'src/util/math';
 
-const multipleFormula1 = (): Question => {
+const values = (): QuestionValues => {
   const a = randomElement([1, 1, 1, 2, 2, 3, 4, 5]) * randomElement([-1, 1]);
   const b = randomIntBetween(1, 10) * randomElement([-1, 1]);
-  let q = '';
   let first = a * a;
   let second = 0;
   let third = b * b;
@@ -14,11 +13,9 @@ const multipleFormula1 = (): Question => {
   const type = randomIntBetween(1, 2);
   switch (type) {
     case 1:
-      q = `\\((${polynomial('x', a, b)})^2\\) 展開為 \\(ax^2+bx+c\\)`;
       second = 2 * a * b;
       break;
     case 2:
-      q = `\\((${polynomial('x', a, b)})(${polynomial('x', a, b * -1)})\\) 展開為 \\(ax^2+bx+c\\)`;
       first = a * a;
       third = -1 * b * b;
       break;
@@ -26,8 +23,8 @@ const multipleFormula1 = (): Question => {
 
   return {
     id: uniqid(),
-    q,
-    a: `\\(${polynomial('x', first, second, third)}\\)`,
+    qp: [type, a, b],
+    ap: [first, second, third],
     validate: [[first, second, third].join()],
     hint: {
       rules: ['依序填入 a,b,c', '以逗號或空白分隔'],
@@ -36,4 +33,22 @@ const multipleFormula1 = (): Question => {
   };
 };
 
-export default multipleFormula1;
+const question = (type: number, a: number, b: number) => {
+  switch (type) {
+    case 1:
+      return `\\((${polynomial('x', a, b)})^2\\) 展開為 \\(ax^2+bx+c\\)`;
+    case 2:
+      return `\\((${polynomial('x', a, b)})(${polynomial(
+        'x',
+        a,
+        b * -1,
+      )})\\) 展開為 \\(ax^2+bx+c\\)`;
+  }
+
+  return '';
+};
+
+const answer = (first: number, second: number, third: number) =>
+  `\\(${polynomial('x', first, second, third)}\\)`;
+
+export default { values, question, answer };

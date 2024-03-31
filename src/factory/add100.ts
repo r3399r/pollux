@@ -1,8 +1,8 @@
 import uniqid from 'uniqid';
-import { Question } from 'src/model/Common';
+import { QuestionValues } from 'src/model/Common';
 import { randomIntBetween } from 'src/util/math';
 
-const add100 = (level = 0): Question => {
+const values = (level = 0): QuestionValues => {
   let tensDigitA = 0;
   let unitsDigitA = 0;
   let tensDigitB = 0;
@@ -37,7 +37,11 @@ const add100 = (level = 0): Question => {
   const b = tensDigitB * 10 + unitsDigitB;
   const c = a + b;
 
-  return { id: uniqid(), q: `\\(${a}+${b}=?\\)`, a: `${c}`, validate: [`${c}`] };
+  return { id: uniqid(), qp: [a, b], ap: [c], validate: [`${c}`] };
 };
 
-export default add100;
+const question = (a: number, b: number) => `\\(${a}+${b}=?\\)`;
+
+const answer = (c: number) => `${c}`;
+
+export default { values, question, answer };

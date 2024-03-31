@@ -1,12 +1,21 @@
 import uniqid from 'uniqid';
-import { Question } from 'src/model/Common';
+import { QuestionValues } from 'src/model/Common';
 import { randomIntBetween } from 'src/util/math';
 
-const rectArea = (): Question => {
+const values = (): QuestionValues => {
   const w = randomIntBetween(2, 10);
   const h = randomIntBetween(2, 10);
   const rotate = (randomIntBetween(0, 360) * Math.PI) / 180;
 
+  return {
+    id: uniqid(),
+    qp: [w, h, rotate],
+    ap: [w, h],
+    validate: [`${w * h}`],
+  };
+};
+
+const image = (w: number, h: number, rotate: number) => {
   const canvas = document.createElement('canvas');
   canvas.width = 150;
   canvas.height = 120;
@@ -28,7 +37,9 @@ const rectArea = (): Question => {
   ctx.fillText(w.toString(), -h * 4 * Math.sin(rotate), h * 4 * Math.cos(rotate));
   ctx.fillText(h.toString(), w * 4 * Math.cos(rotate), w * 4 * Math.sin(rotate));
 
-  return { id: uniqid(), a: `${w * h}`, validate: [`${w * h}`], img: canvas.toDataURL() };
+  return canvas.toDataURL();
 };
 
-export default rectArea;
+const answer = (w: number, h: number) => `${w * h}`;
+
+export default { values, image, answer };

@@ -26,18 +26,24 @@ export type QaForm = {
   ans: string;
 };
 
-export type Question = {
+export type QuestionValues = {
   id: string;
-  img?: string;
-  q?: string; // question
-  a: string; // answer
+  qp?: number[]; // question params
+  ap: number[]; // answer params
   validate: string[]; // answer for validation
   hint?: { rules: string[]; example: string }; // hint
   isRevealed?: boolean; // answer is revealed
   isWrong?: boolean; // reply wrong answer for the first time
 };
 
-export type SavedQuestion = Pick<Question, 'id' | 'img' | 'q' | 'a'> & { t: number };
+export type Factory = {
+  values: (level?: number) => QuestionValues;
+  question?: (...params: number[]) => string;
+  image?: (...params: number[]) => string;
+  answer?: (...params: number[]) => string;
+};
+
+export type SavedQuestionValues = Pick<QuestionValues, 'id' | 'qp' | 'ap'> & { t: number };
 
 type Category = {
   id: string;
@@ -48,7 +54,7 @@ export type Topic = {
   id: string;
   name: string;
   category: Category;
-  factory: (level?: number) => Question;
+  factory: Factory;
   maxLevel?: number;
   upgradeNeed?: number;
   downgradeNeed?: number;

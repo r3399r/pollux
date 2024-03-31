@@ -1,17 +1,16 @@
 import uniqid from 'uniqid';
-import { Question } from 'src/model/Common';
+import { QuestionValues } from 'src/model/Common';
 import { bn } from 'src/util/bignumber';
 import { randomFloatBetween, randomIntBetween } from 'src/util/math';
 
-const scientificNotation1 = (): Question => {
+const values = (): QuestionValues => {
   const m = randomFloatBetween(1, 9.99, 2);
   const n = randomIntBetween(-10, 10);
-  const q = bn(10).pow(n).times(m).toFixed();
 
   return {
     id: uniqid(),
-    q: `\\(${q}=a\\times10^n\\)`,
-    a: `\\(${m}\\times10^{${n}}\\)`,
+    qp: [m, n],
+    ap: [m, n],
     validate: [`${m},${n}`],
     hint: {
       rules: ['依序填入 a,n', '\\(n\\) 為整數且 \\(1\\le a<10\\)', '以逗號或空白分隔'],
@@ -20,4 +19,12 @@ const scientificNotation1 = (): Question => {
   };
 };
 
-export default scientificNotation1;
+const question = (m: number, n: number) => {
+  const q = bn(10).pow(n).times(m).toFixed();
+
+  return `\\(${q}=a\\times10^n\\)`;
+};
+
+const answer = (m: number, n: number) => `\\(${m}\\times10^{${n}}\\)`;
+
+export default { values, question, answer };

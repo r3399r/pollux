@@ -6,7 +6,7 @@ import Menu from 'src/component/Menu';
 import Body from 'src/component/typography/Body';
 import H2 from 'src/component/typography/H2';
 import IcMenu from 'src/image/ic-menu.svg';
-import { Question, SavedQuestion, topics } from 'src/model/Common';
+import { QuestionValues, SavedQuestionValues, topics } from 'src/model/Common';
 import { handleQuestion, removeRecord } from 'src/service/QuestionService';
 import History from './History';
 import QuestionForm from './QuestionForm';
@@ -14,8 +14,8 @@ import QuestionForm from './QuestionForm';
 const QuestionPage = () => {
   const navigate = useNavigate();
   const { topic } = useParams<{ topic: string }>();
-  const [current, setCurrent] = useState<Question>();
-  const [history, setHistory] = useState<SavedQuestion[]>([]);
+  const [current, setCurrent] = useState<QuestionValues>();
+  const [history, setHistory] = useState<SavedQuestionValues[]>([]);
   const [openMenu, setOpenMenu] = useState<boolean>(false);
   const [openHistory, setOpenHistory] = useState<boolean>(false);
 
