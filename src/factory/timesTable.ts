@@ -2,16 +2,21 @@ import uniqid from 'uniqid';
 import { Question } from 'src/model/Common';
 import { randomIntBetween } from 'src/util/math';
 
-const timesTable = (): Question => {
+const values = (): Question => {
   const a = randomIntBetween(1, 9);
   const b = randomIntBetween(1, 9);
+  const c = a * b;
 
   return {
     id: uniqid(),
-    q: `\\(${a}\\times${b}=\\square\\)`,
-    a: `${a * b}`,
-    validate: [`${a * b}`],
+    qp: [a, b],
+    ap: [c],
+    validate: [`${c}`],
   };
 };
 
-export default timesTable;
+const question = (a: number, b: number) => `\\(${a}\\times${b}=\\square\\)`;
+
+const answer = (c: number) => `${c}`;
+
+export default { values, question, answer };

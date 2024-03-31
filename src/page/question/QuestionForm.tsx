@@ -69,9 +69,11 @@ const QuestionForm = ({ initQuestion, current }: Props) => {
         className="p-[30px] sm:p-[60px] md:px-[30px] md:py-[40px] lg:p-[60px]"
       >
         <div className="flex justify-center">
-          {current?.img && <img src={current.img} />}
-          {currentTopic?.generator?.question && current?.qp && (
-            <div className="text-center">{currentTopic.generator.question(...current.qp)}</div>
+          {currentTopic?.factory?.question && current?.qp && (
+            <div className="text-center">{currentTopic.factory.question(...current.qp)}</div>
+          )}
+          {currentTopic?.factory.image && current?.qp && (
+            <img src={currentTopic.factory.image(...current.qp)} />
           )}
         </div>
         <div className="relative mt-[30px]">

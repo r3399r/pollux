@@ -2,9 +2,7 @@ import uniqid from 'uniqid';
 import { Question } from 'src/model/Common';
 import { fractionText, randomElement, randomIntBetween } from 'src/util/math';
 
-const degreeRadianTransform = (): Question => {
-  let q = '';
-  let a = '';
+const values = (): Question => {
   let v: string[] = [];
   let n = '';
   let d = '';
@@ -19,24 +17,20 @@ const degreeRadianTransform = (): Question => {
   const type = randomIntBetween(1, 2);
   switch (type) {
     case 1:
-      q = `將角度換算成弧度：\\(${degree}\\du\\)`;
-      a = `\\(${radian.latex}\\pi\\)`;
       n = radian.text.split('/')[0];
       d = radian.text.split('/')[1];
       if (n === '1') v = [`π/${d}`];
       else v = [`${n}π/${d}`];
       break;
     case 2:
-      q = `將弧度換算成角度：\\(${radian.latex}\\pi\\)`;
-      a = `\\(${degree}\\du\\)`;
       v = [`${degree}°`];
       break;
   }
 
   return {
     id: uniqid(),
-    q,
-    a,
+    qp: [type, degree],
+    ap: [type, degree],
     validate: v,
     hint: {
       rules: [
@@ -49,4 +43,28 @@ const degreeRadianTransform = (): Question => {
   };
 };
 
-export default degreeRadianTransform;
+const question = (type: number, degree: number) => {
+  const radian = fractionText(180, degree);
+  switch (type) {
+    case 1:
+      return `將角度換算成弧度：\\(${degree}\\du\\)`;
+    case 2:
+      return `將弧度換算成角度：\\(${radian.latex}\\pi\\)`;
+  }
+
+  return '';
+};
+
+const answer = (type: number, degree: number) => {
+  const radian = fractionText(180, degree);
+  switch (type) {
+    case 1:
+      return `\\(${radian.latex}\\pi\\)`;
+    case 2:
+      return `\\(${degree}\\du\\)`;
+  }
+
+  return '';
+};
+
+export default { values, question, answer };

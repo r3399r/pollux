@@ -88,7 +88,7 @@ export const handleQuestion = (
     }
   }
 
-  const question = thisTopic.factory(level);
+  const question = thisTopic.factory.values(level);
   localStorage.setItem(`${topic}-current`, JSON.stringify(question));
 
   // directly return new question if first visit or not save
@@ -103,9 +103,6 @@ export const handleQuestion = (
     updatedHistory = [
       {
         id: current.id,
-        img: current.img,
-        q: current.q,
-        a: current.a,
         qp: current.qp,
         ap: current.ap,
         t: Date.now(),
@@ -115,9 +112,6 @@ export const handleQuestion = (
     updatedHistory = [
       {
         id: current.id,
-        img: current.img,
-        q: current.q,
-        a: current.a,
         qp: current.qp,
         ap: current.ap,
         t: Date.now(),

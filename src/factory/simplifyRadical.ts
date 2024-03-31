@@ -2,7 +2,7 @@ import uniqid from 'uniqid';
 import { Question } from 'src/model/Common';
 import { simplifyRadical as doSimplifyRadical, randomIntBetween } from 'src/util/math';
 
-const simplifyRadical = (): Question => {
+const values = (): Question => {
   let c = 1;
   let n = 1;
   let q = 1;
@@ -16,8 +16,8 @@ const simplifyRadical = (): Question => {
 
   return {
     id: uniqid(),
-    q: `化簡 \\(\\sqrt{${q}}=a\\sqrt b\\)`,
-    a: `\\(${c}\\sqrt{${n}}\\)`,
+    qp: [q],
+    ap: [c, n],
     validate: [`${c},${n}`],
     hint: {
       rules: ['依序填入 a,b', '化至最簡', '以逗號或空白分隔'],
@@ -26,4 +26,8 @@ const simplifyRadical = (): Question => {
   };
 };
 
-export default simplifyRadical;
+const question = (q: number) => `化簡 \\(\\sqrt{${q}}=a\\sqrt b\\)`;
+
+const answer = (c: number, n: number) => `\\(${c}\\sqrt{${n}}\\)`;
+
+export default { values, question, answer };

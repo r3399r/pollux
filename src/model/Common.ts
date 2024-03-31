@@ -28,18 +28,22 @@ export type QaForm = {
 
 export type Question = {
   id: string;
-  img?: string;
-  q?: string; // question // depreacated
-  a: string; // answer // depreacated
   qp?: number[]; // question params
-  ap?: number[]; // answer params
+  ap: number[]; // answer params
   validate: string[]; // answer for validation
   hint?: { rules: string[]; example: string }; // hint
   isRevealed?: boolean; // answer is revealed
   isWrong?: boolean; // reply wrong answer for the first time
 };
 
-export type SavedQuestion = Pick<Question, 'id' | 'img' | 'q' | 'a' | 'qp' | 'ap'> & { t: number };
+export type Factory = {
+  values: (level?: number) => Question;
+  question?: (...params: number[]) => string;
+  image?: (...params: number[]) => string;
+  answer?: (...params: number[]) => string;
+};
+
+export type SavedQuestion = Pick<Question, 'id' | 'qp' | 'ap'> & { t: number };
 
 type Category = {
   id: string;
@@ -50,11 +54,7 @@ export type Topic = {
   id: string;
   name: string;
   category: Category;
-  factory: (level?: number) => Question;
-  generator?: {
-    question: (...params: number[]) => string;
-    answer: (...params: number[]) => string;
-  };
+  factory: Factory;
   maxLevel?: number;
   upgradeNeed?: number;
   downgradeNeed?: number;
@@ -72,10 +72,6 @@ export const topics: Topic[] = [
     name: '10以內的加法',
     category: categories[0],
     factory: add10,
-    generator: {
-      question: (a, b) => `\\(${a}+${b}=\\square\\)`,
-      answer: (c) => `${c}`,
-    },
   },
   {
     id: 'minus-10',

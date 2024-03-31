@@ -35,13 +35,15 @@ const History = ({ history, isDrawer = false, onRemoveRecord }: Props) => {
           <Body size="s" className="text-navy-300">
             {format(new Date(v.t), 'yyyy.MM.dd HH:mm:ss')}
           </Body>
-          {v.img && <img src={v.img} />}
-          {currentTopic?.generator?.question && (
-            <div>{currentTopic.generator.question(...(v.qp ?? []))}</div>
+          {currentTopic?.factory?.question && v.qp && (
+            <div>{currentTopic.factory.question(...v.qp)}</div>
           )}
+          {currentTopic?.factory.image && v.qp && <img src={currentTopic.factory.image(...v.qp)} />}
           <Body className="mt-1">
             <span className="mr-[10px]">答:</span>
-            {v.a}
+            {currentTopic?.factory?.answer && (
+              <div>{currentTopic.factory.answer(...(v.ap ?? []))}</div>
+            )}
           </Body>
         </div>
       ))}
