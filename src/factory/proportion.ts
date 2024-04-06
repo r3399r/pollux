@@ -1,6 +1,7 @@
 import uniqid from 'uniqid';
 import { QuestionValues } from 'src/model/Common';
-import { gcd, randomInt, randomIntExcept } from 'src/util/math';
+import { fraction, randomInt, randomIntExcept } from 'src/util/math';
+import { fractionText } from 'src/util/text';
 
 /**
  * level 0: x:a=b:c
@@ -9,32 +10,46 @@ import { gcd, randomInt, randomIntExcept } from 'src/util/math';
  * level 3: (mx+n):a=(px+q):c
  */
 const values = (level = 0): QuestionValues => {
-  const x = randomInt(1, 20);
-  const a = randomIntExcept(1, 20, [x]);
-  const d = gcd(x, a);
+  const id = uniqid();
+  let a = 0;
+  let b = 0;
+  let c = 0;
+  let x = {
+    denominator: 1,
+    numerator: 1,
+  };
 
-  const t = randomIntExcept(1, 5, [d]);
-  const b = (x / d) * t;
-  const c = (a / d) * t;
+  switch (level) {
+    default:
+      b = randomIntExcept(-15, 15, [0]);
+      c = randomIntExcept(-15, 15, [0, b]);
+      a = randomIntExcept(-15, 15, [0]);
+      x = fraction(c, a * b);
+      break;
+  }
 
   // position of unknown value: 1: upper-left, 2: bottom-left, 3: upper-right, 4: bottom-right
   const mode = randomInt(1, 4);
 
   return {
-    id: uniqid(),
+    id,
     qp: [mode, a, b, c],
-    ap: [x],
-    validate: [`${x}`],
+    ap: [x.denominator, x.numerator],
+    validate: [`${fractionText(x.denominator, x.numerator).text}`],
   };
 };
 
 const question = (mode: number, a: number, b: number, c: number) => {
-  if (mode === 1) return `\\(x:${a}=${b}:${c}\\)`;
-  if (mode === 2) return `\\(${a}:x=${c}:${b}\\)`;
-  if (mode === 3) return `\\(${b}:${c}=x:${a}\\)`;
-  else return `\\(${c}:${b}=${a}:x\\)`;
+  const textA = a > 0 ? `${a}` : `(${a})`;
+  const textB = b > 0 ? `${b}` : `(${b})`;
+  const textC = c > 0 ? `${c}` : `(${c})`;
+  if (mode === 1) return `\\(x:${textA}=${textB}:${textC}\\)`;
+  if (mode === 2) return `\\(${textA}:x=${textC}:${textB}\\)`;
+  if (mode === 3) return `\\(${textB}:${textC}=x:${textA}\\)`;
+  else return `\\(${textC}:${textB}=${textA}:x\\)`;
 };
 
-const answer = (x: number) => `${x}`;
+const answer = (denominator: number, numerator: number) =>
+  `\\(${fractionText(denominator, numerator).latex}\\)`;
 
 export default { values, question, answer };
