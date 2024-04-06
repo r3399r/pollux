@@ -29,8 +29,8 @@ export type QaForm = {
 
 export type QuestionValues = {
   id: string;
-  qp?: number[]; // question params
-  ap: number[]; // answer params
+  qp?: (number | string)[]; // question params
+  ap: (number | string)[]; // answer params
   validate: string[]; // answer for validation
   hint?: { rules: string[]; example: string }; // hint
   isRevealed?: boolean; // answer is revealed
@@ -39,9 +39,9 @@ export type QuestionValues = {
 
 export type Factory = {
   values: (level?: number) => QuestionValues;
-  question?: (...params: number[]) => string;
-  image?: (...params: number[]) => string;
-  answer?: (...params: number[]) => string;
+  question?: (...params: (number | string)[]) => string;
+  image?: (...params: (number | string)[]) => string;
+  answer?: (...params: (number | string)[]) => string;
 };
 
 export type SavedQuestionValues = Pick<QuestionValues, 'id' | 'qp' | 'ap'> & { t: number };

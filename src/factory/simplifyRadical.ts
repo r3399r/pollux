@@ -26,8 +26,8 @@ const values = (): QuestionValues => {
   };
 };
 
-const question = (q: number) => `化簡 \\(\\sqrt{${q}}=a\\sqrt b\\)`;
+const question = (q: number | string) => `化簡 \\(\\sqrt{${q}}=a\\sqrt b\\)`;
 
-const answer = (c: number, n: number) => `\\(${c}\\sqrt{${n}}\\)`;
+const answer = (c: number | string, n: number | string) => `\\(${c}\\sqrt{${n}}\\)`;
 
 export default { values, question, answer };

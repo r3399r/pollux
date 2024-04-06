@@ -15,7 +15,11 @@ const values = (): QuestionValues => {
   };
 };
 
-const image = (w: number, h: number, rotate: number) => {
+const image = (w: number | string, h: number | string, rotate: number | string) => {
+  if (typeof w === 'string') w = Number(w);
+  if (typeof h === 'string') h = Number(h);
+  if (typeof rotate === 'string') rotate = Number(rotate);
+
   const canvas = document.createElement('canvas');
   canvas.width = 150;
   canvas.height = 120;
@@ -40,6 +44,11 @@ const image = (w: number, h: number, rotate: number) => {
   return canvas.toDataURL();
 };
 
-const answer = (w: number, h: number) => `${w * h}`;
+const answer = (w: number | string, h: number | string) => {
+  if (typeof w === 'string') w = Number(w);
+  if (typeof h === 'string') h = Number(h);
+
+  return `${w * h}`;
+};
 
 export default { values, image, answer };

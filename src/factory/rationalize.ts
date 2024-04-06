@@ -46,7 +46,11 @@ const values = (): QuestionValues => {
   };
 };
 
-const question = (type: number, numerator: number, denominator: number) => {
+const question = (
+  type: number | string,
+  numerator: number | string,
+  denominator: number | string,
+) => {
   switch (type) {
     case 1:
       return `化簡 \\(\\dfrac{\\sqrt{${numerator}}}{\\sqrt{${denominator}}}=\\dfrac{a\\sqrt b}{c}\\)`;
@@ -59,7 +63,13 @@ const question = (type: number, numerator: number, denominator: number) => {
   return '';
 };
 
-const answer = (numeratorCoefficient: number, numeratorRadical: number, denominator: number) => {
+const answer = (
+  numeratorCoefficient: number | string,
+  numeratorRadical: number | string,
+  denominator: number | string,
+) => {
+  if (typeof numeratorCoefficient === 'string') numeratorCoefficient = Number(numeratorCoefficient);
+
   const ansNumerator = coefficient(numeratorCoefficient, `\\sqrt{${numeratorRadical}}`, true);
   const ans = denominator === 1 ? ansNumerator : `\\dfrac{${ansNumerator}}{${denominator}}`;
 

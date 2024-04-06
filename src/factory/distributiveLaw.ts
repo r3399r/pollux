@@ -27,14 +27,37 @@ const values = (): QuestionValues => {
   };
 };
 
-const question = (sign: number, a: number, b: number, c: number, d: number) =>
-  `\\(${sign === 1 ? '' : '-'}(${polynomial('x', a, b)})(${polynomial(
+const question = (
+  sign: number | string,
+  a: number | string,
+  b: number | string,
+  c: number | string,
+  d: number | string,
+) => {
+  if (typeof a === 'string') a = Number(a);
+  if (typeof b === 'string') b = Number(b);
+  if (typeof c === 'string') c = Number(c);
+  if (typeof d === 'string') d = Number(d);
+
+  return `\\(${sign === 1 ? '' : '-'}(${polynomial('x', a, b)})(${polynomial(
     'x',
     c,
     d,
   )})\\) 展開為 \\(ax^2+bx+c\\)`;
+};
 
-const answer = (sign: number, first: number, second: number, third: number) =>
-  `\\(${polynomial('x', first * sign, second * sign, third * sign)}\\)`;
+const answer = (
+  sign: number | string,
+  first: number | string,
+  second: number | string,
+  third: number | string,
+) => {
+  if (typeof sign === 'string') sign = Number(sign);
+  if (typeof first === 'string') first = Number(first);
+  if (typeof second === 'string') second = Number(second);
+  if (typeof third === 'string') third = Number(third);
+
+  return `\\(${polynomial('x', first * sign, second * sign, third * sign)}\\)`;
+};
 
 export default { values, question, answer };

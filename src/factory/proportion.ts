@@ -31,11 +31,13 @@ const values = (level = 0): QuestionValues => {
   // position of unknown value: 1: upper-left, 2: bottom-left, 3: upper-right, 4: bottom-right
   const mode = randomInt(1, 4);
 
+  const fractionResult = fractionText(x.denominator, x.numerator);
+
   return {
     id,
     qp: [mode, a, b, c],
-    ap: [x.denominator, x.numerator],
-    validate: [`${fractionText(x.denominator, x.numerator).text}`],
+    ap: [fractionResult.latex],
+    validate: [fractionResult.text],
     hint: {
       rules: ['若答案為分數請寫用 / 表示', '若為負數，請將負號寫在最前面'],
       example: '-2/3',
@@ -43,7 +45,16 @@ const values = (level = 0): QuestionValues => {
   };
 };
 
-const question = (mode: number, a: number, b: number, c: number) => {
+const question = (
+  mode: number | string,
+  a: number | string,
+  b: number | string,
+  c: number | string,
+) => {
+  if (typeof a === 'string') a = Number(a);
+  if (typeof b === 'string') b = Number(b);
+  if (typeof c === 'string') c = Number(c);
+
   const textA = a > 0 ? `${a}` : `(${a})`;
   const textB = b > 0 ? `${b}` : `(${b})`;
   const textC = c > 0 ? `${c}` : `(${c})`;
@@ -53,7 +64,6 @@ const question = (mode: number, a: number, b: number, c: number) => {
   else return `\\(${textC}:${textB}=${textA}:x\\)`;
 };
 
-const answer = (denominator: number, numerator: number) =>
-  `\\(${fractionText(denominator, numerator).latex}\\)`;
+const answer = (result: number | string) => `\\(${result}\\)`;
 
 export default { values, question, answer };

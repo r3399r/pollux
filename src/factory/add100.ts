@@ -40,8 +40,8 @@ const values = (level = 0): QuestionValues => {
   return { id: uniqid(), qp: [a, b], ap: [c], validate: [`${c}`] };
 };
 
-const question = (a: number, b: number) => `\\(${a}+${b}=?\\)`;
+const question = (a: number | string, b: number | string) => `\\(${a}+${b}=?\\)`;
 
-const answer = (c: number) => `${c}`;
+const answer = (c: number | string) => `${c}`;
 
 export default { values, question, answer };

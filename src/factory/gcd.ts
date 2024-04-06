@@ -16,8 +16,8 @@ const values = (): QuestionValues => {
   };
 };
 
-const question = (a: number, b: number) => `求 ${a} 與 ${b} 的最大公因數`;
+const question = (a: number | string, b: number | string) => `求 ${a} 與 ${b} 的最大公因數`;
 
-const answer = (c: number) => `${c}`;
+const answer = (c: number | string) => `${c}`;
 
 export default { values, question, answer };

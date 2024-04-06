@@ -37,7 +37,18 @@ const values = (): QuestionValues => {
   };
 };
 
-const question = (type: number, a: number, b: number, m: number, n: number, d: number) => {
+const question = (
+  type: number | string,
+  a: number | string,
+  b: number | string,
+  m: number | string,
+  n: number | string,
+  d: number | string,
+) => {
+  if (typeof m === 'string') m = Number(m);
+  if (typeof n === 'string') n = Number(n);
+  if (typeof d === 'string') d = Number(d);
+
   switch (type) {
     case 1:
       return `數線上兩點 \\(A(${a})\\) 與 \\(B(${b})\\)，點 \\(P\\) 滿足 \\(\\overline{PA}:\\overline{PB}=${
@@ -52,7 +63,18 @@ const question = (type: number, a: number, b: number, m: number, n: number, d: n
   return '';
 };
 
-const answer = (type: number, a: number, b: number, m: number, n: number) => {
+const answer = (
+  type: number | string,
+  a: number | string,
+  b: number | string,
+  m: number | string,
+  n: number | string,
+) => {
+  if (typeof m === 'string') m = Number(m);
+  if (typeof n === 'string') n = Number(n);
+  if (typeof a === 'string') a = Number(a);
+  if (typeof b === 'string') b = Number(b);
+  
   let ans = { text: '', latex: '' };
   switch (type) {
     case 1:

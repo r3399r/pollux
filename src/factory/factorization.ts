@@ -32,18 +32,35 @@ const values = (): QuestionValues => {
   };
 };
 
-const question = (a: number, b: number, c: number, d: number) =>
-  `將 \\(${polynomial('x', a * c, a * d + b * c, b * d)}\\) 化簡為 \\(k(ax+b)(cx+d)\\)`;
+const question = (
+  a: number | string,
+  b: number | string,
+  c: number | string,
+  d: number | string,
+) => {
+  if (typeof a === 'string') a = Number(a);
+  if (typeof b === 'string') b = Number(b);
+  if (typeof c === 'string') c = Number(c);
+  if (typeof d === 'string') d = Number(d);
+
+  return `將 \\(${polynomial('x', a * c, a * d + b * c, b * d)}\\) 化簡為 \\(k(ax+b)(cx+d)\\)`;
+};
 
 const answer = (
-  leading: number,
-  b: number,
-  d: number,
-  a1: number,
-  b1: number,
-  c1: number,
-  d1: number,
+  leading: number | string,
+  b: number | string,
+  d: number | string,
+  a1: number | string,
+  b1: number | string,
+  c1: number | string,
+  d1: number | string,
 ) => {
+  if (typeof a1 === 'string') a1 = Number(a1);
+  if (typeof b1 === 'string') b1 = Number(b1);
+  if (typeof c1 === 'string') c1 = Number(c1);
+  if (typeof d1 === 'string') d1 = Number(d1);
+  if (typeof leading === 'string') leading = Number(leading);
+
   const first = b === 0 ? 'x' : `(${polynomial('x', a1, b1)})`;
   const second = d === 0 ? 'x' : `(${polynomial('x', c1, d1)})`;
 

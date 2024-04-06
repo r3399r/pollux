@@ -19,9 +19,9 @@ const values = (): QuestionValues => {
   };
 };
 
-const question = (q: number) => `將 ${q} 質因數分解`;
+const question = (q: number | string) => `將 ${q} 質因數分解`;
 
-const answer = (...factors: number[]) => {
+const answer = (...factors: (number | string)[]) => {
   const ans: string[] = [];
   for (const b of new Set(factors)) {
     const n = factors.filter((f) => f === b).length;

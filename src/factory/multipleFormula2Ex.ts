@@ -35,7 +35,7 @@ const values = (): QuestionValues => {
   };
 };
 
-const question = (pm: number, given: number) => {
+const question = (pm: number | string, given: number | string) => {
   switch (pm) {
     case 1:
       return `若 \\(x+\\dfrac1x=${given}\\)，則 \\(x^2+\\dfrac1{x^2}=a\\)，\\(x^3+\\dfrac1{x^3}=b\\)`;
@@ -46,6 +46,6 @@ const question = (pm: number, given: number) => {
   return '';
 };
 
-const answer = (a: number, b: number) => `\\(a=${a},b=${b}\\)`;
+const answer = (a: number | string, b: number | string) => `\\(a=${a},b=${b}\\)`;
 
 export default { values, question, answer };

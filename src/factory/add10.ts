@@ -15,8 +15,8 @@ const values = (): QuestionValues => {
   };
 };
 
-const question = (a: number, b: number) => `\\(${a}+${b}=\\square\\)`;
+const question = (a: number | string, b: number | string) => `\\(${a}+${b}=\\square\\)`;
 
-const answer = (c: number) => `${c}`;
+const answer = (c: number | string) => `${c}`;
 
 export default { values, question, answer };

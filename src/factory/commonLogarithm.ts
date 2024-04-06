@@ -43,7 +43,10 @@ const values = (): QuestionValues => {
   };
 };
 
-const question = (type: number, n: number, b: number) => {
+const question = (type: number | string, n: number | string, b: number | string) => {
+  if (typeof b === 'string') b = Number(b);
+  if (typeof n === 'string') n = Number(n);
+
   switch (type) {
     case 1:
       return `\\(\\log${bn(10).pow(n).toFixed()}=?\\)`;
@@ -60,7 +63,10 @@ const question = (type: number, n: number, b: number) => {
   return '';
 };
 
-const answer = (type: number, n: number, b: number) => {
+const answer = (type: number | string, n: number | string, b: number | string) => {
+  if (typeof b === 'string') b = Number(b);
+  if (typeof n === 'string') n = Number(n);
+  
   switch (type) {
     case 1:
       return `\\(${n.toString()}\\)`;

@@ -26,7 +26,12 @@ const values = (): QuestionValues => {
   return { id: uniqid(), qp: [type, theta, l, r], ap: [type, theta, l, r], validate: [v] };
 };
 
-const question = (type: number, theta: number, l: number, r: number) => {
+const question = (
+  type: number | string,
+  theta: number | string,
+  l: number | string,
+  r: number | string,
+) => {
   switch (type) {
     case 1:
       return `一扇形，其圓心角弧度 ${theta}，弧長 ${l}，求半徑`;
@@ -39,7 +44,12 @@ const question = (type: number, theta: number, l: number, r: number) => {
   return '';
 };
 
-const answer = (type: number, theta: number, l: number, r: number) => {
+const answer = (
+  type: number | string,
+  theta: number | string,
+  l: number | string,
+  r: number | string,
+) => {
   switch (type) {
     case 1:
       return r.toString();

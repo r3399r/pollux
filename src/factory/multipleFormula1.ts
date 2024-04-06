@@ -34,7 +34,10 @@ const values = (): QuestionValues => {
   };
 };
 
-const question = (type: number, a: number, b: number) => {
+const question = (type: number | string, a: number | string, b: number | string) => {
+  if (typeof a === 'string') a = Number(a);
+  if (typeof b === 'string') b = Number(b);
+
   switch (type) {
     case 1:
       return `\\((${polynomial('x', a, b)})^2\\) 展開為 \\(ax^2+bx+c\\)`;
@@ -49,7 +52,12 @@ const question = (type: number, a: number, b: number) => {
   return '';
 };
 
-const answer = (first: number, second: number, third: number) =>
-  `\\(${polynomial('x', first, second, third)}\\)`;
+const answer = (first: number | string, second: number | string, third: number | string) => {
+  if (typeof first === 'string') first = Number(first);
+  if (typeof second === 'string') second = Number(second);
+  if (typeof third === 'string') third = Number(third);
+
+  return `\\(${polynomial('x', first, second, third)}\\)`;
+};
 
 export default { values, question, answer };

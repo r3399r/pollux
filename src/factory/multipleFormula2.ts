@@ -25,10 +25,25 @@ const values = (): QuestionValues => {
   };
 };
 
-const question = (a: number, b: number) =>
-  `\\((${polynomial('x', a, b)})^3\\) 展開為 \\(ax^3+bx^2+cx+d\\)`;
+const question = (a: number | string, b: number | string) => {
+  if (typeof a === 'string') a = Number(a);
+  if (typeof b === 'string') b = Number(b);
 
-const answer = (first: number, second: number, third: number, fourth: number) =>
-  `\\(${polynomial('x', first, second, third, fourth)}\\)`;
+  return `\\((${polynomial('x', a, b)})^3\\) 展開為 \\(ax^3+bx^2+cx+d\\)`;
+};
+
+const answer = (
+  first: number | string,
+  second: number | string,
+  third: number | string,
+  fourth: number | string,
+) => {
+  if (typeof first === 'string') first = Number(first);
+  if (typeof second === 'string') second = Number(second);
+  if (typeof third === 'string') third = Number(third);
+  if (typeof fourth === 'string') fourth = Number(fourth);
+
+  return `\\(${polynomial('x', first, second, third, fourth)}\\)`;
+};
 
 export default { values, question, answer };
