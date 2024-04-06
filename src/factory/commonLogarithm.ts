@@ -66,7 +66,7 @@ const question = (type: number | string, n: number | string, b: number | string)
 const answer = (type: number | string, n: number | string, b: number | string) => {
   if (typeof b === 'string') b = Number(b);
   if (typeof n === 'string') n = Number(n);
-  
+
   switch (type) {
     case 1:
       return `\\(${n.toString()}\\)`;

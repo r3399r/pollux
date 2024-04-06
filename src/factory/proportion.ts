@@ -1,43 +1,43 @@
+import Fraction from 'fraction.js';
 import uniqid from 'uniqid';
 import { QuestionValues } from 'src/model/Common';
-import { fraction, randomInt, randomIntExcept } from 'src/util/math';
-import { fractionText } from 'src/util/text';
+import { randomFraction, randomInt, randomIntExcept } from 'src/util/math';
+import { polynomial } from 'src/util/text';
 
 /**
  * level 0: x:a=b:c
- * level 1: (p/q)x:a=b:c
+ * level 1: px:a=b:c, p is fraction
  * level 2: (mx+n):a=b:c
  * level 3: (mx+n):a=(px+q):c
  */
 const values = (level = 0): QuestionValues => {
   const id = uniqid();
+  const mode = randomInt(1, 4);
   let a = 0;
   let b = 0;
   let c = 0;
-  let x = {
-    denominator: 1,
-    numerator: 1,
-  };
+  let p = '1';
+  let x = new Fraction(0);
+
+  b = randomIntExcept(-15, 15, [0]);
+  c = randomIntExcept(-15, 15, [0, b]);
+  a = randomIntExcept(-15, 15, [0, c]);
 
   switch (level) {
+    case 1:
+      p = randomFraction(-5, 5, 2, 10);
+      x = new Fraction(a * b, c).div(p);
+      break;
     default:
-      b = randomIntExcept(-15, 15, [0]);
-      c = randomIntExcept(-15, 15, [0, b]);
-      a = randomIntExcept(-15, 15, [0]);
-      x = fraction(c, a * b);
+      x = new Fraction(a * b, c);
       break;
   }
 
-  // position of unknown value: 1: upper-left, 2: bottom-left, 3: upper-right, 4: bottom-right
-  const mode = randomInt(1, 4);
-
-  const fractionResult = fractionText(x.denominator, x.numerator);
-
   return {
     id,
-    qp: [mode, a, b, c],
-    ap: [fractionResult.latex],
-    validate: [fractionResult.text],
+    qp: [mode, p, a, b, c],
+    ap: [x.toLatex()],
+    validate: [x.toFraction()],
     hint: {
       rules: ['若答案為分數請寫用 / 表示', '若為負數，請將負號寫在最前面'],
       example: '-2/3',
@@ -47,6 +47,7 @@ const values = (level = 0): QuestionValues => {
 
 const question = (
   mode: number | string,
+  p: number | string,
   a: number | string,
   b: number | string,
   c: number | string,
@@ -54,14 +55,19 @@ const question = (
   if (typeof a === 'string') a = Number(a);
   if (typeof b === 'string') b = Number(b);
   if (typeof c === 'string') c = Number(c);
+  if (typeof p === 'number') p = String(p);
 
-  const textA = a > 0 ? `${a}` : `(${a})`;
-  const textB = b > 0 ? `${b}` : `(${b})`;
-  const textC = c > 0 ? `${c}` : `(${c})`;
-  if (mode === 1) return `\\(x:${textA}=${textB}:${textC}\\)`;
-  if (mode === 2) return `\\(${textA}:x=${textC}:${textB}\\)`;
-  if (mode === 3) return `\\(${textB}:${textC}=x:${textA}\\)`;
-  else return `\\(${textC}:${textB}=${textA}:x\\)`;
+  const poly = polynomial('x', p, 0);
+  const n1 = p.includes('-') ? `(${poly})` : poly;
+  const n2 = a > 0 ? `${a}` : `(${a})`;
+  const m1 = b > 0 ? `${b}` : `(${b})`;
+  const m2 = c > 0 ? `${c}` : `(${c})`;
+
+  if (mode === 1) return `\\(${n1}:${n2}=${m1}:${m2}\\)`;
+  if (mode === 2) return `\\(${n2}:${n1}=${m2}:${m1}\\)`;
+  if (mode === 3) return `\\(${m1}:${m2}=${n1}:${n2}\\)`;
+
+  return `\\(${m2}:${m1}=${n2}:${n1}\\)`;
 };
 
 const answer = (result: number | string) => `\\(${result}\\)`;

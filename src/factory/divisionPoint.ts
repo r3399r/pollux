@@ -74,7 +74,7 @@ const answer = (
   if (typeof n === 'string') n = Number(n);
   if (typeof a === 'string') a = Number(a);
   if (typeof b === 'string') b = Number(b);
-  
+
   let ans = { text: '', latex: '' };
   switch (type) {
     case 1:

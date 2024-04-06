@@ -46,7 +46,7 @@ const values = (): QuestionValues => {
 
 const question = (type: number | string, degree: number | string) => {
   if (typeof degree === 'string') degree = Number(degree);
-  
+
   const radian = fractionText(180, degree);
   switch (type) {
     case 1:

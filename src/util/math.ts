@@ -1,3 +1,5 @@
+import Fraction from 'fraction.js';
+
 export const randomInt = (min: number, max: number) => {
   if (min >= max) throw new Error('min must be less than max');
 
@@ -16,6 +18,26 @@ export const randomFloat = (min: number, max: number, dp = 2) => {
   if (min >= max) throw new Error('min must be less than max');
 
   return parseFloat((Math.random() * (max - min) + min).toFixed(dp));
+};
+
+export const randomFraction = (
+  min: number,
+  max: number,
+  minDenominator: number,
+  maxDenominator: number,
+) => {
+  if (min >= max) throw new Error('min must be less than max');
+
+  const denominator = randomIntExcept(minDenominator, maxDenominator, [0]);
+  const minumum = denominator * min;
+  const maximum = denominator * max;
+  const numerator = randomIntExcept(
+    minumum,
+    maximum,
+    [...Array(max - min + 1)].map((v, i) => denominator * (min + i)),
+  );
+
+  return new Fraction(numerator, denominator).toString();
 };
 
 export const pickRandomElement = <T>(arr: T[]): T => arr[randomInt(0, arr.length - 1)];
