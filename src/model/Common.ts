@@ -14,6 +14,7 @@ import multipleFormula1 from 'src/factory/multipleFormula1';
 import multipleFormula2 from 'src/factory/multipleFormula2';
 import multipleFormula2Ex from 'src/factory/multipleFormula2Ex';
 import primeFactorization from 'src/factory/primeFactorization';
+import proportion from 'src/factory/proportion';
 import rationalize from 'src/factory/rationalize';
 import rectArea from 'src/factory/rectArea';
 import scientificNotation1 from 'src/factory/scientificNotation1';
@@ -117,6 +118,15 @@ export const topics: Topic[] = [
     name: '質因數分解',
     category: categories[0],
     factory: primeFactorization,
+  },
+  {
+    id: 'proportion',
+    name: '比例式',
+    category: categories[1],
+    factory: proportion,
+    maxLevel: 3,
+    upgradeNeed: 5,
+    downgradeNeed: 4,
   },
   {
     id: 'scientific-notation-1',
