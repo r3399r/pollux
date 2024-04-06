@@ -1,10 +1,10 @@
 import uniqid from 'uniqid';
 import { QuestionValues } from 'src/model/Common';
-import { randomIntBetween } from 'src/util/math';
+import { randomInt } from 'src/util/math';
 
 const values = (): QuestionValues => {
-  const a = randomIntBetween(1, 9);
-  const b = randomIntBetween(1, 9);
+  const a = randomInt(1, 9);
+  const b = randomInt(1, 9);
   const c = a * b;
 
   return {

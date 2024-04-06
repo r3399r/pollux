@@ -1,7 +1,7 @@
 import uniqid from 'uniqid';
 import { QuestionValues } from 'src/model/Common';
 import { bn } from 'src/util/bignumber';
-import { randomElement, randomIntBetween, randomIntBetweenExcept } from 'src/util/math';
+import { pickRandomElement, randomInt, randomIntExcept } from 'src/util/math';
 import { fractionText } from 'src/util/text';
 
 const values = (): QuestionValues => {
@@ -10,23 +10,23 @@ const values = (): QuestionValues => {
   let v = '';
 
   // 1 for log 100, 2 for log 1/100, 3 for log 10^{12}, 4 for log\sqrt[3]{100}
-  const type = randomElement([1, 2, 3, 4, 4, 4]) as 1 | 2 | 3 | 4;
+  const type = pickRandomElement([1, 2, 3, 4, 4, 4]) as 1 | 2 | 3 | 4;
   switch (type) {
     case 1:
-      n = randomIntBetween(0, 5);
+      n = randomInt(0, 5);
       v = n.toString();
       break;
     case 2:
-      n = randomIntBetween(1, 5);
+      n = randomInt(1, 5);
       v = (-n).toString();
       break;
     case 3:
-      n = randomIntBetweenExcept(-15, 15, [0, 1]);
+      n = randomIntExcept(-15, 15, [0, 1]);
       v = n.toString();
       break;
     case 4:
-      n = randomIntBetweenExcept(-5, 5, [0]);
-      b = randomIntBetween(2, 5);
+      n = randomIntExcept(-5, 5, [0]);
+      b = randomInt(2, 5);
       v = fractionText(b, n).text;
       break;
   }

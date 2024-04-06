@@ -1,30 +1,25 @@
 import uniqid from 'uniqid';
 import { QuestionValues } from 'src/model/Common';
-import {
-  gcd as findGcd,
-  randomElement,
-  randomIntBetween,
-  randomIntBetweenExcept,
-} from 'src/util/math';
+import { gcd as findGcd, pickRandomElement, randomInt, randomIntExcept } from 'src/util/math';
 import { fractionText } from 'src/util/text';
 
 const values = (): QuestionValues => {
-  const a = randomIntBetween(-10, 10);
-  const b = randomIntBetweenExcept(-10, 10, [a]);
+  const a = randomInt(-10, 10);
+  const b = randomIntExcept(-10, 10, [a]);
 
-  const type = randomElement([1, 2]) as 1 | 2;
+  const type = pickRandomElement([1, 2]) as 1 | 2;
   let ans = { text: '', latex: '' };
   let d = 0;
-  const m = randomIntBetween(1, 10);
+  const m = randomInt(1, 10);
   let n = 0;
   switch (type) {
     case 1:
-      n = randomIntBetween(1, 10);
+      n = randomInt(1, 10);
       d = findGcd(m, n);
       ans = fractionText(m + n, a * n + b * m);
       break;
     case 2:
-      n = randomIntBetweenExcept(1, 10, [m]);
+      n = randomIntExcept(1, 10, [m]);
       d = findGcd(m, n);
       ans = m > n ? fractionText(m - n, b * m - a * n) : fractionText(n - m, a * n - b * m);
       break;

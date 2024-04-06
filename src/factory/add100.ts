@@ -1,6 +1,6 @@
 import uniqid from 'uniqid';
 import { QuestionValues } from 'src/model/Common';
-import { randomIntBetween } from 'src/util/math';
+import { randomInt } from 'src/util/math';
 
 const values = (level = 0): QuestionValues => {
   let tensDigitA = 0;
@@ -10,26 +10,26 @@ const values = (level = 0): QuestionValues => {
 
   switch (level) {
     case 3:
-      tensDigitA = randomIntBetween(1, 7);
-      unitsDigitA = randomIntBetween(1, 9);
-      tensDigitB = randomIntBetween(1, 8 - tensDigitA);
-      unitsDigitB = randomIntBetween(10 - unitsDigitA, 9);
+      tensDigitA = randomInt(1, 7);
+      unitsDigitA = randomInt(1, 9);
+      tensDigitB = randomInt(1, 8 - tensDigitA);
+      unitsDigitB = randomInt(10 - unitsDigitA, 9);
       break;
     case 2:
-      tensDigitA = randomIntBetween(1, 8);
-      unitsDigitA = randomIntBetween(0, 8);
-      tensDigitB = randomIntBetween(1, 9 - tensDigitA);
-      unitsDigitB = randomIntBetween(0, 9 - unitsDigitA);
+      tensDigitA = randomInt(1, 8);
+      unitsDigitA = randomInt(0, 8);
+      tensDigitB = randomInt(1, 9 - tensDigitA);
+      unitsDigitB = randomInt(0, 9 - unitsDigitA);
       break;
     case 1:
-      tensDigitA = randomIntBetween(1, 8);
-      unitsDigitA = randomIntBetween(1, 9);
-      unitsDigitB = randomIntBetween(10 - unitsDigitA, 9);
+      tensDigitA = randomInt(1, 8);
+      unitsDigitA = randomInt(1, 9);
+      unitsDigitB = randomInt(10 - unitsDigitA, 9);
       break;
     default:
-      tensDigitA = randomIntBetween(1, 9);
-      unitsDigitA = randomIntBetween(0, 8);
-      unitsDigitB = randomIntBetween(1, 9 - unitsDigitA);
+      tensDigitA = randomInt(1, 9);
+      unitsDigitA = randomInt(0, 8);
+      unitsDigitB = randomInt(1, 9 - unitsDigitA);
       break;
   }
 

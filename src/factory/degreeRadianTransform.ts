@@ -1,21 +1,21 @@
 import uniqid from 'uniqid';
 import { QuestionValues } from 'src/model/Common';
-import { randomElement, randomIntBetween } from 'src/util/math';
+import { pickRandomElement, randomInt } from 'src/util/math';
 import { fractionText } from 'src/util/text';
 
 const values = (): QuestionValues => {
   let v: string[] = [];
   let n = '';
   let d = '';
-  const prime = randomElement([2, 3, 5]);
+  const prime = pickRandomElement([2, 3, 5]);
   let degree = 0;
-  if (prime === 2) degree = 2 * randomIntBetween(1, 179);
-  else if (prime === 3) degree = 3 * randomIntBetween(1, 59);
-  else if (prime === 5) degree = 5 * randomIntBetween(1, 35);
+  if (prime === 2) degree = 2 * randomInt(1, 179);
+  else if (prime === 3) degree = 3 * randomInt(1, 59);
+  else if (prime === 5) degree = 5 * randomInt(1, 35);
   const radian = fractionText(180, degree);
 
   // 1: degree to radian, 2: radian to degree
-  const type = randomIntBetween(1, 2);
+  const type = randomInt(1, 2);
   switch (type) {
     case 1:
       n = radian.text.split('/')[0];

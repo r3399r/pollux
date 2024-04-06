@@ -1,10 +1,10 @@
 import uniqid from 'uniqid';
 import { QuestionValues } from 'src/model/Common';
-import { randomFloatBetween, randomIntBetween } from 'src/util/math';
+import { randomFloat, randomInt } from 'src/util/math';
 
 const values = (): QuestionValues => {
-  const m = randomFloatBetween(1, 9.99, 2);
-  const n = randomIntBetween(-10, 10);
+  const m = randomFloat(1, 9.99, 2);
+  const n = randomInt(-10, 10);
 
   return {
     id: uniqid(),

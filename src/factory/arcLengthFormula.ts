@@ -1,16 +1,16 @@
 import uniqid from 'uniqid';
 import { QuestionValues } from 'src/model/Common';
-import { randomIntBetween } from 'src/util/math';
+import { randomInt } from 'src/util/math';
 
 const values = (): QuestionValues => {
-  const r = randomIntBetween(1, 10);
-  const theta = randomIntBetween(1, 6);
+  const r = randomInt(1, 10);
+  const theta = randomInt(1, 6);
   const l = r * theta;
 
   let v = '';
 
   // 1: r unknown, 2: theta unknown, 3: l unknown
-  const type = randomIntBetween(1, 3);
+  const type = randomInt(1, 3);
   switch (type) {
     case 1:
       v = r.toString();

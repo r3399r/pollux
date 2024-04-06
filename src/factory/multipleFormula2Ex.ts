@@ -1,6 +1,6 @@
 import uniqid from 'uniqid';
 import { QuestionValues } from 'src/model/Common';
-import { randomElement, randomIntBetween } from 'src/util/math';
+import { pickRandomElement, randomInt } from 'src/util/math';
 
 // given x±1/x, find x^2+1/x^2 and x^3±1/x^3
 const values = (): QuestionValues => {
@@ -8,8 +8,8 @@ const values = (): QuestionValues => {
   let a = 0;
   let b = 0;
 
-  const pm = randomElement([1, -1]) as 1 | -1;
-  given = randomIntBetween(3, 8);
+  const pm = pickRandomElement([1, -1]) as 1 | -1;
+  given = randomInt(3, 8);
 
   switch (pm) {
     case 1:
@@ -17,7 +17,7 @@ const values = (): QuestionValues => {
       b = given * (a - 1);
       break;
     case -1:
-      given = given * randomElement([1, -1]);
+      given = given * pickRandomElement([1, -1]);
       a = given * given + 2;
       b = given * (a + 1);
       break;

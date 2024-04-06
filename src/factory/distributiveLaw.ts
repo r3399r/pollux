@@ -1,15 +1,15 @@
 import uniqid from 'uniqid';
 import { QuestionValues } from 'src/model/Common';
-import { randomElement, randomIntBetween } from 'src/util/math';
+import { pickRandomElement, randomInt } from 'src/util/math';
 import { polynomial } from 'src/util/text';
 
 // (ax+b)(cx+d) -> a*c, a*d+b*c, b*d
 const values = (): QuestionValues => {
-  const sign = randomElement([-1, 1, 1, 1, 1]);
-  const a = randomElement([1, 1, 1, 2, 2, 3, 4, 5]) * randomElement([-1, 1]);
-  const c = randomElement([1, 1, 1, 2, 2, 3, 4, 5]) * randomElement([-1, 1]);
-  const b = randomIntBetween(1, 10) * randomElement([-1, 1]);
-  const d = randomIntBetween(1, 10) * randomElement([-1, 1]);
+  const sign = pickRandomElement([-1, 1, 1, 1, 1]);
+  const a = pickRandomElement([1, 1, 1, 2, 2, 3, 4, 5]) * pickRandomElement([-1, 1]);
+  const c = pickRandomElement([1, 1, 1, 2, 2, 3, 4, 5]) * pickRandomElement([-1, 1]);
+  const b = randomInt(1, 10) * pickRandomElement([-1, 1]);
+  const d = randomInt(1, 10) * pickRandomElement([-1, 1]);
 
   const first = a * c;
   const second = a * d + b * c;

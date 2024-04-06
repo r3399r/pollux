@@ -1,6 +1,6 @@
 import uniqid from 'uniqid';
 import { QuestionValues } from 'src/model/Common';
-import { randomIntBetween, rationalizeSingle } from 'src/util/math';
+import { randomInt, rationalizeSingle } from 'src/util/math';
 import { coefficient } from 'src/util/text';
 
 const values = (): QuestionValues => {
@@ -9,26 +9,26 @@ const values = (): QuestionValues => {
   let a = { numeratorCoefficient: 1, numeratorRadical: 1, denominator: 1 };
 
   // 1: sqrt{a}/sqrt{b}, 2: sqrt{a/b}, 3: a/sqrt{b}
-  const type = randomIntBetween(1, 3);
+  const type = randomInt(1, 3);
   switch (type) {
     case 1:
       while (a.numeratorRadical === 1 || a.denominator === 1) {
-        denominator = randomIntBetween(2, 20);
-        numerator = randomIntBetween(1, 20);
+        denominator = randomInt(2, 20);
+        numerator = randomInt(1, 20);
         a = rationalizeSingle(denominator, numerator);
       }
       break;
     case 2:
       while (a.numeratorRadical === 1 || a.denominator === 1) {
-        denominator = randomIntBetween(2, 20);
-        numerator = randomIntBetween(1, 20);
+        denominator = randomInt(2, 20);
+        numerator = randomInt(1, 20);
         a = rationalizeSingle(denominator, numerator);
       }
       break;
     case 3:
       while (a.numeratorRadical === 1 || a.denominator === 1) {
-        denominator = randomIntBetween(2, 20);
-        numerator = randomIntBetween(1, 20);
+        denominator = randomInt(2, 20);
+        numerator = randomInt(1, 20);
         a = rationalizeSingle(denominator, numerator * numerator);
       }
       break;

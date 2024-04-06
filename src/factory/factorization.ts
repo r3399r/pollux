@@ -1,14 +1,14 @@
 import uniqid from 'uniqid';
 import { QuestionValues } from 'src/model/Common';
-import { gcd, randomElement, randomIntBetween } from 'src/util/math';
+import { gcd, pickRandomElement, randomInt } from 'src/util/math';
 import { coefficient, polynomial } from 'src/util/text';
 
 // (ax+b)(cx+d) -> a*c, a*d+b*c, b*d
 const values = (): QuestionValues => {
-  const a = randomElement([1, 1, 1, 2, 2, 3]) * randomElement([-1, 1]);
-  const c = randomElement([1, 1, 1, 2, 2, 3]) * randomElement([-1, 1]);
-  const b = randomIntBetween(-10, 10);
-  const d = randomIntBetween(1, 10) * randomElement([-1, 1]);
+  const a = pickRandomElement([1, 1, 1, 2, 2, 3]) * pickRandomElement([-1, 1]);
+  const c = pickRandomElement([1, 1, 1, 2, 2, 3]) * pickRandomElement([-1, 1]);
+  const b = randomInt(-10, 10);
+  const d = randomInt(1, 10) * pickRandomElement([-1, 1]);
 
   const gcd1 = b === 0 ? a : (gcd(Math.abs(a), Math.abs(b)) * a) / Math.abs(a);
   const gcd2 = d === 0 ? c : (gcd(Math.abs(c), Math.abs(d)) * c) / Math.abs(c);

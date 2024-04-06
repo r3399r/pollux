@@ -1,12 +1,12 @@
 import uniqid from 'uniqid';
 import { QuestionValues } from 'src/model/Common';
-import { randomElement, randomIntBetween } from 'src/util/math';
+import { pickRandomElement, randomInt } from 'src/util/math';
 import { polynomial } from 'src/util/text';
 
 // (ax+b)^3 -> a^3, 3*a*a*b, 3*a*b*b, b^3
 const values = (): QuestionValues => {
-  const a = randomElement([1, 1, 1, 2, 2, 3]) * randomElement([-1, 1]);
-  const b = randomIntBetween(1, 5) * randomElement([-1, 1]);
+  const a = pickRandomElement([1, 1, 1, 2, 2, 3]) * pickRandomElement([-1, 1]);
+  const b = randomInt(1, 5) * pickRandomElement([-1, 1]);
 
   const first = a * a * a;
   const second = 3 * a * a * b;

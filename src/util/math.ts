@@ -1,26 +1,24 @@
-export const randomIntBetween = (min: number, max: number) =>
-  Math.floor(Math.random() * (max - min + 1) + min);
+export const randomInt = (min: number, max: number) => {
+  if (min >= max) throw new Error('min must be less than max');
 
-export const randomIntBetweenExcept = (min: number, max: number, except: number[]) => {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+};
+
+export const randomIntExcept = (min: number, max: number, except: number[]) => {
   let x: number;
-  do x = randomIntBetween(min, max);
+  do x = randomInt(min, max);
   while (except.includes(x));
 
   return x;
 };
 
-export const randomFloatBetween = (min: number, max: number, dp = 2) =>
-  parseFloat((Math.random() * (max - min) + min).toFixed(dp));
+export const randomFloat = (min: number, max: number, dp = 2) => {
+  if (min >= max) throw new Error('min must be less than max');
 
-export const randomElement = <T>(arr: T[]): T => arr[randomIntBetween(0, arr.length - 1)];
-
-export const randomElementExcept = <T>(arr: T[], except: T[]): T => {
-  let element: T;
-  do element = randomElement(arr);
-  while (except.includes(element));
-
-  return element;
+  return parseFloat((Math.random() * (max - min) + min).toFixed(dp));
 };
+
+export const pickRandomElement = <T>(arr: T[]): T => arr[randomInt(0, arr.length - 1)];
 
 export const gcd = (a: number, b: number): number => {
   if (b === 0) return a;

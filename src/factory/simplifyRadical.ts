@@ -1,6 +1,6 @@
 import uniqid from 'uniqid';
 import { QuestionValues } from 'src/model/Common';
-import { simplifyRadical as doSimplifyRadical, randomIntBetween } from 'src/util/math';
+import { simplifyRadical as doSimplifyRadical, randomInt } from 'src/util/math';
 
 const values = (): QuestionValues => {
   let c = 1;
@@ -8,7 +8,7 @@ const values = (): QuestionValues => {
   let q = 1;
 
   while (c === 1 || n === 1) {
-    q = randomIntBetween(8, 400);
+    q = randomInt(8, 400);
     const res = doSimplifyRadical(q);
     c = res.coefficient;
     n = res.n;

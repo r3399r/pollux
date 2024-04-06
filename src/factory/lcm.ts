@@ -1,10 +1,10 @@
 import uniqid from 'uniqid';
 import { QuestionValues } from 'src/model/Common';
-import { lcm as findLcm, randomIntBetween } from 'src/util/math';
+import { lcm as findLcm, randomInt } from 'src/util/math';
 
 const values = (): QuestionValues => {
-  const a = randomIntBetween(2, 30);
-  const b = randomIntBetween(2, 30);
+  const a = randomInt(2, 30);
+  const b = randomInt(2, 30);
   const c = findLcm(a, b);
 
   return { id: uniqid(), qp: [a, b], ap: [c], validate: [`${c}`] };
