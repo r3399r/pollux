@@ -1,6 +1,7 @@
 import uniqid from 'uniqid';
 import { QuestionValues } from 'src/model/Common';
-import { polynomial, randomElement, randomIntBetween } from 'src/util/math';
+import { randomElement, randomIntBetween } from 'src/util/math';
+import { polynomial } from 'src/util/text';
 
 // (ax+b)(cx+d) -> a*c, a*d+b*c, b*d
 const values = (): QuestionValues => {

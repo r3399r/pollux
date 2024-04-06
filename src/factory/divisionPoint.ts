@@ -2,11 +2,11 @@ import uniqid from 'uniqid';
 import { QuestionValues } from 'src/model/Common';
 import {
   gcd as findGcd,
-  fractionText,
   randomElement,
   randomIntBetween,
   randomIntBetweenExcept,
 } from 'src/util/math';
+import { fractionText } from 'src/util/text';
 
 const values = (): QuestionValues => {
   const a = randomIntBetween(-10, 10);

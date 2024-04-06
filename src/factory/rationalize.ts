@@ -1,6 +1,7 @@
 import uniqid from 'uniqid';
 import { QuestionValues } from 'src/model/Common';
-import { coefficient, randomIntBetween, rationalizeSingle } from 'src/util/math';
+import { randomIntBetween, rationalizeSingle } from 'src/util/math';
+import { coefficient } from 'src/util/text';
 
 const values = (): QuestionValues => {
   let denominator = 1;

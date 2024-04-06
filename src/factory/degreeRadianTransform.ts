@@ -1,6 +1,7 @@
 import uniqid from 'uniqid';
 import { QuestionValues } from 'src/model/Common';
-import { fractionText, randomElement, randomIntBetween } from 'src/util/math';
+import { randomElement, randomIntBetween } from 'src/util/math';
+import { fractionText } from 'src/util/text';
 
 const values = (): QuestionValues => {
   let v: string[] = [];

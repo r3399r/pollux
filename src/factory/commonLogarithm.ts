@@ -1,12 +1,8 @@
 import uniqid from 'uniqid';
 import { QuestionValues } from 'src/model/Common';
 import { bn } from 'src/util/bignumber';
-import {
-  fractionText,
-  randomElement,
-  randomIntBetween,
-  randomIntBetweenExcept,
-} from 'src/util/math';
+import { randomElement, randomIntBetween, randomIntBetweenExcept } from 'src/util/math';
+import { fractionText } from 'src/util/text';
 
 const values = (): QuestionValues => {
   let n = 0;
