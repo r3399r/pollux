@@ -36,6 +36,10 @@ const values = (level = 0): QuestionValues => {
     qp: [mode, a, b, c],
     ap: [x.denominator, x.numerator],
     validate: [`${fractionText(x.denominator, x.numerator).text}`],
+    hint: {
+      rules: ['若答案為分數請寫用 / 表示', '若為負數，請將負號寫在最前面'],
+      example: '-2/3',
+    },
   };
 };
 
