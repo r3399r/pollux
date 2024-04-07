@@ -1,8 +1,8 @@
+import Fraction from 'fraction.js';
 import uniqid from 'uniqid';
 import { QuestionValues } from 'src/model/Common';
 import { bn } from 'src/util/bignumber';
 import { pickRandomElement, randomInt, randomIntExcept } from 'src/util/math';
-import { fractionText } from 'src/util/text';
 
 const values = (): QuestionValues => {
   let n = 0;
@@ -27,7 +27,7 @@ const values = (): QuestionValues => {
     case 4:
       n = randomIntExcept(-5, 5, [0]);
       b = randomInt(2, 5);
-      v = fractionText(b, n).text;
+      v = new Fraction(n, b).toFraction();
       break;
   }
 
@@ -75,7 +75,7 @@ const answer = (type: number | string, n: number | string, b: number | string) =
     case 3:
       return `\\(${n.toString()}\\)`;
     case 4:
-      return `\\(${fractionText(b, n).latex}\\)`;
+      return `\\(${new Fraction(n, b).toLatex()}\\)`;
   }
 
   return '';

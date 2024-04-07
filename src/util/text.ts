@@ -1,5 +1,4 @@
 import Fraction from 'fraction.js';
-import { fraction } from './math';
 
 export const coefficient = (c: number | string, x = '', isLeading = false) => {
   const f = new Fraction(c);
@@ -31,18 +30,3 @@ export const polynomial = (x: string, ...coefficients: (number | string)[]) =>
       return coefficient(c, `${x}^${pow}`, i === 0);
     })
     .join('');
-
-export const fractionText = (denominator: number, numerator: number) => {
-  const sign = denominator * numerator < 0 ? -1 : 1;
-  const f = fraction(Math.abs(denominator), Math.abs(numerator));
-  if (f.denominator === 1)
-    return {
-      text: (sign * f.numerator).toString(),
-      latex: (sign * f.numerator).toString(),
-    };
-
-  return {
-    text: `${sign > 0 ? '' : '-'}${f.numerator}/${f.denominator}`,
-    latex: `${sign > 0 ? '' : '-'}\\dfrac{${f.numerator}}{${f.denominator}}`,
-  };
-};

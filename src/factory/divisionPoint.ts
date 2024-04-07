@@ -1,14 +1,14 @@
+import Fraction from 'fraction.js';
 import uniqid from 'uniqid';
 import { QuestionValues } from 'src/model/Common';
 import { gcd as findGcd, pickRandomElement, randomInt, randomIntExcept } from 'src/util/math';
-import { fractionText } from 'src/util/text';
 
 const values = (): QuestionValues => {
   const a = randomInt(-10, 10);
   const b = randomIntExcept(-10, 10, [a]);
 
   const type = pickRandomElement([1, 2]) as 1 | 2;
-  let ans = { text: '', latex: '' };
+  let ans = new Fraction(0);
   let d = 0;
   const m = randomInt(1, 10);
   let n = 0;
@@ -16,12 +16,12 @@ const values = (): QuestionValues => {
     case 1:
       n = randomInt(1, 10);
       d = findGcd(m, n);
-      ans = fractionText(m + n, a * n + b * m);
+      ans = new Fraction(a * n + b * m, m + n);
       break;
     case 2:
       n = randomIntExcept(1, 10, [m]);
       d = findGcd(m, n);
-      ans = m > n ? fractionText(m - n, b * m - a * n) : fractionText(n - m, a * n - b * m);
+      ans = m > n ? new Fraction(b * m - a * n, m - n) : new Fraction(a * n - b * m, n - m);
       break;
   }
 
@@ -29,7 +29,7 @@ const values = (): QuestionValues => {
     id: uniqid(),
     qp: [type, a, b, m, n, d],
     ap: [type, a, b, m, n],
-    validate: [ans.text],
+    validate: [ans.toFraction()],
     hint: {
       rules: ['若答案為分數請寫用 / 表示', '若為負數，請將負號寫在最前面'],
       example: '-2/3',
@@ -75,17 +75,17 @@ const answer = (
   if (typeof a === 'string') a = Number(a);
   if (typeof b === 'string') b = Number(b);
 
-  let ans = { text: '', latex: '' };
+  let ans = new Fraction(0);
   switch (type) {
     case 1:
-      ans = fractionText(m + n, a * n + b * m);
+      ans = new Fraction(a * n + b * m, m + n);
       break;
     case 2:
-      ans = m > n ? fractionText(m - n, b * m - a * n) : fractionText(n - m, a * n - b * m);
+      ans = m > n ? new Fraction(b * m - a * n, m - n) : new Fraction(a * n - b * m, n - m);
       break;
   }
 
-  return `\\(${ans.latex}\\)`;
+  return `\\(${ans.toLatex()}\\)`;
 };
 
 export default { values, question, answer };
