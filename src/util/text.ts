@@ -20,8 +20,14 @@ export const coefficient = (c: number | string, x = '', isLeading = false) => {
   return `${c}${x}`;
 };
 
-export const polynomial = (x: string, ...coefficients: (number | string)[]) =>
-  coefficients
+export const polynomial = (x: string, ...coefficients: (number | string)[]) => {
+  for (let j = 0; j < coefficients.length; j++)
+    if (Number(coefficients[j]) !== 0) {
+      coefficients = coefficients.slice(j);
+      break;
+    }
+
+  return coefficients
     .map((c, i) => {
       const pow = coefficients.length - i - 1;
       if (pow === 1) return coefficient(c, x, i === 0);
@@ -30,3 +36,4 @@ export const polynomial = (x: string, ...coefficients: (number | string)[]) =>
       return coefficient(c, `${x}^${pow}`, i === 0);
     })
     .join('');
+};
