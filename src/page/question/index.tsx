@@ -14,6 +14,7 @@ import QuestionForm from './QuestionForm';
 const QuestionPage = () => {
   const navigate = useNavigate();
   const { topic } = useParams<{ topic: string }>();
+  const [currentTopic, setCurrentTopic] = useState<string>();
   const [current, setCurrent] = useState<QuestionValues>();
   const [history, setHistory] = useState<SavedQuestionValues[]>([]);
   const [openMenu, setOpenMenu] = useState<boolean>(false);
@@ -27,6 +28,7 @@ const QuestionPage = () => {
       const { current: c, history: h } = handleQuestion(topic, next, save);
       setCurrent(c);
       setHistory(h);
+      setCurrentTopic(topic);
     } catch (e) {
       navigate('/');
     }
@@ -67,10 +69,16 @@ const QuestionPage = () => {
             </div>
             <div className="flex">
               <div className="hidden md:block w-1/2 md:h-[calc(100vh-170px-92px)] overflow-y-auto">
-                <History history={history} onRemoveRecord={onRemoveRecord} />
+                <History
+                  history={currentTopic !== topic ? [] : history}
+                  onRemoveRecord={onRemoveRecord}
+                />
               </div>
               <div className="w-full md:w-1/2 bg-white md:h-[calc(100vh-170px-92px)] overflow-y-auto rounded-[15px]">
-                <QuestionForm initQuestion={initQuestion} current={current} />
+                <QuestionForm
+                  initQuestion={initQuestion}
+                  current={currentTopic !== topic ? undefined : current}
+                />
               </div>
             </div>
           </MathJax>
@@ -87,7 +95,7 @@ const QuestionPage = () => {
       >
         <MathJax className="w-[300px]">
           <History
-            history={history}
+            history={currentTopic !== topic ? [] : history}
             isDrawer
             onRemoveRecord={() => {
               setOpenHistory(false);

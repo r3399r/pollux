@@ -1,7 +1,7 @@
-import Fraction from 'fraction.js';
+import { myFraction } from './fraction';
 
 export const coefficient = (c: number | string, x = '', isLeading = false) => {
-  const f = new Fraction(c);
+  const f = new myFraction(c);
   if (typeof c === 'string') c = f.toLatex();
   if (f.equals(0)) return '';
   if (isLeading) {
