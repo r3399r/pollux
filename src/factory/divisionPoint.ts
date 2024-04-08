@@ -1,14 +1,14 @@
 import uniqid from 'uniqid';
 import { QuestionValues } from 'src/model/Common';
-import { myFraction } from 'src/util/fraction';
 import { gcd as findGcd, pickRandomElement, randomInt, randomIntExcept } from 'src/util/math';
+import { MyFraction } from 'src/util/MyFraction';
 
 const values = (): QuestionValues => {
   const a = randomInt(-10, 10);
   const b = randomIntExcept(-10, 10, [a]);
 
   const type = pickRandomElement([1, 2]) as 1 | 2;
-  let ans = new myFraction(0);
+  let ans = new MyFraction(0);
   let d = 0;
   const m = randomInt(1, 10);
   let n = 0;
@@ -16,12 +16,12 @@ const values = (): QuestionValues => {
     case 1:
       n = randomInt(1, 10);
       d = findGcd(m, n);
-      ans = new myFraction(a * n + b * m, m + n);
+      ans = new MyFraction(a * n + b * m, m + n);
       break;
     case 2:
       n = randomIntExcept(1, 10, [m]);
       d = findGcd(m, n);
-      ans = m > n ? new myFraction(b * m - a * n, m - n) : new myFraction(a * n - b * m, n - m);
+      ans = m > n ? new MyFraction(b * m - a * n, m - n) : new MyFraction(a * n - b * m, n - m);
       break;
   }
 
@@ -75,13 +75,13 @@ const answer = (
   if (typeof a === 'string') a = Number(a);
   if (typeof b === 'string') b = Number(b);
 
-  let ans = new myFraction(0);
+  let ans = new MyFraction(0);
   switch (type) {
     case 1:
-      ans = new myFraction(a * n + b * m, m + n);
+      ans = new MyFraction(a * n + b * m, m + n);
       break;
     case 2:
-      ans = m > n ? new myFraction(b * m - a * n, m - n) : new myFraction(a * n - b * m, n - m);
+      ans = m > n ? new MyFraction(b * m - a * n, m - n) : new MyFraction(a * n - b * m, n - m);
       break;
   }
 

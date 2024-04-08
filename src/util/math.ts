@@ -1,4 +1,4 @@
-import { myFraction } from './fraction';
+import { MyFraction } from './MyFraction';
 
 export const randomInt = (min: number, max: number) => {
   if (min >= max) throw new Error('min must be less than max');
@@ -37,7 +37,7 @@ export const randomFraction = (
     [...Array(max - min + 1)].map((v, i) => denominator * (min + i)),
   );
 
-  return new myFraction(numerator, denominator).toString();
+  return new MyFraction(numerator, denominator).toString();
 };
 
 export const pickRandomElement = <T>(arr: T[]): T => arr[randomInt(0, arr.length - 1)];

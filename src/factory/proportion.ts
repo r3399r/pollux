@@ -1,7 +1,7 @@
 import uniqid from 'uniqid';
 import { QuestionValues } from 'src/model/Common';
-import { myFraction } from 'src/util/fraction';
 import { gcd, randomFraction, randomInt, randomIntExcept } from 'src/util/math';
+import { MyFraction } from 'src/util/MyFraction';
 import { polynomial } from 'src/util/text';
 
 /**
@@ -17,7 +17,7 @@ const values = (level = 0): QuestionValues => {
   let n = 0;
   let k = '0';
   let t = 0;
-  let x = new myFraction(0);
+  let x = new MyFraction(0);
 
   const b = randomIntExcept(-15, 15, [0]);
   const c = randomIntExcept(-15, 15, [0, b]);
@@ -30,7 +30,7 @@ const values = (level = 0): QuestionValues => {
   switch (level) {
     case 3:
       k = randomIntExcept(-5, 5, [0]).toString();
-      x = new myFraction(randomIntExcept(-9, 9, [0]));
+      x = new MyFraction(randomIntExcept(-9, 9, [0]));
       t = b - Number(k) * x.valueOf();
 
       a = (c / d) * mul;
@@ -40,15 +40,15 @@ const values = (level = 0): QuestionValues => {
     case 2:
       a = (c / d) * mul;
       m = randomIntExcept(-5, 5, [0]).toString();
-      x = new myFraction(randomIntExcept(-9, 9, [0]));
+      x = new MyFraction(randomIntExcept(-9, 9, [0]));
       n = y - Number(m) * x.valueOf();
       break;
     case 1:
       m = randomFraction(-5, 5, 2, 5);
-      x = new myFraction(a * b, c).div(m);
+      x = new MyFraction(a * b, c).div(m);
       break;
     default:
-      x = new myFraction(a * b, c);
+      x = new MyFraction(a * b, c);
       break;
   }
 
