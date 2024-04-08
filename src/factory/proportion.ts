@@ -34,7 +34,7 @@ const values = (level = 0): QuestionValues => {
       t = b - Number(k) * x.valueOf();
 
       a = (c / d) * mul;
-      m = randomIntExcept(-5, 5, [0]).toString();
+      m = randomIntExcept(-5, 5, [0, (x.valueOf() / c) * mul]).toString();
       n = y - Number(m) * x.valueOf();
       break;
     case 2:
