@@ -34,7 +34,7 @@ const values = (level = 0): QuestionValues => {
       t = b - Number(k) * x.valueOf();
 
       a = (c / d) * mul;
-      m = randomIntExcept(-5, 5, [0, (x.valueOf() / c) * mul]).toString();
+      m = randomIntExcept(-5, 5, [0, (Number(k) / d) * mul]).toString();
       n = y - Number(m) * x.valueOf();
       break;
     case 2:
@@ -55,7 +55,7 @@ const values = (level = 0): QuestionValues => {
   return {
     id,
     qp: [mode, m, n, a, k, level === 3 ? t : b, c],
-    ap: [x.toLatex()],
+    ap: [x.toString()],
     validate: [x.toFraction()],
     hint: {
       rules: ['若答案為分數請寫用 / 表示', '若為負數，請將負號寫在最前面'],
@@ -97,6 +97,10 @@ const question = (
   return `\\(${m2}:${m1}=${n2}:${n1}\\)`;
 };
 
-const answer = (result: number | string) => `\\(${result}\\)`;
+const answer = (result: number | string) => {
+  const fraction = new MyFraction(result);
+
+  return `\\(${fraction.toLatex()}\\)`;
+};
 
 export default { values, question, answer };

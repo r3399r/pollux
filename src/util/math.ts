@@ -1,21 +1,24 @@
 import { MyFraction } from './MyFraction';
 
 export const randomInt = (min: number, max: number) => {
-  if (min >= max) throw new Error('min must be less than max');
+  if (min > max) throw new Error('min must be less than max');
 
   return Math.floor(Math.random() * (max - min + 1) + min);
 };
 
-export const randomIntExcept = (min: number, max: number, except: number[]) => {
-  let x: number;
-  do x = randomInt(min, max);
-  while (except.includes(x));
+export const pickRandomElement = <T>(arr: T[]): T => arr[randomInt(0, arr.length - 1)];
 
-  return x;
+export const randomIntExcept = (min: number, max: number, except: number[]) => {
+  const choice = [...Array(max - min + 1)]
+    .map((v, i) => min + i)
+    .filter((v) => !except.includes(v));
+  if (choice.length === 0) throw new Error('no choice');
+
+  return pickRandomElement(choice);
 };
 
 export const randomFloat = (min: number, max: number, dp = 2) => {
-  if (min >= max) throw new Error('min must be less than max');
+  if (min > max) throw new Error('min must be less than max');
 
   return parseFloat((Math.random() * (max - min) + min).toFixed(dp));
 };
@@ -26,7 +29,7 @@ export const randomFraction = (
   minDenominator: number,
   maxDenominator: number,
 ) => {
-  if (min >= max) throw new Error('min must be less than max');
+  if (min > max) throw new Error('min must be less than max');
 
   const denominator = randomIntExcept(minDenominator, maxDenominator, [0]);
   const minumum = denominator * min;
@@ -39,8 +42,6 @@ export const randomFraction = (
 
   return new MyFraction(numerator, denominator).toString();
 };
-
-export const pickRandomElement = <T>(arr: T[]): T => arr[randomInt(0, arr.length - 1)];
 
 export const gcd = (a: number, b: number): number => {
   if (b === 0) return a;
