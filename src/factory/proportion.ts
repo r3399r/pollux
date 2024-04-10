@@ -55,10 +55,10 @@ const values = (level = 0): QuestionValues => {
   return {
     id,
     qp: [mode, m, n, a, k, level === 3 ? t : b, c],
-    ap: [x.toString()],
+    ap: [x.toFraction()],
     validate: [x.toFraction()],
     hint: {
-      rules: ['若答案為分數請寫用 / 表示', '若為負數，請將負號寫在最前面'],
+      rules: ['若答案為分數請用 / 表示', '若為負數，請將負號寫在最前面'],
       example: '-2/3',
     },
   };
@@ -97,10 +97,6 @@ const question = (
   return `\\(${m2}:${m1}=${n2}:${n1}\\)`;
 };
 
-const answer = (result: number | string) => {
-  const fraction = new MyFraction(result);
-
-  return `\\(${fraction.toLatex()}\\)`;
-};
+const answer = (result: number | string) => `\\(${new MyFraction(result).toLatex()}\\)`;
 
 export default { values, question, answer };

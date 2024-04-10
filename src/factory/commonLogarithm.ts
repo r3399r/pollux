@@ -37,7 +37,7 @@ const values = (): QuestionValues => {
     ap: [type, n, b],
     validate: [v],
     hint: {
-      rules: ['若答案為分數請寫用 / 表示', '若為負數，請將負號寫在最前面'],
+      rules: ['若答案為分數請用 / 表示', '若為負數，請將負號寫在最前面'],
       example: '-2/3',
     },
   };

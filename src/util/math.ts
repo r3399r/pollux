@@ -40,7 +40,7 @@ export const randomFraction = (
     [...Array(max - min + 1)].map((v, i) => denominator * (min + i)),
   );
 
-  return new MyFraction(numerator, denominator).toString();
+  return new MyFraction(numerator, denominator).toFraction();
 };
 
 export const gcd = (a: number, b: number): number => {
