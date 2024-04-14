@@ -55,9 +55,10 @@ export type Topic = {
   name: string;
   category: Category;
   factory: Factory;
-  maxLevel?: number;
-  upgradeNeed?: number;
-  downgradeNeed?: number;
+  levelDefinition?: {
+    upgrade: number | null;
+    downgrade: number | null;
+  }[];
   hint?: { rules: string[]; example: string };
 };
 
@@ -85,9 +86,12 @@ export const topics: Topic[] = [
     name: '雙位數的加法',
     category: categories[0],
     factory: add100,
-    maxLevel: 3,
-    upgradeNeed: 5,
-    downgradeNeed: 4,
+    levelDefinition: [
+      { upgrade: 5, downgrade: null },
+      { upgrade: 5, downgrade: 3 },
+      { upgrade: 5, downgrade: 3 },
+      { upgrade: null, downgrade: 2 },
+    ],
   },
   {
     id: 'times-table',
@@ -128,9 +132,12 @@ export const topics: Topic[] = [
     name: '比例式',
     category: categories[1],
     factory: proportion,
-    maxLevel: 3,
-    upgradeNeed: 5,
-    downgradeNeed: 4,
+    levelDefinition: [
+      { upgrade: 2, downgrade: null },
+      { upgrade: 3, downgrade: 3 },
+      { upgrade: 3, downgrade: 3 },
+      { upgrade: null, downgrade: 2 },
+    ],
     hint: {
       rules: ['若答案為分數請用 / 表示', '若為負數，請將負號寫在最前面'],
       example: '-2/3',
