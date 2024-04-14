@@ -32,7 +32,6 @@ export type QuestionValues = {
   qp?: (number | string)[]; // question params
   ap: (number | string)[]; // answer params
   validate: string[]; // answer for validation
-  hint?: { rules: string[]; example: string }; // hint
   isRevealed?: boolean; // answer is revealed
   isWrong?: boolean; // reply wrong answer for the first time
 };
@@ -59,6 +58,7 @@ export type Topic = {
   maxLevel?: number;
   upgradeNeed?: number;
   downgradeNeed?: number;
+  hint?: { rules: string[]; example: string };
 };
 
 export const categories: Category[] = [
@@ -118,6 +118,10 @@ export const topics: Topic[] = [
     name: '質因數分解',
     category: categories[0],
     factory: primeFactorization,
+    hint: {
+      rules: ['質因數由小到大排列', '重複的質因數請重複輸入', '以逗號或空白分隔'],
+      example: '2,2,3,3,5',
+    },
   },
   {
     id: 'proportion',
@@ -127,12 +131,20 @@ export const topics: Topic[] = [
     maxLevel: 3,
     upgradeNeed: 5,
     downgradeNeed: 4,
+    hint: {
+      rules: ['若答案為分數請用 / 表示', '若為負數，請將負號寫在最前面'],
+      example: '-2/3',
+    },
   },
   {
     id: 'scientific-notation-1',
     name: '科學記號(一)',
     category: categories[1],
     factory: scientificNotation1,
+    hint: {
+      rules: ['依序填入 a,n', '\\(n\\) 為整數且 \\(1\\le a<10\\)', '以逗號或空白分隔'],
+      example: '3.42 -2',
+    },
   },
   {
     id: 'scientific-notation-2',
@@ -145,66 +157,114 @@ export const topics: Topic[] = [
     name: '乘法分配律',
     category: categories[1],
     factory: distributiveLaw,
+    hint: {
+      rules: ['依序填入 a,b,c', '以逗號或空白分隔'],
+      example: '1,2,-5',
+    },
   },
   {
     id: 'multiple-formula-1',
     name: '乘法公式(一)',
     category: categories[1],
     factory: multipleFormula1,
+    hint: {
+      rules: ['依序填入 a,b,c', '以逗號或空白分隔'],
+      example: '1,-4,4',
+    },
   },
   {
     id: 'factorization',
     name: '二次式因式分解',
     category: categories[1],
     factory: factorization,
+    hint: {
+      rules: ['依序填入 k,a,b,c,d', 'a,c 為正數', '以逗號或空白分隔'],
+      example: '-1,2,-3,1,4',
+    },
   },
   {
     id: 'simplify-radical',
     name: '根號化簡',
     category: categories[1],
     factory: simplifyRadical,
+    hint: {
+      rules: ['依序填入 a,b', '化至最簡', '以逗號或空白分隔'],
+      example: '2,2,3,3,5',
+    },
   },
   {
     id: 'rationalize',
     name: '根號有理化',
     category: categories[1],
     factory: rationalize,
+    hint: {
+      rules: ['依序填入 a,b,c', '化至最簡', '以逗號或空白分隔'],
+      example: '1,2,5',
+    },
   },
   {
     id: 'completing-the-square',
     name: '配方法',
     category: categories[1],
     factory: completingTheSquare,
+    hint: {
+      rules: ['依序填入 a,h,k', '以逗號或空白分隔'],
+      example: '2,-1,3',
+    },
   },
   {
     id: 'multiple-foamula-2',
     name: '乘法公式(二)',
     category: categories[2],
     factory: multipleFormula2,
+    hint: {
+      rules: ['依序填入 a,b,c,d', '以逗號或空白分隔'],
+      example: '1,-6,9,27',
+    },
   },
   {
     id: 'multiple-formula-2-ex',
     name: '乘法公式(二) 題型',
     category: categories[2],
     factory: multipleFormula2Ex,
+    hint: {
+      rules: ['依序填入 a,b', '以逗號或空白分隔'],
+      example: '3,10',
+    },
   },
   {
     id: 'division-point',
     name: '分點公式',
     category: categories[2],
     factory: divisionPoint,
+    hint: {
+      rules: ['若答案為分數請用 / 表示', '若為負數，請將負號寫在最前面'],
+      example: '-2/3',
+    },
   },
   {
     id: 'common-logarithm',
     name: '常用對數',
     category: categories[2],
     factory: commonLogarithm,
+    hint: {
+      rules: ['若答案為分數請用 / 表示', '若為負數，請將負號寫在最前面'],
+      example: '-2/3',
+    },
   },
   {
     id: 'degree-radian-transform',
     name: '角度弧度換算',
     category: categories[2],
     factory: degreeRadianTransform,
+    hint: {
+      rules: [
+        '特殊符號可在這複製：圓周率「π」，度「°」',
+        '分數請化到最簡',
+        '答案輸入方式請參考下方',
+      ],
+      example: '8π/5 或 117°',
+    },
   },
   {
     id: 'arc-length-formula',

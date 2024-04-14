@@ -33,14 +33,6 @@ const values = (): QuestionValues => {
     qp: [type, degree],
     ap: [type, degree],
     validate: v,
-    hint: {
-      rules: [
-        '特殊符號可在這複製：圓周率「π」，度「°」',
-        '分數請化到最簡',
-        '答案輸入方式請參考下方',
-      ],
-      example: '8π/5 或 117°',
-    },
   };
 };
 

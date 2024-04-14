@@ -39,10 +39,6 @@ const values = (): QuestionValues => {
     qp: [type, numerator, denominator],
     ap: [a.numeratorCoefficient, a.numeratorRadical, a.denominator],
     validate: [[a.numeratorCoefficient, a.numeratorRadical, a.denominator].join()],
-    hint: {
-      rules: ['依序填入 a,b,c', '化至最簡', '以逗號或空白分隔'],
-      example: '1,2,5',
-    },
   };
 };
 

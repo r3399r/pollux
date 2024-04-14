@@ -12,10 +12,6 @@ const values = (): QuestionValues => {
     qp: [m, n],
     ap: [m, n],
     validate: [`${m},${n}`],
-    hint: {
-      rules: ['依序填入 a,n', '\\(n\\) 為整數且 \\(1\\le a<10\\)', '以逗號或空白分隔'],
-      example: '3.42 -2',
-    },
   };
 };
 

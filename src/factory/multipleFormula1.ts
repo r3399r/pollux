@@ -27,10 +27,6 @@ const values = (): QuestionValues => {
     qp: [type, a, b],
     ap: [first, second, third],
     validate: [[first, second, third].join()],
-    hint: {
-      rules: ['依序填入 a,b,c', '以逗號或空白分隔'],
-      example: '1,-4,4',
-    },
   };
 };
 

@@ -30,10 +30,6 @@ const values = (): QuestionValues => {
     qp: [type, a, b, m, n, d],
     ap: [type, a, b, m, n],
     validate: [ans.toFraction()],
-    hint: {
-      rules: ['若答案為分數請用 / 表示', '若為負數，請將負號寫在最前面'],
-      example: '-2/3',
-    },
   };
 };
 

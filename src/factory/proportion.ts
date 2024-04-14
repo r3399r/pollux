@@ -57,10 +57,6 @@ const values = (level = 0): QuestionValues => {
     qp: [mode, m, n, a, k, level === 3 ? t : b, c],
     ap: [x.toFraction()],
     validate: [x.toFraction()],
-    hint: {
-      rules: ['若答案為分數請用 / 表示', '若為負數，請將負號寫在最前面'],
-      example: '-2/3',
-    },
   };
 };
 

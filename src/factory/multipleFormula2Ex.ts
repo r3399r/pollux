@@ -28,10 +28,6 @@ const values = (): QuestionValues => {
     qp: [pm, given],
     ap: [a, b],
     validate: [`${a},${b}`],
-    hint: {
-      rules: ['依序填入 a,b', '以逗號或空白分隔'],
-      example: '3,10',
-    },
   };
 };
 

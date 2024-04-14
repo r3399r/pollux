@@ -20,10 +20,6 @@ const values = (): QuestionValues => {
     qp: [sign, a, b, c, d],
     ap: [sign, first, second, third],
     validate: [[first * sign, second * sign, third * sign].join()],
-    hint: {
-      rules: ['依序填入 a,b,c', '以逗號或空白分隔'],
-      example: '1,2,-5',
-    },
   };
 };
 

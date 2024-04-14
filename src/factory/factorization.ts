@@ -25,10 +25,6 @@ const values = (): QuestionValues => {
     qp: [a, b, c, d],
     ap: [leading, b, d, a1, b1, c1, d1],
     validate,
-    hint: {
-      rules: ['依序填入 k,a,b,c,d', 'a,c 為正數', '以逗號或空白分隔'],
-      example: '-1,2,-3,1,4',
-    },
   };
 };
 

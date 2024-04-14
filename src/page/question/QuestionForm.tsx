@@ -115,16 +115,16 @@ const QuestionForm = ({ initQuestion, current }: Props) => {
           {!errors.ans && !checked && <div />}
           <Button type="submit">確認</Button>
         </div>
-        {current?.hint && (
+        {currentTopic?.hint && (
           <div className="mt-[30px] rounded-[10px] bg-haze-100 p-5 flex gap-5 items-start">
             <img src={IcHint} />
             <ul>
-              {current.hint.rules.map((v, i) => (
+              {currentTopic.hint.rules.map((v, i) => (
                 <li className="text-navy-500 list-['-'] pl-[5px]" key={i}>
                   {v}
                 </li>
               ))}
-              <H4 className="text-haze-500 mt-[15px]">例: {current.hint.example}</H4>
+              <H4 className="text-haze-500 mt-[15px]">例: {currentTopic.hint.example}</H4>
             </ul>
           </div>
         )}
