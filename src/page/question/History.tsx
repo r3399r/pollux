@@ -3,7 +3,8 @@ import { format } from 'date-fns';
 import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import Body from 'src/component/typography/Body';
-import { SavedQuestionValues, topics } from 'src/model/Common';
+import { SavedQuestionValues } from 'src/model/Common';
+import { topics } from 'src/model/Topics';
 
 type Props = {
   history: SavedQuestionValues[];

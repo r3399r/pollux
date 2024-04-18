@@ -7,6 +7,7 @@ module.exports = {
       beige: {
         100: '#F6F4EC',
         200: '#EFE9DF',
+        300: '#E7DFD3',
         500: '#D9CEBD',
       },
       navy: {

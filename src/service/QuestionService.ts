@@ -1,4 +1,5 @@
-import { QuestionValues, SavedQuestionValues, Topic, topics } from 'src/model/Common';
+import { QuestionValues, SavedQuestionValues, Topic } from 'src/model/Common';
+import { topics } from 'src/model/Topics';
 
 const getTopic = (topic: string): Topic => {
   const topicObj = topics.find((t) => t.id === topic);

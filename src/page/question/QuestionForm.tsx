@@ -9,7 +9,8 @@ import H4 from 'src/component/typography/H4';
 import IcCheck from 'src/image/ic-check.svg';
 import IcCross from 'src/image/ic-cross.svg';
 import IcHint from 'src/image/ic-hint.svg';
-import { QaForm, QuestionValues, topics } from 'src/model/Common';
+import { QaForm, QuestionValues } from 'src/model/Common';
+import { topics } from 'src/model/Topics';
 import { onCorrectAnswer, onWrongAnswer, setAnswerIsRevealed } from 'src/service/QuestionService';
 
 type Props = {

@@ -11,8 +11,9 @@ const Home = () => {
   const [openMenu, setOpenMenu] = useState<boolean>(false);
 
   useEffect(() => {
+    const stage = localStorage.getItem('stage') ?? 'elementary';
     const target = localStorage.getItem('target');
-    if (target) navigate(`/${target}`);
+    if (stage && target) navigate(`/${stage}/${target}`);
   }, []);
 
   return (
