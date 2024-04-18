@@ -9,6 +9,8 @@ import H4 from 'src/component/typography/H4';
 import IcCheck from 'src/image/ic-check.svg';
 import IcCross from 'src/image/ic-cross.svg';
 import IcHint from 'src/image/ic-hint.svg';
+import IcLevelOlive from 'src/image/ic-level-olive.svg';
+import IcLevelWhite from 'src/image/ic-level-white.svg';
 import { QaForm, QuestionValues } from 'src/model/Common';
 import { topics } from 'src/model/Topics';
 import { onCorrectAnswer, onWrongAnswer, setAnswerIsRevealed } from 'src/service/QuestionService';
@@ -33,6 +35,7 @@ const QuestionForm = ({ initQuestion, current }: Props) => {
   const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null);
   const [checked, setChecked] = useState<boolean>(false);
   const currentTopic = useMemo(() => topics.find((t) => t.id === topic), [topic]);
+  const maxLevel = useMemo(() => currentTopic?.levelDefinition?.length ?? 1, [currentTopic]);
 
   useEffect(() => {
     setValue('ans', '');
@@ -69,6 +72,17 @@ const QuestionForm = ({ initQuestion, current }: Props) => {
         onSubmit={handleSubmit(onSubmit)}
         className="p-[30px] sm:p-[60px] md:px-[30px] md:py-[40px] lg:p-[60px]"
       >
+        <div className="flex mb-[30px] items-center">
+          <Body size="m" className="text-navy-300 mr-[5px]">
+            難度
+          </Body>
+          {[...Array(maxLevel)].map((v, i) => {
+            const level = Number(localStorage.getItem(`${topic}-level`) ?? '0');
+            if (level >= i) return <img key={i} src={IcLevelOlive} />;
+
+            return <img key={i} src={IcLevelWhite} />;
+          })}
+        </div>
         <div className="flex justify-center">
           {currentTopic?.factory?.question && current?.qp && (
             <div className="text-center">{currentTopic.factory.question(...current.qp)}</div>
