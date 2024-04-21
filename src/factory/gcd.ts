@@ -1,11 +1,11 @@
 import uniqid from 'uniqid';
 import { QuestionValues } from 'src/model/Common';
-import { gcd as findGcd, randomElement, randomIntBetween } from 'src/util/math';
+import { gcd as findGcd, pickRandomElement, randomInt } from 'src/util/math';
 
 const values = (): QuestionValues => {
-  const base = randomElement([1, 2, 3, 5, 7, 11, 13, 17, 19, 23, 29]);
-  const a = base * randomIntBetween(1, 20);
-  const b = base * randomIntBetween(1, 20);
+  const base = pickRandomElement([1, 2, 3, 5, 7, 11, 13, 17, 19, 23, 29]);
+  const a = base * randomInt(1, 20);
+  const b = base * randomInt(1, 20);
   const c = findGcd(a, b);
 
   return {
@@ -16,8 +16,8 @@ const values = (): QuestionValues => {
   };
 };
 
-const question = (a: number, b: number) => `求 ${a} 與 ${b} 的最大公因數`;
+const question = (a: number | string, b: number | string) => `求 ${a} 與 ${b} 的最大公因數`;
 
-const answer = (c: number) => `${c}`;
+const answer = (c: number | string) => `${c}`;
 
 export default { values, question, answer };

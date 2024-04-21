@@ -1,19 +1,22 @@
 import { Drawer } from '@mui/material';
 import { MathJax } from 'better-react-mathjax';
+import classNames from 'classnames';
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Menu from 'src/component/Menu';
 import Body from 'src/component/typography/Body';
 import H2 from 'src/component/typography/H2';
 import IcMenu from 'src/image/ic-menu.svg';
-import { QuestionValues, SavedQuestionValues, topics } from 'src/model/Common';
+import { QuestionValues, SavedQuestionValues } from 'src/model/Common';
+import { topics } from 'src/model/Topics';
 import { handleQuestion, removeRecord } from 'src/service/QuestionService';
 import History from './History';
 import QuestionForm from './QuestionForm';
 
 const QuestionPage = () => {
   const navigate = useNavigate();
-  const { topic } = useParams<{ topic: string }>();
+  const { stage, topic } = useParams<{ stage: string; topic: string }>();
+  const [currentTopic, setCurrentTopic] = useState<string>();
   const [current, setCurrent] = useState<QuestionValues>();
   const [history, setHistory] = useState<SavedQuestionValues[]>([]);
   const [openMenu, setOpenMenu] = useState<boolean>(false);
@@ -27,6 +30,7 @@ const QuestionPage = () => {
       const { current: c, history: h } = handleQuestion(topic, next, save);
       setCurrent(c);
       setHistory(h);
+      setCurrentTopic(topic);
     } catch (e) {
       navigate('/');
     }
@@ -35,6 +39,7 @@ const QuestionPage = () => {
   const onRemoveRecord = () => {
     if (!topic) return;
     removeRecord(topic);
+    initQuestion(false);
     setHistory([]);
   };
 
@@ -61,16 +66,29 @@ const QuestionPage = () => {
                 <H2>{title}</H2>
                 <img src={IcMenu} />
               </div>
-              <Body className="cursor-pointer text-olive-700" onClick={() => setOpenHistory(true)}>
+              <Body
+                className={classNames('cursor-pointer', {
+                  'text-orange-700': stage === 'elementary',
+                  'text-olive-700': stage === 'junior-high',
+                  'text-haze-700': stage === 'senior-high',
+                })}
+                onClick={() => setOpenHistory(true)}
+              >
                 觀看答題紀錄
               </Body>
             </div>
             <div className="flex">
               <div className="hidden md:block w-1/2 md:h-[calc(100vh-170px-92px)] overflow-y-auto">
-                <History history={history} onRemoveRecord={onRemoveRecord} />
+                <History
+                  history={currentTopic !== topic ? [] : history}
+                  onRemoveRecord={onRemoveRecord}
+                />
               </div>
               <div className="w-full md:w-1/2 bg-white md:h-[calc(100vh-170px-92px)] overflow-y-auto rounded-[15px]">
-                <QuestionForm initQuestion={initQuestion} current={current} />
+                <QuestionForm
+                  initQuestion={initQuestion}
+                  current={currentTopic !== topic ? undefined : current}
+                />
               </div>
             </div>
           </MathJax>
@@ -87,7 +105,7 @@ const QuestionPage = () => {
       >
         <MathJax className="w-[300px]">
           <History
-            history={history}
+            history={currentTopic !== topic ? [] : history}
             isDrawer
             onRemoveRecord={() => {
               setOpenHistory(false);

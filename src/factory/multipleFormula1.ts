@@ -1,16 +1,17 @@
 import uniqid from 'uniqid';
 import { QuestionValues } from 'src/model/Common';
-import { polynomial, randomElement, randomIntBetween } from 'src/util/math';
+import { pickRandomElement, randomInt } from 'src/util/math';
+import { polynomial } from 'src/util/text';
 
 const values = (): QuestionValues => {
-  const a = randomElement([1, 1, 1, 2, 2, 3, 4, 5]) * randomElement([-1, 1]);
-  const b = randomIntBetween(1, 10) * randomElement([-1, 1]);
+  const a = pickRandomElement([1, 1, 1, 2, 2, 3, 4, 5]) * pickRandomElement([-1, 1]);
+  const b = randomInt(1, 10) * pickRandomElement([-1, 1]);
   let first = a * a;
   let second = 0;
   let third = b * b;
 
   // 1: (ax+b)^2 -> a^2, 2*a*b, b^2, 2: (a+b)(a-b) -> a^2, b^2
-  const type = randomIntBetween(1, 2);
+  const type = randomInt(1, 2);
   switch (type) {
     case 1:
       second = 2 * a * b;
@@ -26,14 +27,13 @@ const values = (): QuestionValues => {
     qp: [type, a, b],
     ap: [first, second, third],
     validate: [[first, second, third].join()],
-    hint: {
-      rules: ['依序填入 a,b,c', '以逗號或空白分隔'],
-      example: '1,-4,4',
-    },
   };
 };
 
-const question = (type: number, a: number, b: number) => {
+const question = (type: number | string, a: number | string, b: number | string) => {
+  if (typeof a === 'string') a = Number(a);
+  if (typeof b === 'string') b = Number(b);
+
   switch (type) {
     case 1:
       return `\\((${polynomial('x', a, b)})^2\\) 展開為 \\(ax^2+bx+c\\)`;
@@ -48,7 +48,12 @@ const question = (type: number, a: number, b: number) => {
   return '';
 };
 
-const answer = (first: number, second: number, third: number) =>
-  `\\(${polynomial('x', first, second, third)}\\)`;
+const answer = (first: number | string, second: number | string, third: number | string) => {
+  if (typeof first === 'string') first = Number(first);
+  if (typeof second === 'string') second = Number(second);
+  if (typeof third === 'string') third = Number(third);
+
+  return `\\(${polynomial('x', first, second, third)}\\)`;
+};
 
 export default { values, question, answer };

@@ -1,25 +1,46 @@
-export const randomIntBetween = (min: number, max: number) =>
-  Math.floor(Math.random() * (max - min + 1) + min);
+import { MyFraction } from './MyFraction';
 
-export const randomIntBetweenExcept = (min: number, max: number, except: number[]) => {
-  let x: number;
-  do x = randomIntBetween(min, max);
-  while (except.includes(x));
+export const randomInt = (min: number, max: number) => {
+  if (min > max) throw new Error('min must be less than max');
 
-  return x;
+  return Math.floor(Math.random() * (max - min + 1) + min);
 };
 
-export const randomFloatBetween = (min: number, max: number, dp = 2) =>
-  parseFloat((Math.random() * (max - min) + min).toFixed(dp));
+export const pickRandomElement = <T>(arr: T[]): T => arr[randomInt(0, arr.length - 1)];
 
-export const randomElement = <T>(arr: T[]): T => arr[randomIntBetween(0, arr.length - 1)];
+export const randomIntExcept = (min: number, max: number, except: number[]) => {
+  const choice = [...Array(max - min + 1)]
+    .map((v, i) => min + i)
+    .filter((v) => !except.includes(v));
+  if (choice.length === 0) throw new Error('no choice');
 
-export const randomElementExcept = <T>(arr: T[], except: T[]): T => {
-  let element: T;
-  do element = randomElement(arr);
-  while (except.includes(element));
+  return pickRandomElement(choice);
+};
 
-  return element;
+export const randomFloat = (min: number, max: number, dp = 2) => {
+  if (min > max) throw new Error('min must be less than max');
+
+  return parseFloat((Math.random() * (max - min) + min).toFixed(dp));
+};
+
+export const randomFraction = (
+  min: number,
+  max: number,
+  minDenominator: number,
+  maxDenominator: number,
+) => {
+  if (min > max) throw new Error('min must be less than max');
+
+  const denominator = randomIntExcept(minDenominator, maxDenominator, [0]);
+  const minumum = denominator * min;
+  const maximum = denominator * max;
+  const numerator = randomIntExcept(
+    minumum,
+    maximum,
+    [...Array(max - min + 1)].map((v, i) => denominator * (min + i)),
+  );
+
+  return new MyFraction(numerator, denominator).toFraction();
 };
 
 export const gcd = (a: number, b: number): number => {
@@ -28,35 +49,6 @@ export const gcd = (a: number, b: number): number => {
 };
 
 export const lcm = (a: number, b: number): number => (a * b) / gcd(a, b);
-
-export const coefficient = (c: number, x = '', isLeading = false) => {
-  if (c === 0) return '';
-  if (isLeading) {
-    if (x === '') return `${c}`;
-    if (x !== '' && c === 1) return x;
-    if (x !== '' && c === -1) return `-${x}`;
-  } else {
-    if (x === '' && c > 0) return `+${c}`;
-    if (x === '' && c < 0) return `${c}`;
-
-    if (x !== '' && c === 1) return `+${x}`;
-    if (x !== '' && c === -1) return `-${x}`;
-    if (x !== '' && c > 0) return `+${c}${x}`;
-  }
-
-  return `${c}${x}`;
-};
-
-export const polynomial = (x: string, ...coefficients: number[]) =>
-  coefficients
-    .map((c, i) => {
-      const pow = coefficients.length - i - 1;
-      if (pow === 1) return coefficient(c, x, i === 0);
-      if (pow === 0) return coefficient(c, '', i === 0);
-
-      return coefficient(c, `${x}^${pow}`, i === 0);
-    })
-    .join('');
 
 export const primeFactorization = (n: number) => {
   const factors: number[] = [];
@@ -99,31 +91,5 @@ export const rationalizeSingle = (denominator: number, numerator: number) => {
     denominator: denominator / d2,
     numeratorCoefficient: numerator2.coefficient / d2,
     numeratorRadical: numerator2.n,
-  };
-};
-
-export const fraction = (denominator: number, numerator: number) => {
-  const d = gcd(denominator, numerator);
-  denominator = denominator / d;
-  numerator = numerator / d;
-
-  return {
-    denominator,
-    numerator,
-  };
-};
-
-export const fractionText = (denominator: number, numerator: number) => {
-  const sign = denominator * numerator < 0 ? -1 : 1;
-  const f = fraction(Math.abs(denominator), Math.abs(numerator));
-  if (f.denominator === 1)
-    return {
-      text: (sign * f.numerator).toString(),
-      latex: (sign * f.numerator).toString(),
-    };
-
-  return {
-    text: `${sign > 0 ? '' : '-'}${f.numerator}/${f.denominator}`,
-    latex: `${sign > 0 ? '' : '-'}\\dfrac{${f.numerator}}{${f.denominator}}`,
   };
 };

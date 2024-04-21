@@ -7,6 +7,7 @@ module.exports = {
       beige: {
         100: '#F6F4EC',
         200: '#EFE9DF',
+        300: '#E7DFD3',
         500: '#D9CEBD',
       },
       navy: {
@@ -24,8 +25,15 @@ module.exports = {
       },
       haze: {
         100: '#D7E4f8',
+        300: '#83A2D1',
         500: '#5085D4',
+        700: '#3969BB',
       },
+      orange: {
+        300: '#FFA16A',
+        500: '#E6834C',
+        700: '#C8652E',
+      }
     },
     screens: {
       sm: '640px',

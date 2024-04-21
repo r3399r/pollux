@@ -1,16 +1,16 @@
 import uniqid from 'uniqid';
 import { QuestionValues } from 'src/model/Common';
-import { randomIntBetween } from 'src/util/math';
+import { randomInt } from 'src/util/math';
 
 const values = (): QuestionValues => {
-  const r = randomIntBetween(1, 10);
-  const theta = randomIntBetween(1, 6);
+  const r = randomInt(1, 10);
+  const theta = randomInt(1, 6);
   const l = r * theta;
 
   let v = '';
 
   // 1: r unknown, 2: theta unknown, 3: l unknown
-  const type = randomIntBetween(1, 3);
+  const type = randomInt(1, 3);
   switch (type) {
     case 1:
       v = r.toString();
@@ -26,7 +26,12 @@ const values = (): QuestionValues => {
   return { id: uniqid(), qp: [type, theta, l, r], ap: [type, theta, l, r], validate: [v] };
 };
 
-const question = (type: number, theta: number, l: number, r: number) => {
+const question = (
+  type: number | string,
+  theta: number | string,
+  l: number | string,
+  r: number | string,
+) => {
   switch (type) {
     case 1:
       return `一扇形，其圓心角弧度 ${theta}，弧長 ${l}，求半徑`;
@@ -39,7 +44,12 @@ const question = (type: number, theta: number, l: number, r: number) => {
   return '';
 };
 
-const answer = (type: number, theta: number, l: number, r: number) => {
+const answer = (
+  type: number | string,
+  theta: number | string,
+  l: number | string,
+  r: number | string,
+) => {
   switch (type) {
     case 1:
       return r.toString();

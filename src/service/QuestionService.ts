@@ -1,4 +1,5 @@
-import { QuestionValues, SavedQuestionValues, Topic, topics } from 'src/model/Common';
+import { QuestionValues, SavedQuestionValues, Topic } from 'src/model/Common';
+import { topics } from 'src/model/Topics';
 
 const getTopic = (topic: string): Topic => {
   const topicObj = topics.find((t) => t.id === topic);
@@ -51,6 +52,7 @@ export const onWrongAnswer = (topic: string) => {
 };
 
 export const removeRecord = (topic: string) => {
+  localStorage.removeItem(`${topic}-current`);
   localStorage.removeItem(`${topic}-history`);
   localStorage.removeItem(`${topic}-level`);
   localStorage.removeItem(`${topic}-continuous-status`);
@@ -70,14 +72,20 @@ export const handleQuestion = (
   const thisTopic = getTopic(topic);
 
   let level = Number(localStorage.getItem(`${topic}-level`) ?? '0');
-  if (thisTopic.maxLevel && thisTopic.upgradeNeed && thisTopic.downgradeNeed) {
+  if (thisTopic.levelDefinition && thisTopic.levelDefinition.length > level) {
+    const currentLevelDefinition = thisTopic.levelDefinition[level];
     const continousStatus = Number(localStorage.getItem(`${topic}-continuous-status`) ?? '0');
+    const maxLevel = thisTopic.levelDefinition.length - 1;
 
     let reset = false;
-    if (continousStatus >= thisTopic.upgradeNeed) {
-      level = Math.min(level + 1, thisTopic.maxLevel);
+    if (currentLevelDefinition.upgrade && continousStatus >= currentLevelDefinition.upgrade) {
+      level = Math.min(level + 1, maxLevel);
       reset = true;
-    } else if (continousStatus < 0 && Math.abs(continousStatus) >= thisTopic.downgradeNeed) {
+    } else if (
+      currentLevelDefinition.downgrade &&
+      continousStatus < 0 &&
+      Math.abs(continousStatus) >= currentLevelDefinition.downgrade
+    ) {
       level = Math.max(level - 1, 0);
       reset = true;
     }
