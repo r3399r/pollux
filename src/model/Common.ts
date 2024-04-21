@@ -1,3 +1,5 @@
+import { Category } from './Categories';
+
 export type QaForm = {
   ans: string;
 };
@@ -19,17 +21,6 @@ export type Factory = {
 };
 
 export type SavedQuestionValues = Pick<QuestionValues, 'id' | 'qp' | 'ap'> & { t: number };
-
-export type Stage = {
-  id: string;
-  name: string;
-};
-
-export type Category = {
-  id: string;
-  name: string;
-  stage: Stage;
-};
 
 export type Topic = {
   id: string;

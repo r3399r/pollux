@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { categories } from 'src/model/Categories';
+import { category } from 'src/model/Categories';
 import { topics } from 'src/model/Topics';
 import Accordion from './Accordion';
 
@@ -13,7 +13,10 @@ type Props = {
 const Menu = ({ isDrawer = false, onCloseDrawer }: Props) => {
   const { stage, topic } = useParams<{ stage: string; topic: string }>();
   const navigate = useNavigate();
-  const currentCategories = useMemo(() => categories.filter((c) => c.stage.id === stage), [stage]);
+  const currentCategories = useMemo(
+    () => Object.values(category).filter((c) => c.stage.key === stage),
+    [stage],
+  );
 
   return (
     <div
@@ -26,11 +29,11 @@ const Menu = ({ isDrawer = false, onCloseDrawer }: Props) => {
       )}
     >
       {currentCategories.map((c) => {
-        const currentTopics = topics.filter((t) => t.category.id === c.id);
+        const currentTopics = topics.filter((t) => t.category.key === c.key);
 
         return (
           <Accordion
-            key={c.id}
+            key={c.key}
             summary={c.name}
             details={currentTopics.map((t) => t.name)}
             current={currentTopics.find((t) => t.id === topic)?.name ?? ''}
