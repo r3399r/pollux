@@ -52,6 +52,7 @@ export const onWrongAnswer = (topic: string) => {
 };
 
 export const removeRecord = (topic: string) => {
+  localStorage.removeItem(`${topic}-current`);
   localStorage.removeItem(`${topic}-history`);
   localStorage.removeItem(`${topic}-level`);
   localStorage.removeItem(`${topic}-continuous-status`);

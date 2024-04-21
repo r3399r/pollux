@@ -39,6 +39,7 @@ const QuestionPage = () => {
   const onRemoveRecord = () => {
     if (!topic) return;
     removeRecord(topic);
+    initQuestion(false);
     setHistory([]);
   };
 
