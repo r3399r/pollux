@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import IcArrow from 'src/image/ic-arrow-s.svg';
@@ -9,6 +10,7 @@ const Header = () => {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const ref = useRef<HTMLButtonElement>(null);
+  const stage = localStorage.getItem('stage') ?? 'elementary';
 
   const switchStage = (stage: 'elementary' | 'junior-high' | 'senior-high') => {
     localStorage.removeItem('target');
@@ -16,8 +18,7 @@ const Header = () => {
     navigate(`/${stage}`);
   };
 
-  const getCurrentStage = () => {
-    const stage = localStorage.getItem('stage') ?? 'elementary';
+  const getCurrentStageName = () => {
     if (stage === 'elementary') return '國小';
     if (stage === 'junior-high') return '國中';
 
@@ -30,18 +31,21 @@ const Header = () => {
         className="cursor-pointer"
         onClick={() => {
           localStorage.removeItem('target');
-          const stage = localStorage.getItem('stage') ?? 'elementary';
           navigate(`/${stage}`);
         }}
       >
         無限 ∞ 算術
       </H2>
       <button
-        className="py-[6px] pl-4 pr-2 rounded-[40px] bg-olive-700 flex text-white md:hidden"
+        className={classNames('py-[6px] pl-4 pr-2 rounded-[40px] flex text-white md:hidden', {
+          'bg-orange-500': stage === 'elementary',
+          'bg-olive-500': stage === 'junior-high',
+          'bg-haze-500': stage === 'senior-high',
+        })}
         ref={ref}
         onClick={() => setMenuOpen(true)}
       >
-        {getCurrentStage()}
+        {getCurrentStageName()}
         <img src={IcArrow} />
       </button>
       <div className="hidden md:flex">

@@ -9,8 +9,10 @@ import H4 from 'src/component/typography/H4';
 import IcCheck from 'src/image/ic-check.svg';
 import IcCross from 'src/image/ic-cross.svg';
 import IcHint from 'src/image/ic-hint.svg';
+import IcLevelBeige from 'src/image/ic-level-beige.svg';
+import IcLevelHaze from 'src/image/ic-level-haze.svg';
 import IcLevelOlive from 'src/image/ic-level-olive.svg';
-import IcLevelWhite from 'src/image/ic-level-white.svg';
+import IcLevelOrange from 'src/image/ic-level-orange.svg';
 import { QaForm, QuestionValues } from 'src/model/Common';
 import { topics } from 'src/model/Topics';
 import { onCorrectAnswer, onWrongAnswer, setAnswerIsRevealed } from 'src/service/QuestionService';
@@ -21,7 +23,7 @@ type Props = {
 };
 
 const QuestionForm = ({ initQuestion, current }: Props) => {
-  const { topic } = useParams<{ topic: string }>();
+  const { stage, topic } = useParams<{ stage: string; topic: string }>();
   const {
     register,
     handleSubmit,
@@ -78,9 +80,11 @@ const QuestionForm = ({ initQuestion, current }: Props) => {
           </Body>
           {[...Array(maxLevel)].map((v, i) => {
             const level = Number(localStorage.getItem(`${topic}-level`) ?? '0');
-            if (level >= i) return <img key={i} src={IcLevelOlive} />;
+            if (level < i) return <img key={i} src={IcLevelBeige} />;
+            if (stage === 'elementary') return <img key={i} src={IcLevelOrange} />;
+            if (stage === 'junior-high') return <img key={i} src={IcLevelOlive} />;
 
-            return <img key={i} src={IcLevelWhite} />;
+            return <img key={i} src={IcLevelHaze} />;
           })}
         </div>
         <div className="flex justify-center">

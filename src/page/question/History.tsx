@@ -13,7 +13,7 @@ type Props = {
 };
 
 const History = ({ history, isDrawer = false, onRemoveRecord }: Props) => {
-  const { topic } = useParams<{ topic: string }>();
+  const { stage, topic } = useParams<{ stage: string; topic: string }>();
   const currentTopic = useMemo(() => topics.find((t) => t.id === topic), [topic]);
 
   return (
@@ -24,7 +24,14 @@ const History = ({ history, isDrawer = false, onRemoveRecord }: Props) => {
       })}
     >
       <div className={classNames('flex justify-between items-end', { 'my-[10px]': isDrawer })}>
-        <Body className="text-olive-700 cursor-pointer w-fit" onClick={onRemoveRecord}>
+        <Body
+          className={classNames('cursor-pointer w-fit', {
+            'text-orange-700': stage === 'elementary',
+            'text-olive-700': stage === 'junior-high',
+            'text-haze-700': stage === 'senior-high',
+          })}
+          onClick={onRemoveRecord}
+        >
           清除答題紀錄
         </Body>
         <Body size="m" className="text-navy-300">

@@ -1,5 +1,6 @@
 import { Drawer } from '@mui/material';
 import { MathJax } from 'better-react-mathjax';
+import classNames from 'classnames';
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Menu from 'src/component/Menu';
@@ -14,7 +15,7 @@ import QuestionForm from './QuestionForm';
 
 const QuestionPage = () => {
   const navigate = useNavigate();
-  const { topic } = useParams<{ topic: string }>();
+  const { stage, topic } = useParams<{ stage: string; topic: string }>();
   const [currentTopic, setCurrentTopic] = useState<string>();
   const [current, setCurrent] = useState<QuestionValues>();
   const [history, setHistory] = useState<SavedQuestionValues[]>([]);
@@ -64,7 +65,14 @@ const QuestionPage = () => {
                 <H2>{title}</H2>
                 <img src={IcMenu} />
               </div>
-              <Body className="cursor-pointer text-olive-700" onClick={() => setOpenHistory(true)}>
+              <Body
+                className={classNames('cursor-pointer', {
+                  'text-orange-700': stage === 'elementary',
+                  'text-olive-700': stage === 'junior-high',
+                  'text-haze-700': stage === 'senior-high',
+                })}
+                onClick={() => setOpenHistory(true)}
+              >
                 觀看答題紀錄
               </Body>
             </div>

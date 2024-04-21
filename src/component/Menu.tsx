@@ -21,10 +21,13 @@ const Menu = ({ isDrawer = false, onCloseDrawer }: Props) => {
   return (
     <div
       className={classNames(
-        'flex flex-col gap-[5px] bg-olive-500 h-full text-white px-[15px] py-5 overflow-y-auto',
+        'flex flex-col gap-[5px] h-full text-white px-[15px] py-5 overflow-y-auto',
         {
           'rounded-[15px] w-[256px]': !isDrawer,
           'w-[300px]': isDrawer,
+          'bg-orange-500': stage === 'elementary',
+          'bg-olive-500': stage === 'junior-high',
+          'bg-haze-500': stage === 'senior-high',
         },
       )}
     >
