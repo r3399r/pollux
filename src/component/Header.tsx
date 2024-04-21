@@ -51,21 +51,30 @@ const Header = () => {
       <div className="hidden md:flex">
         <Body
           bold
-          className="px-5 cursor-pointer hover:bg-beige-300 leading-[70px]"
+          className={classNames('px-5 cursor-pointer py-6', {
+            'text-navy-900 bg-beige-300': stage === 'elementary',
+            'text-navy-300 hover:bg-beige-300': stage !== 'elementary',
+          })}
           onClick={() => switchStage('elementary')}
         >
           國小數學
         </Body>
         <Body
           bold
-          className="px-5 cursor-pointer hover:bg-beige-300 leading-[70px]"
+          className={classNames('px-5 cursor-pointer py-6', {
+            'text-navy-900 bg-beige-300': stage === 'junior-high',
+            'text-navy-300 hover:bg-beige-300': stage !== 'junior-high',
+          })}
           onClick={() => switchStage('junior-high')}
         >
           國中數學
         </Body>
         <Body
           bold
-          className="px-5 cursor-pointer hover:bg-beige-300 leading-[70px]"
+          className={classNames('px-5 cursor-pointer py-6', {
+            'text-navy-900 bg-beige-300': stage === 'senior-high',
+            'text-navy-300 hover:bg-beige-300': stage !== 'senior-high',
+          })}
           onClick={() => switchStage('senior-high')}
         >
           高中數學
