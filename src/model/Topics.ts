@@ -9,6 +9,7 @@ import divisionPoint from 'src/factory/divisionPoint';
 import factorization from 'src/factory/factorization';
 import gcd from 'src/factory/gcd';
 import lcm from 'src/factory/lcm';
+import linearEquationOfTwoVar1 from 'src/factory/linearEquationOfTwoVar1';
 import minus10 from 'src/factory/minus10';
 import multipleFormula1 from 'src/factory/multipleFormula1';
 import multipleFormula2 from 'src/factory/multipleFormula2';
@@ -118,6 +119,16 @@ const juniorHighTopics: Topic[] = [
       rules: ['若答案為分數請用 / 表示', '若為負數，請將負號寫在最前面'],
       example: '-2/3',
     },
+  },
+  {
+    id: 'linear-equation-of-two-variables-1',
+    name: '二元一次方程式的圖形 題型一',
+    category: category['junior-high-1-2'],
+    factory: linearEquationOfTwoVar1,
+    // levelDefinition: [
+    //   { upgrade: 2, downgrade: null },
+    //   { upgrade: null, downgrade: 2 },
+    // ],
   },
   {
     id: 'distributive-law',
