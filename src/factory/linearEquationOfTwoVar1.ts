@@ -48,8 +48,8 @@ const question = (equation: number | string, point: number | string, unknown: nu
   const order = randomInt(0, 1);
 
   return order
-    ? `若 \\(${equation}\\) 通過點 \\(${point}\\)，求 \\(${unknown}\\)`
-    : `若點 \\(${point}\\) 在直線 \\(${equation}\\) 上，求 \\(${unknown}\\)`;
+    ? `若 \\(${equation}\\) 通過點 \\(${point}\\)，求 \\(${unknown}=?\\)`
+    : `若點 \\(${point}\\) 在直線 \\(${equation}\\) 上，求 \\(${unknown}=?\\)`;
 };
 
 const answer = (m: number | string) => `${m}`;
