@@ -125,10 +125,10 @@ const juniorHighTopics: Topic[] = [
     name: '二元一次方程式的圖形 題型一',
     category: category['junior-high-1-2'],
     factory: linearEquationOfTwoVar1,
-    // levelDefinition: [
-    //   { upgrade: 2, downgrade: null },
-    //   { upgrade: null, downgrade: 2 },
-    // ],
+    levelDefinition: [
+      { upgrade: 3, downgrade: null },
+      { upgrade: null, downgrade: 3 },
+    ],
   },
   {
     id: 'distributive-law',
