@@ -5,6 +5,7 @@ import { coefficient } from 'src/util/text';
 
 const values = (level?: number): QuestionValues => {
   const mode = randomInt(0, 1);
+  const order = randomInt(0, 1);
 
   let x = randomInt(-10, 10);
   let y = randomInt(-10, 10);
@@ -38,19 +39,21 @@ const values = (level?: number): QuestionValues => {
 
   return {
     id: uniqid(),
-    qp: [equation, point, unknown],
+    qp: [order, equation, point, unknown],
     ap: [ans],
     validate: [`${ans}`],
   };
 };
 
-const question = (equation: number | string, point: number | string, unknown: number | string) => {
-  const order = randomInt(0, 1);
-
-  return order
+const question = (
+  order: number | string,
+  equation: number | string,
+  point: number | string,
+  unknown: number | string,
+) =>
+  order
     ? `若 \\(${equation}\\) 通過點 \\(${point}\\)，求 \\(${unknown}=?\\)`
     : `若點 \\(${point}\\) 在直線 \\(${equation}\\) 上，求 \\(${unknown}=?\\)`;
-};
 
 const answer = (m: number | string) => `${m}`;
 
