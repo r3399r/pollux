@@ -1,23 +1,37 @@
 import uniqid from 'uniqid';
 import { QuestionValues } from 'src/model/Common';
 import { randomInt, randomIntExcept } from 'src/util/math';
+import { polynomial } from 'src/util/text';
 
 const values = (level?: number): QuestionValues => {
   const order = randomInt(0, 1);
 
-  const mode = randomInt(0, 1); // 0 for vertical, 1 for horizontal
-  const x1 = randomInt(-10, 10);
-  const y1 = randomInt(-10, 10);
-  const x2 = mode ? randomIntExcept(-10, 10, [x1]) : x1;
-  const y2 = mode ? y1 : randomIntExcept(-10, 10, [y1]);
-
+  let mode = 0;
+  let x1 = 0;
+  let x2 = 0;
+  let y1 = 0;
+  let y2 = 0;
+  let a = 0;
+  let b = 0;
   let ans = '';
-  const validate: string[] = [];
+
   switch (level) {
+    case 1:
+      x1 = randomInt(-6, 6);
+      x2 = randomIntExcept(-6, 6, [x1]);
+      a = randomIntExcept(-9, 9, [0]);
+      b = randomInt(-9, 9);
+      y1 = a * x1 + b;
+      y2 = a * x2 + b;
+      ans = `y=${polynomial('x', a, b)}`;
+      break;
     default:
+      mode = randomInt(0, 1); // 0 for vertical, 1 for horizontal
+      x1 = randomInt(-10, 10);
+      y1 = randomInt(-10, 10);
+      x2 = mode ? randomIntExcept(-10, 10, [x1]) : x1;
+      y2 = mode ? y1 : randomIntExcept(-10, 10, [y1]);
       ans = mode ? `y=${y1}` : `x=${x1}`;
-      validate.push(ans);
-      validate.push(mode ? `-y=${-y1}` : `-x=${-x1}`);
       break;
   }
 
@@ -25,7 +39,7 @@ const values = (level?: number): QuestionValues => {
     id: uniqid(),
     qp: [order, x1, x2, y1, y2],
     ap: [ans],
-    validate,
+    validate: [ans],
   };
 };
 

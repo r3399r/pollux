@@ -136,13 +136,13 @@ const juniorHighTopics: Topic[] = [
     name: '二元一次方程式的圖形 題型二',
     category: category['junior-high-1-2'],
     factory: linearEquationOfTwoVar2,
-    // levelDefinition: [
-    //   { upgrade: 3, downgrade: null },
-    //   { upgrade: null, downgrade: 3 },
-    // ],
+    levelDefinition: [
+      { upgrade: 3, downgrade: null },
+      { upgrade: null, downgrade: 3 },
+    ],
     hint: {
-      rules: ['式子的中間不要加任何空格或符號'],
-      example: 'x=1, y=2, 3x-2y=-4',
+      rules: ['式子的中間不要加任何空格或符號', '答案格式為 x=a 或 y=b 或 y=ax+b'],
+      example: 'x=1, y=2, y=3x-5',
     },
   },
   {

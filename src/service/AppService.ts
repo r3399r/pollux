@@ -1,4 +1,4 @@
-const version = 'v1.3.1-snapshot-3';
+const version = 'v1.3.1-snapshot-4';
 
 export const init = () => {
   const ver = localStorage.getItem('ver');
