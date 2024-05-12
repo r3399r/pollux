@@ -19,9 +19,11 @@ const values = (level?: number): QuestionValues => {
   let unknown = '';
   switch (level) {
     case 1:
-      if (x === 0) x = randomIntExcept(-10, 10, [0]);
-      if (y === 0) y = randomIntExcept(-10, 10, [0]);
-      if (x === 0 || y === 0) c = a * x + b * y;
+      if (x === 0 || y === 0) {
+        if (x === 0) x = randomIntExcept(-10, 10, [0]);
+        if (y === 0) y = randomIntExcept(-10, 10, [0]);
+        c = a * x + b * y;
+      }
       equation = mode
         ? `${coefficient(a, 'x', true)}+ky=${c}`
         : `kx${coefficient(b, 'y', false)}=${c}`;
