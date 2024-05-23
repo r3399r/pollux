@@ -8,6 +8,7 @@ import distributiveLaw from 'src/factory/distributiveLaw';
 import divisionPoint from 'src/factory/divisionPoint';
 import factorization from 'src/factory/factorization';
 import gcd from 'src/factory/gcd';
+import inequality1 from 'src/factory/inequality1';
 import lcm from 'src/factory/lcm';
 import linearEquationOfTwoVar1 from 'src/factory/linearEquationOfTwoVar1';
 import linearEquationOfTwoVar2 from 'src/factory/linearEquationOfTwoVar2';
@@ -143,6 +144,26 @@ const juniorHighTopics: Topic[] = [
     hint: {
       rules: ['式子的中間不要加任何空格或符號', '答案格式為 x=a 或 y=b 或 y=ax+b'],
       example: 'x=1, y=2, y=3x-5',
+    },
+  },
+  {
+    id: 'inequality-1',
+    name: '不等式 題型一',
+    category: category['junior-high-1-2'],
+    factory: inequality1,
+    levelDefinition: [
+      { upgrade: 3, downgrade: null },
+      { upgrade: null, downgrade: 3 },
+    ],
+    hint: {
+      rules: [
+        '請把 x 寫於式子左邊且係數為 1',
+        '\\(\\ge\\) 寫作 >=; \\(\\le\\) 寫作 <=',
+        '式子的中間不要加任何空格或符號',
+        '若遇分數，請化為最簡',
+        '若遇負分數，請將負號置於分數的前方',
+      ],
+      example: 'x>1, x<2, x>=1/2, x<=-3/4',
     },
   },
   {
