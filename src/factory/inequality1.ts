@@ -1,7 +1,6 @@
-import Fraction from 'fraction.js';
 import uniqid from 'uniqid';
 import { QuestionValues } from 'src/model/Common';
-import { randomInt, randomIntExcept } from 'src/util/math';
+import { randomFraction, randomInt, randomIntExcept } from 'src/util/math';
 import { MyFraction } from 'src/util/MyFraction';
 import { polynomial } from 'src/util/text';
 
@@ -9,28 +8,33 @@ const signLatex = ['>', '\\ge', '<', '\\le', '>', '\\ge'];
 const signText = ['>', '>=', '<', '<=', '>', '>='];
 
 const values = (level?: number): QuestionValues => {
-  const h = 1;
-  let a = 1;
+  let h = 1;
+  let a = new MyFraction(1);
   const b = randomIntExcept(-15, 15, [0]);
   const d = randomInt(-15, 15);
   const signIdx = randomInt(0, 3);
-  let ans = new Fraction(0);
 
   switch (level) {
+    case 3:
+      a = new MyFraction(randomIntExcept(-9, 9, [0]));
+      h = randomIntExcept(-9, 9, [0]);
+      break;
+    case 2:
+      a = randomFraction(-5, 5, 2, 9);
+      break;
     case 1:
-      a = randomIntExcept(-9, 9, [0]);
-      ans = new MyFraction(d - b, a);
+      a = new MyFraction(randomIntExcept(-9, 9, [0]));
       break;
     default:
-      ans = new Fraction(d - b);
       break;
   }
+  const ans = new MyFraction((d - h * b) * a.d * a.s, h * a.n);
 
   return {
     id: uniqid(),
-    qp: [h, a, b, d, signIdx],
-    ap: [ans.toLatex(), a > 0 ? signIdx : signIdx + 2],
-    validate: [`x${signText[a > 0 ? signIdx : signIdx + 2]}${ans.toFraction()}`],
+    qp: [h, a.toFraction(), b, d, signIdx],
+    ap: [ans.toLatex(), h * a.s > 0 ? signIdx : signIdx + 2],
+    validate: [`x${signText[h * a.s > 0 ? signIdx : signIdx + 2]}${ans.toFraction()}`],
   };
 };
 

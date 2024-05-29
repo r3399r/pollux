@@ -44,7 +44,7 @@ const values = (level = 0): QuestionValues => {
       n = y - Number(m) * x.valueOf();
       break;
     case 1:
-      m = randomFraction(-5, 5, 2, 5);
+      m = randomFraction(-5, 5, 2, 5).toFraction();
       x = new MyFraction(a * b, c).div(m);
       break;
     default:
