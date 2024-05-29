@@ -124,7 +124,7 @@ const juniorHighTopics: Topic[] = [
   },
   {
     id: 'linear-equation-of-two-variables-1',
-    name: '二元一次方程式的圖形 題型一',
+    name: '二元一次方程式的圖形(一)',
     category: category['junior-high-1-2'],
     factory: linearEquationOfTwoVar1,
     levelDefinition: [
@@ -134,7 +134,7 @@ const juniorHighTopics: Topic[] = [
   },
   {
     id: 'linear-equation-of-two-variables-2',
-    name: '二元一次方程式的圖形 題型二',
+    name: '二元一次方程式的圖形(二)',
     category: category['junior-high-1-2'],
     factory: linearEquationOfTwoVar2,
     levelDefinition: [
@@ -148,17 +148,19 @@ const juniorHighTopics: Topic[] = [
   },
   {
     id: 'inequality-1',
-    name: '不等式 題型一',
+    name: '不等式(一)',
     category: category['junior-high-1-2'],
     factory: inequality1,
     levelDefinition: [
       { upgrade: 3, downgrade: null },
+      { upgrade: 3, downgrade: 3 },
+      { upgrade: 3, downgrade: 3 },
       { upgrade: null, downgrade: 3 },
     ],
     hint: {
       rules: [
         '請把 x 寫於式子左邊且係數為 1',
-        '\\(\\ge\\) 寫作 >=; \\(\\le\\) 寫作 <=',
+        '\\(\\ge\\) 請輸入 >=；\\(\\le\\) 請輸入 <=',
         '式子的中間不要加任何空格或符號',
         '若遇分數，請化為最簡',
         '若遇負分數，請將負號置於分數的前方',
