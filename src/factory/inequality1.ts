@@ -17,7 +17,7 @@ const values = (level?: number): QuestionValues => {
   switch (level) {
     case 3:
       a = new MyFraction(randomIntExcept(-9, 9, [0]));
-      h = randomIntExcept(-9, 9, [0]);
+      h = randomIntExcept(-9, 9, [0, 1]);
       break;
     case 2:
       a = randomFraction(-5, 5, 2, 9);
