@@ -74,19 +74,21 @@ const QuestionForm = ({ initQuestion, current }: Props) => {
         onSubmit={handleSubmit(onSubmit)}
         className="p-[30px] sm:p-[60px] md:px-[30px] md:py-[40px] lg:p-[60px]"
       >
-        <div className="flex mb-[30px] items-center">
-          <Body size="m" className="text-navy-300 mr-[5px]">
-            難度
-          </Body>
-          {[...Array(maxLevel)].map((v, i) => {
-            const level = Number(localStorage.getItem(`${topic}-level`) ?? '0');
-            if (level < i) return <img key={i} src={IcLevelBeige} />;
-            if (stage === 'elementary') return <img key={i} src={IcLevelOrange} />;
-            if (stage === 'junior-high') return <img key={i} src={IcLevelOlive} />;
+        {maxLevel > 1 && (
+          <div className="flex mb-[30px] items-center">
+            <Body size="m" className="text-navy-300 mr-[5px]">
+              難度
+            </Body>
+            {[...Array(maxLevel)].map((v, i) => {
+              const level = Number(localStorage.getItem(`${topic}-level`) ?? '0');
+              if (level < i) return <img key={i} src={IcLevelBeige} />;
+              if (stage === 'elementary') return <img key={i} src={IcLevelOrange} />;
+              if (stage === 'junior-high') return <img key={i} src={IcLevelOlive} />;
 
-            return <img key={i} src={IcLevelHaze} />;
-          })}
-        </div>
+              return <img key={i} src={IcLevelHaze} />;
+            })}
+          </div>
+        )}
         <div className="flex justify-center">
           {currentTopic?.factory?.question && current?.qp && (
             <div className="text-center">{currentTopic.factory.question(...current.qp)}</div>
