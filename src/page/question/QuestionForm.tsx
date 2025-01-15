@@ -139,14 +139,28 @@ const QuestionForm = ({ initQuestion, current }: Props) => {
         {currentTopic?.hint && (
           <div className="mt-[30px] rounded-[10px] bg-haze-100 p-5 flex gap-5 items-start">
             <img src={IcHint} />
-            <ul>
-              {currentTopic.hint.rules.map((v, i) => (
-                <li className="text-navy-500 list-['-'] pl-[5px]" key={i}>
-                  {v}
-                </li>
-              ))}
+            <div>
+              <ul>
+                {currentTopic.hint.rules.map((v, i) => (
+                  <li className="text-navy-500 list-['-'] pl-[5px]" key={i}>
+                    {v}
+                  </li>
+                ))}
+              </ul>
               <H4 className="text-haze-500 mt-[15px]">例: {currentTopic.hint.example}</H4>
-            </ul>
+            </div>
+          </div>
+        )}
+        {currentTopic?.videoUrl && (
+          <div className="mt-[30px] rounded-[10px] bg-haze-100 p-5 flex gap-5 items-start">
+            <img src={IcHint} />
+            <div>
+              <Body className="text-navy-500 underline">
+                <a href={currentTopic.videoUrl} target="_blank" rel="noreferrer">
+                  點擊觀看講解影片
+                </a>
+              </Body>
+            </div>
           </div>
         )}
       </form>

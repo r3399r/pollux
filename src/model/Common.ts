@@ -32,4 +32,5 @@ export type Topic = {
     downgrade: number | null;
   }[];
   hint?: { rules: string[]; example: string };
+  videoUrl?: string;
 };
