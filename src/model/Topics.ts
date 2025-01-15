@@ -1,6 +1,7 @@
 import add10 from 'src/factory/add10';
 import add100 from 'src/factory/add100';
 import arcLengthFormula from 'src/factory/arcLengthFormula';
+import arithmeticSequence from 'src/factory/arithmeticSequence';
 import commonLogarithm from 'src/factory/commonLogarithm';
 import completingTheSquare from 'src/factory/completingTheSquare';
 import degreeRadianTransform from 'src/factory/degreeRadianTransform';
@@ -270,6 +271,12 @@ const seniorHighTopics: Topic[] = [
       rules: ['若答案為分數請用 / 表示', '若為負數，請將負號寫在最前面'],
       example: '-2/3',
     },
+  },
+  {
+    id: 'arithmetic-sequence',
+    name: '等差數列',
+    category: category['senior-high-1-2'],
+    factory: arithmeticSequence,
   },
   {
     id: 'degree-radian-transform',

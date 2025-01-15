@@ -81,6 +81,11 @@ export const category = {
     name: '高一上',
     stage: stage['senior-high'],
   },
+  [CATEGORY.SENIOR_HIGH_1_2]: {
+    key: CATEGORY.SENIOR_HIGH_1_2,
+    name: '高一下',
+    stage: stage['senior-high'],
+  },
   [CATEGORY.SENIOR_HIGH_2_1]: {
     key: CATEGORY.SENIOR_HIGH_2_1,
     name: '高二上',
