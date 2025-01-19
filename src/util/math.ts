@@ -6,6 +6,8 @@ export const randomInt = (min: number, max: number) => {
   return Math.floor(Math.random() * (max - min + 1) + min);
 };
 
+export const randomBoolean = () => (randomInt(0, 1) === 0 ? false : true);
+
 export const pickRandomElement = <T>(arr: T[]): T => arr[randomInt(0, arr.length - 1)];
 
 export const randomIntExcept = (min: number, max: number, except: number[]) => {

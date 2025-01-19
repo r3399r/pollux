@@ -9,6 +9,7 @@ import distributiveLaw from 'src/factory/distributiveLaw';
 import divisionPoint from 'src/factory/divisionPoint';
 import factorization from 'src/factory/factorization';
 import gcd from 'src/factory/gcd';
+import geometricSequence from 'src/factory/geometricSequence';
 import inequality1 from 'src/factory/inequality1';
 import lcm from 'src/factory/lcm';
 import linearEquationOfTwoVar1 from 'src/factory/linearEquationOfTwoVar1';
@@ -277,6 +278,16 @@ const seniorHighTopics: Topic[] = [
     name: '等差數列',
     category: category['senior-high-1-2'],
     factory: arithmeticSequence,
+  },
+  {
+    id: 'geometric-sequence',
+    name: '等比數列',
+    category: category['senior-high-1-2'],
+    factory: geometricSequence,
+    hint: {
+      rules: ['若答案為分數請用 / 表示', '若為負數，請將負號寫在最前面'],
+      example: '-2/3',
+    },
   },
   {
     id: 'degree-radian-transform',
